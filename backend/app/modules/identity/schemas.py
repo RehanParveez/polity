@@ -1,5 +1,5 @@
 import uuid
-from pydantic import BaseModel, ConfigDict, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 class UserCreate(BaseModel):
   email: EmailStr
@@ -12,7 +12,7 @@ class UserRead(BaseModel):
   email: EmailStr
   full_name: str
   is_active: bool
-  permissions: list[str] = []
+  permissions: list[str] = Field(default_factory=list)
 
 class LoginRequest(BaseModel):
   email: EmailStr
@@ -25,3 +25,14 @@ class TokenPair(BaseModel):
 
 class RefreshRequest(BaseModel):
   refresh_token: str
+  
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class ForgotPasswordResponse(BaseModel):
+    message: str
+    dev_reset_token: str | None = None 
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str

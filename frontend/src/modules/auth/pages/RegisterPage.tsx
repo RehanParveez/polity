@@ -1,6 +1,9 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { User, Mail, Lock } from 'lucide-react'
 import { authService } from '../../../services/authService'
+import { TextField } from '../../../components/ui/TextField'
+import { Button } from '../../../components/ui/Button'
 
 export function RegisterPage() {
   const navigate = useNavigate()
@@ -25,19 +28,21 @@ export function RegisterPage() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <input type="text" placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)}
-        className="border border-slate-300 rounded px-3 py-2" required />
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}
-        className="border border-slate-300 rounded px-3 py-2" required />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}
-        className="border border-slate-300 rounded px-3 py-2" required minLength={8} />
-      {error && <p className="text-red-600 text-sm">{error}</p>}
-      <button type="submit" disabled={loading} className="bg-slate-800 text-white rounded px-3 py-2 disabled:opacity-50">
-        {loading ? 'Creating account…' : 'Create account'}
-      </button>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      <div>
+        <h2 className="text-lg font-semibold text-slate-100">Create your account</h2>
+        <p className="text-sm text-slate-500 mt-0.5">Join Polity to get started.</p>
+      </div>
+      <TextField label="Full name" icon={User} placeholder="Jane Doe" value={fullName}
+        onChange={(e) => setFullName(e.target.value)} required autoFocus />
+      <TextField label="Email" icon={Mail} type="email" placeholder="you@example.com" value={email}
+        onChange={(e) => setEmail(e.target.value)} required />
+      <TextField label="Password" icon={Lock} isPassword placeholder="At least 8 characters" value={password}
+        onChange={(e) => setPassword(e.target.value)} required minLength={8} />
+      {error && <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">{error}</p>}
+      <Button type="submit" loading={loading}>Create account</Button>
       <p className="text-sm text-slate-500 text-center">
-        Already have an account? <Link to="/login" className="text-slate-800 underline">Sign in</Link>
+        Already have an account? <Link to="/login" className="text-teal-400 hover:text-teal-300 font-medium">Sign in</Link>
       </p>
     </form>
   )

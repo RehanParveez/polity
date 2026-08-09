@@ -14,6 +14,11 @@ export type TokenPair = {
   token_type: string
 }
 
+export type ForgotPasswordResponse = {
+  message: string
+  dev_reset_token?: string | null
+}
+
 export const authService = {
   register: async (email: string, password: string, fullName: string): Promise<User> => {
     const res = await apiClient.post('/auth/register', { email, password, full_name: fullName })
@@ -34,4 +39,11 @@ export const authService = {
     )
     return res.data
   },
+  forgotPassword: async (email: string): Promise<ForgotPasswordResponse> => {
+  const res = await apiClient.post('/auth/forgot-password', { email })
+  return res.data
+},
+  resetPassword: async (token: string, newPassword: string): Promise<void> => {
+  await apiClient.post('/auth/reset-password', { token, new_password: newPassword })
+},
 }

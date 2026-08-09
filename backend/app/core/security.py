@@ -2,7 +2,6 @@ from passlib.context import CryptContext
 import hashlib
 from datetime import datetime, timedelta, timezone
 from jose import jwt, JWTError
-
 from app.core.config import get_settings
 
 settings = get_settings()
@@ -33,3 +32,8 @@ def decode_token(token: str) -> dict:
     return jwt.decode(token, settings.auth.jwt_secret_key, algorithms=[settings.auth.jwt_algorithm])
   except JWTError as exc:
     raise ValueError("invalid token") from exc
+
+def create_password_reset_token(subject: str) -> str:
+  expire = datetime.now(timezone.utc) + timedelta(minutes=30)
+  payload = {"sub": subject, "exp": expire, "type": "password_reset"}
+  return jwt.encode(payload, settings.auth.jwt_secret_key, algorithm=settings.auth.jwt_algorithm)

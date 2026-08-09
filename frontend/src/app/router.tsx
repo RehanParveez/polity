@@ -1,6 +1,8 @@
 import type { ReactElement } from 'react'
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { AuthLayout } from '../layouts/AuthLayout'
+import { ForgotPasswordPage } from '../modules/auth/pages/ForgotPasswordPage'
+import { ResetPasswordPage } from '../modules/auth/pages/ResetPasswordPage'
 import { GovernmentLayout } from '../layouts/GovernmentLayout'
 import { LoginPage } from '../modules/auth/pages/LoginPage'
 import { RegisterPage } from '../modules/auth/pages/RegisterPage'
@@ -23,6 +25,8 @@ export const router = createBrowserRouter([
     children: [
       { path: '/login', element: <LoginPage /> },
       { path: '/register', element: <RegisterPage /> },
+      { path: '/forgot-password', element: <ForgotPasswordPage /> },
+      { path: '/reset-password', element: <ResetPasswordPage /> },
     ],
   },
   {

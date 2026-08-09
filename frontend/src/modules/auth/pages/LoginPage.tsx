@@ -1,7 +1,10 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { Mail, Lock } from 'lucide-react'
 import { authService } from '../../../services/authService'
 import { useAuthStore } from '../../../app/store'
+import { TextField } from '../../../components/ui/TextField'
+import { Button } from '../../../components/ui/Button'
 
 export function LoginPage() {
   const navigate = useNavigate()
@@ -29,17 +32,24 @@ export function LoginPage() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}
-        className="border border-slate-300 rounded px-3 py-2" required />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}
-        className="bg-slate-950 border border-slate-700 rounded px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-teal-500" required />
-      {error && <p className="text-red-600 text-sm">{error}</p>}
-      <button type="submit" disabled={loading} className="bg-teal-500 text-slate-950 font-medium rounded px-3 py-2 hover:bg-teal-400 disabled:opacity-50 transition-colors">
-        {loading ? 'Signing in…' : 'Sign in'}
-      </button>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      <div>
+        <h2 className="text-lg font-semibold text-slate-100">Sign in</h2>
+        <p className="text-sm text-slate-500 mt-0.5">Welcome back, enter your credentials to continue.</p>
+      </div>
+      <TextField label="Email" icon={Mail} type="email" placeholder="you@gmail.com" value={email}
+        onChange={(e) => setEmail(e.target.value)} required autoFocus />
+      <div>
+        <TextField label="Password" icon={Lock} isPassword placeholder="••••••••" value={password}
+          onChange={(e) => setPassword(e.target.value)} required />
+        <div className="text-right mt-1.5">
+          <Link to="/forgot-password" className="text-xs text-teal-400 hover:text-teal-300">Forgot password?</Link>
+        </div>
+      </div>
+      {error && <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">{error}</p>}
+      <Button type="submit" loading={loading}>Sign in</Button>
       <p className="text-sm text-slate-500 text-center">
-        No account? <Link to="/register" className="text-slate-800 underline">Register</Link>
+        No account? <Link to="/register" className="text-teal-400 hover:text-teal-300 font-medium">Register</Link>
       </p>
     </form>
   )
