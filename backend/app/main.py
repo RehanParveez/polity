@@ -6,6 +6,7 @@ from app.core.config import get_settings
 from app.core.database import get_db
 from app.modules.authorization.router import router as authorization_router
 from app.modules.identity.router import router as identity_router
+from app.modules.geography.router import router as geography_router
 
 settings = get_settings()
 
@@ -26,6 +27,7 @@ def create_app() -> FastAPI:
   
   app.include_router(identity_router)
   app.include_router(authorization_router)
+  app.include_router(geography_router)
   return app
 
 app = create_app()

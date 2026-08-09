@@ -12,6 +12,7 @@ class UserRead(BaseModel):
   email: EmailStr
   full_name: str
   is_active: bool
+  permissions: list[str] = []
 
 class LoginRequest(BaseModel):
   email: EmailStr

@@ -6,6 +6,7 @@ from app.modules.identity.models import User
 from app.modules.identity.schemas import LoginRequest, RefreshRequest, TokenPair, UserCreate, UserRead
 from app.modules.identity.service import AuthError
 from app.shared.dependencies import get_current_user
+from app.modules.authorization.repository import get_permission_codes_for_user
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -32,5 +33,7 @@ async def refresh(payload: RefreshRequest, db: AsyncSession = Depends(get_db)):
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc)) from exc
 
 @router.get("/me", response_model=UserRead)
-async def me(current_user: User = Depends(get_current_user)):
-  return current_user
+async def me(current_user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+  permissions = await get_permission_codes_for_user(db, current_user.id)
+  return UserRead(id=current_user.id, email=current_user.email, full_name=current_user.full_name,
+    is_active=current_user.is_active, permissions=permissions,)
