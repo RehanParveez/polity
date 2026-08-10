@@ -1,3 +1,4 @@
+import app.core.model_registry
 from datetime import date
 from app.core.database import AsyncSessionLocal
 from app.modules.elections.models import Constituency, Party, Candidate, Election, VoteRecord

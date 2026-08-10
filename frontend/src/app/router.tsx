@@ -17,6 +17,9 @@ import { MinistryOrgChartPage } from '../modules/institutions/pages/MinistryOrgC
 import { ElectionsPage } from '../modules/elections/pages/ElectionsPage'
 import { ElectionCreatePage } from '../modules/elections/pages/ElectionCreatePage'
 import { ElectionResultsPage } from '../modules/elections/pages/ElectionResultsPage'
+import { GovernmentCreatePage } from '../modules/government/pages/GovernmentCreatePage'
+import { GovernmentDetailPage } from '../modules/government/pages/GovernmentDetailPage'
+import { GovernmentsPage } from '../modules/government/pages/GovernmentsPage'
 
 function ProtectedRoute({ children }: { children: ReactElement }) {
   const accessToken = useAuthStore((s) => s.accessToken)
@@ -51,6 +54,9 @@ export const router = createBrowserRouter([
       { path: '/elections', element: <ElectionsPage /> },
       { path: '/elections/new', element: <ElectionCreatePage /> },
       { path: '/elections/:electionId', element: <ElectionResultsPage /> },
+      { path: '/governments', element: <GovernmentsPage /> },
+      { path: '/governments/new', element: <GovernmentCreatePage /> },
+      { path: '/governments/:governmentId', element: <GovernmentDetailPage /> },
     ],
   },
 ])

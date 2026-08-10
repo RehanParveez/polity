@@ -1,3 +1,4 @@
+import app.core.model_registry
 import asyncio
 from datetime import date
 from sqlalchemy import select

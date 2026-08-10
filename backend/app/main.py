@@ -9,6 +9,7 @@ from app.modules.identity.router import router as identity_router
 from app.modules.geography.router import router as geography_router
 from app.modules.institutions.router import router as institutions_router
 from app.modules.elections.router import router as elections_router
+from app.modules.government.router import router as government_router
 
 settings = get_settings()
 
@@ -43,6 +44,7 @@ def create_app() -> FastAPI:
   app.include_router(geography_router)
   app.include_router(institutions_router)
   app.include_router(elections_router)
+  app.include_router(government_router)
   return app
 
 app = create_app()

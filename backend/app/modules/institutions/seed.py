@@ -1,7 +1,7 @@
+import app.core.model_registry
 from app.core.database import AsyncSessionLocal
 from app.modules.institutions.models import Ministry, Department, InstitutionMembership
 from app.modules.identity.models import User
-from app.modules.authorization.models import UserRole
 from sqlalchemy import select
 import asyncio
 

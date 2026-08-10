@@ -9,7 +9,6 @@ from app.shared.dependencies import get_current_user
 from app.modules.authorization.repository import get_permission_codes_for_user
 from app.core.config import get_settings
 
-
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
