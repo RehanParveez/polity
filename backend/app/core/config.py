@@ -1,5 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
+from pydantic import field_validator
+import json
 
 class AppSettings(BaseSettings):
   model_config = SettingsConfigDict(extra="ignore")
@@ -7,6 +9,13 @@ class AppSettings(BaseSettings):
   app_debug: bool = True
   app_secret_key: str
   backend_cors_origins: list[str] = ["http://localhost:5082"]
+  
+  @field_validator("backend_cors_origins", mode="before")
+  @classmethod
+  def parse_cors_origins(cls, v):
+    if isinstance(v, str):
+      return json.loads(v)
+    return v
 
 class DatabaseSettings(BaseSettings):
   model_config = SettingsConfigDict(extra = "ignore")

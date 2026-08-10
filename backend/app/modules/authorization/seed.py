@@ -2,9 +2,11 @@ from app.core.database import AsyncSessionLocal
 from app.modules.authorization.models import Permission, Role, RolePermission
 from sqlalchemy import select
 import asyncio
+from app.modules.identity.models import User
 
 SEED_PERMISSIONS = [("identity.user.manage", "Create, update, deactivate user accounts"),
   ("authorization.role.manage", "Assign roles and permissions"),
+  ("institution.manage", "Manage ministries, departments, and institution membership"),
 ]
 SEED_ROLES = [("superadmin", "Full system access", [c for c, _ in SEED_PERMISSIONS])]
 
@@ -26,9 +28,10 @@ async def seed() -> None:
         db.add(role)
         await db.flush()
       for code in codes:
-        link = (await db.execute(select(RolePermission).where(RolePermission.role_id == role.id,
+        link = (await db.execute(select(RolePermission).where(
+          RolePermission.role_id == role.id,
           RolePermission.permission_id == perm_by_code[code].id,)
-         )
+        )
         ).scalar_one_or_none()
         if not link:
           db.add(RolePermission(role_id=role.id, permission_id=perm_by_code[code].id))

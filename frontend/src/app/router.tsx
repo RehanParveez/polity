@@ -12,6 +12,8 @@ import { useAuthStore } from './store'
 import { ProvincesPage } from '../modules/geography/pages/ProvincesPage'
 import { ProvinceDistrictsPage } from '../modules/geography/pages/ProvinceDistrictsPage'
 import { DistrictDetailPage } from '../modules/geography/pages/DistrictDetailPage'
+import { MinistriesPage } from '../modules/institutions/pages/MinistriesPage'
+import { MinistryOrgChartPage } from '../modules/institutions/pages/MinistryOrgChartPage'
 
 function ProtectedRoute({ children }: { children: ReactElement }) {
   const accessToken = useAuthStore((s) => s.accessToken)
@@ -41,6 +43,8 @@ export const router = createBrowserRouter([
       { path: '/geography', element: <ProvincesPage /> },
       { path: '/geography/provinces/:provinceId', element: <ProvinceDistrictsPage /> },
       { path: '/geography/districts/:districtId', element: <DistrictDetailPage /> },
+      { path: '/institutions', element: <MinistriesPage /> },
+      { path: '/institutions/ministries/:ministryId', element: <MinistryOrgChartPage /> },
     ],
   },
 ])

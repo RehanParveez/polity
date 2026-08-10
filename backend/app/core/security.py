@@ -3,6 +3,7 @@ import hashlib
 from datetime import datetime, timedelta, timezone
 from jose import jwt, JWTError
 from app.core.config import get_settings
+import secrets
 
 settings = get_settings()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated = "auto")
@@ -23,7 +24,8 @@ def create_access_token(subject: str) -> str:
 
 def create_refresh_token(subject: str) -> tuple[str, datetime]:
   expire = datetime.now(timezone.utc) + timedelta(days=settings.auth.refresh_token_expire_days)
-  payload = {"sub": subject, "exp": expire, "type": "refresh"}
+  jti = secrets.token_urlsafe(32)
+  payload = {"sub": subject, "exp": expire, "type": "refresh", "jti": jti}
   token = jwt.encode(payload, settings.auth.jwt_secret_key, algorithm=settings.auth.jwt_algorithm)
   return token, expire
 
