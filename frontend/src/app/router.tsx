@@ -14,6 +14,9 @@ import { ProvinceDistrictsPage } from '../modules/geography/pages/ProvinceDistri
 import { DistrictDetailPage } from '../modules/geography/pages/DistrictDetailPage'
 import { MinistriesPage } from '../modules/institutions/pages/MinistriesPage'
 import { MinistryOrgChartPage } from '../modules/institutions/pages/MinistryOrgChartPage'
+import { ElectionsPage } from '../modules/elections/pages/ElectionsPage'
+import { ElectionCreatePage } from '../modules/elections/pages/ElectionCreatePage'
+import { ElectionResultsPage } from '../modules/elections/pages/ElectionResultsPage'
 
 function ProtectedRoute({ children }: { children: ReactElement }) {
   const accessToken = useAuthStore((s) => s.accessToken)
@@ -45,6 +48,9 @@ export const router = createBrowserRouter([
       { path: '/geography/districts/:districtId', element: <DistrictDetailPage /> },
       { path: '/institutions', element: <MinistriesPage /> },
       { path: '/institutions/ministries/:ministryId', element: <MinistryOrgChartPage /> },
+      { path: '/elections', element: <ElectionsPage /> },
+      { path: '/elections/new', element: <ElectionCreatePage /> },
+      { path: '/elections/:electionId', element: <ElectionResultsPage /> },
     ],
   },
 ])

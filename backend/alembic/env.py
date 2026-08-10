@@ -12,7 +12,8 @@ from app.core.database import Base
 from app.modules.authorization import models as authorization_models 
 from app.modules.identity import models as identity_models 
 from app.modules.geography import models as geography_models
-from app.modules.institutions import models as institutions_router
+from app.modules.institutions import models as institutions_models
+from app.modules.elections import models as elections_models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -7,8 +7,15 @@ from app.modules.identity.models import User
 SEED_PERMISSIONS = [("identity.user.manage", "Create, update, deactivate user accounts"),
   ("authorization.role.manage", "Assign roles and permissions"),
   ("institution.manage", "Manage ministries, departments, and institution membership"),
+  ("election.manage", "Create elections and record vote counts"),
 ]
-SEED_ROLES = [("superadmin", "Full system access", [c for c, _ in SEED_PERMISSIONS])]
+SEED_ROLES = [
+  ("superadmin", "Full system access", [c for c, _ in SEED_PERMISSIONS]),
+  ("ministry_secretary", "Manages their ministry's structure", ["institution.manage"]),
+  ("election_officer", "Runs elections and records results", ["election.manage"]),
+  ("citizen", "Standard authenticated user, no elevated permissions", []),
+]
+
 
 async def seed() -> None:
   async with AsyncSessionLocal() as db:

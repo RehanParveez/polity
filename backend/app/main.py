@@ -8,11 +8,23 @@ from app.modules.authorization.router import router as authorization_router
 from app.modules.identity.router import router as identity_router
 from app.modules.geography.router import router as geography_router
 from app.modules.institutions.router import router as institutions_router
+from app.modules.elections.router import router as elections_router
 
 settings = get_settings()
 
 def create_app() -> FastAPI:
-  app = FastAPI(title = "Polity API", version="0.1.0")
+  app = FastAPI(
+    title = "Polity API",
+    description = "Governance simulator for Pakistan — identity, geography, institutions, and elections.",
+    version="0.4.0",
+    openapi_tags=[
+      {"name": "auth", "description": "Registration, login, token refresh, password reset"},
+      {"name": "authorization", "description": "Permission-check demo endpoint"},
+      {"name": "geography", "description": "Provinces, districts, tehsils, demographics"},
+      {"name": "institutions", "description": "Ministries, departments, institution membership"},
+      {"name": "elections", "description": "Parties, constituencies, candidates, elections, results"},
+    ],
+  )
   
   app.add_middleware(CORSMiddleware, allow_origins=settings.app.backend_cors_origins,
     allow_credentials=True, allow_methods=["*"], allow_headers=["*"],)
@@ -30,6 +42,7 @@ def create_app() -> FastAPI:
   app.include_router(authorization_router)
   app.include_router(geography_router)
   app.include_router(institutions_router)
+  app.include_router(elections_router)
   return app
 
 app = create_app()

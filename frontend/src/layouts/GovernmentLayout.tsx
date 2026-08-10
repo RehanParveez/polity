@@ -1,5 +1,5 @@
 import { Outlet, NavLink } from 'react-router-dom'
-import { Home, Map, Landmark, ShieldCheck, LogOut } from 'lucide-react'
+import { Home, Map, Landmark, Vote, ShieldCheck, LogOut } from 'lucide-react'
 import { useAuthStore } from '../app/store'
 import { RequirePermission } from '../components/permissions/RequirePermission'
 
@@ -7,6 +7,7 @@ const navItems = [
   { to: '/', label: 'Dashboard', icon: Home, end: true },
   { to: '/geography', label: 'Geography', icon: Map, end: false },
   { to: '/institutions', label: 'Institutions', icon: Landmark, end: false },
+  { to: '/elections', label: 'Elections', icon: Vote, end: false },
 ]
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>

@@ -15,19 +15,21 @@ PROVINCES = [
 ]
 
 DISTRICTS = {
-  "PB": ["Lahore", "Faisalabad", "Rawalpindi", "Multan", "Gujranwala"],
-  "SD": ["Karachi Central", "Hyderabad", "Sukkur"],
-  "KP": ["Peshawar", "Abbottabad", "Mardan"],
-  "BA": ["Quetta", "Gwadar"],
+  "PB": ["Lahore", "Faisalabad", "Rawalpindi", "Multan", "Gujranwala", "Sialkot", "Bahawalpur", "Sargodha", "Sheikhupura", "Gujrat"],
+  "SD": ["Karachi Central", "Hyderabad", "Sukkur", "Larkana", "Shaheed Benazirabad", "Mirpurkhas", "Jacobabad", "Thatta", "Dadu", "Khairpur"],
+  "KP": ["Peshawar", "Abbottabad", "Mardan", "Swat", "Kohat", "Bannu", "Dera Ismail Khan", "Mansehra", "Charsadda", "Nowshera"],
+  "BA": ["Quetta", "Gwadar", "Sibi", "Khuzdar", "Kech", "Zhob", "Loralai", "Chaman", "Panjgur", "Nushki"],
   "ICT": ["Islamabad"],
-  "GB": ["Gilgit", "Skardu"],
-  "AJK": ["Muzaffarabad", "Mirpur"],
+  "GB": ["Gilgit", "Skardu", "Ghizer", "Hunza", "Nagar", "Diamer", "Astore", "Shigar"],
+  "AJK": ["Muzaffarabad", "Mirpur", "Kotli", "Bhimber", "Bagh", "Sudhnoti", "Rawalakot", "Neelum"],
 }
 
 TEHSILS = {
   "Lahore": ["Lahore City", "Lahore Cantonment"],
   "Karachi Central": ["Gulberg Town", "Liaquatabad Town"],
   "Peshawar": ["Peshawar City", "Peshawar Cantonment"],
+  "Multan": ["Multan City", "Shujabad"],
+  "Quetta": ["Quetta City", "Quetta Saddar"],
 }
 
 DEMOGRAPHICS = {
@@ -35,8 +37,13 @@ DEMOGRAPHICS = {
   "Faisalabad": (7_800_000, 68.2, 61.0),
   "Karachi Central": (2_900_000, 79.0, 100.0),
   "Peshawar": (4_200_000, 60.5, 55.0),
+  "Rawalpindi": (5_400_000, 71.3, 68.0),
+  "Gujranwala": (5_000_000, 65.8, 51.0),
+  "Hyderabad": (2_200_000, 66.4, 74.0),
+  "Quetta": (1_600_000, 55.2, 62.0),
+  "Islamabad": (1_100_000, 88.1, 96.0),
+  "Muzaffarabad": (650_000, 62.7, 40.0),
 }
-
 async def seed() -> None:
   async with AsyncSessionLocal() as db:
     province_by_code = {}
