@@ -11,6 +11,7 @@ from app.modules.institutions.router import router as institutions_router
 from app.modules.elections.router import router as elections_router
 from app.modules.government.router import router as government_router
 from app.modules.finance.router import router as finance_router
+from app.modules.sectors.router import router as sectors_router
 
 settings = get_settings()
 
@@ -27,6 +28,7 @@ def create_app() -> FastAPI:
       {"name": "elections", "description": "Parties, constituencies, candidates, elections, results"},
       {"name": "governments", "description": "Cabinet formation and government administration"},
       {"name": "finance", "description": "Revenue, budgets, procurement, and audit findings"},
+      {"name": "sectors", "description": "Education, healthcare, agriculture, infrastructure, labor, and defense sector data"},
     ],
   )
   
@@ -49,6 +51,7 @@ def create_app() -> FastAPI:
   app.include_router(elections_router)
   app.include_router(government_router)
   app.include_router(finance_router)
+  app.include_router(sectors_router)
   return app
 
 app = create_app()

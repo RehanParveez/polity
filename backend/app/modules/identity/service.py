@@ -66,3 +66,32 @@ async def reset_password(db: AsyncSession, token: str, new_password: str) -> Non
   await repository.update_user_password(db, user, hash_password(new_password))
   await repository.mark_password_reset_token_used(db, token_row)
   await db.commit()
+  
+async def refresh_tokens(db: AsyncSession, refresh_token: str) -> TokenPair:
+  try:
+    payload = decode_token(refresh_token)
+  except ValueError as exc:
+    raise AuthError("invalid or expired refresh token") from exc
+  if payload.get("type") != "refresh":
+    raise AuthError("wrong token type")
+  user_id = payload.get("sub")
+  if not user_id:
+    raise AuthError("invalid refresh token payload")
+
+  token_hash = hash_token(refresh_token)
+  stored = await repository.get_refresh_token_by_hash(db, token_hash)
+  if not stored or stored.revoked:
+    raise AuthError("refresh token revoked or not found")
+
+  if stored.expires_at < datetime.now(timezone.utc):
+    raise AuthError("refresh token expired")
+    
+  user = await repository.get_user_by_id(db, stored.user_id)
+  if not user or not user.is_active:
+    raise AuthError("user is not present or inactive")
+  access_token = create_access_token(subject=str(user.id))
+  new_refresh_token, expires_at = create_refresh_token(subject=str(user.id))
+  await repository.store_refresh_token(db, user.id, hash_token(new_refresh_token), expires_at)
+  await db.commit()
+
+  return TokenPair(access_token=access_token, refresh_token=new_refresh_token)

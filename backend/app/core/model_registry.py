@@ -5,3 +5,4 @@ from app.modules.institutions.models import Ministry, Department, InstitutionMem
 from app.modules.elections.models import Party, Constituency, Candidate, Election, VoteRecord  
 from app.modules.government.models import Government, CabinetMember 
 from app.modules.finance.models import AuditFinding, Budget, BudgetLine, ProcurementProject, RevenueSource 
+from app.modules.sectors.models import DefenseBranch, DefenseBudget, DefenseIndicator, DefenseMinistry, DefenseProcurementProject, DisasterResponseUnit, EducationInstitution, Farm, HealthcareInstitution, InfrastructureAsset, LaborRecord, MilitaryPersonnel
