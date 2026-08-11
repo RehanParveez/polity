@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "geography": "Geography",
+    "institutions": "Institutions",
+    "elections": "Elections",
+    "government": "Government",
+    "adminCheck": "Admin check",
+    "logOut": "Log out"
+  },
+  "loading": "Loading…",
+  "pleaseWait": "Please wait…"
+}

@@ -3,6 +3,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './queryClient'
 import { useAuthStore } from './store'
 import { authService } from '../services/authService'
+import { useDocumentDirection } from '../i18n/useDocumentDirection'
 
 function AuthBootstrap({ children }: { children: ReactNode }) {
   const setAuth = useAuthStore((s) => s.setAuth)
@@ -32,6 +33,7 @@ function AuthBootstrap({ children }: { children: ReactNode }) {
 }
 
 export function Providers({ children }: { children: ReactNode }) {
+  useDocumentDirection()
   return (
     <QueryClientProvider client={queryClient}>
       <AuthBootstrap>{children}</AuthBootstrap>

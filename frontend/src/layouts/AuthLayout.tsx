@@ -1,9 +1,15 @@
 import { Outlet } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ShieldCheck } from 'lucide-react'
+import { LanguageSwitcher } from '../components/ui/LanguageSwitcher'
 
 export function AuthLayout() {
+  const { t } = useTranslation('auth')
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-950 flex items-center justify-center px-4">
+      <div className="absolute top-6 end-6 z-10">
+        <LanguageSwitcher />
+      </div>
       
       <div
         className="absolute inset-0 opacity-[0.06]"
@@ -36,7 +42,7 @@ export function AuthLayout() {
             <ShieldCheck className="text-teal-400" size={24} />
           </div>
           <h1 className="text-2xl font-semibold text-slate-100 tracking-tight">Polity</h1>
-          <p className="text-xs text-slate-500 mt-1">Governance · Pakistan</p>
+          <p className="text-xs text-slate-500 mt-1">{t('tagline')}</p>
         </div>
         <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl shadow-black/40 p-8">
           <Outlet />

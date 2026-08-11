@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "dashboard": "ڈیش بورڈ",
+    "geography": "جغرافیہ",
+    "institutions": "ادارے",
+    "elections": "انتخابات",
+    "government": "حکومت",
+    "adminCheck": "ایڈمن چیک",
+    "logOut": "لاگ آؤٹ"
+  },
+  "loading": "لوڈ ہو رہا ہے…",
+  "pleaseWait": "براہ کرم انتظار کریں…"
+}

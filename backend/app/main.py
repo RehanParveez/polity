@@ -24,6 +24,7 @@ def create_app() -> FastAPI:
       {"name": "geography", "description": "Provinces, districts, tehsils, demographics"},
       {"name": "institutions", "description": "Ministries, departments, institution membership"},
       {"name": "elections", "description": "Parties, constituencies, candidates, elections, results"},
+      {"name": "governments", "description": "Cabinet formation and government administration"},
     ],
   )
   

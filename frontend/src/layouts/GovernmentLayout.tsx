@@ -1,14 +1,16 @@
 import { Outlet, NavLink } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Home, Map, Landmark, Vote, ShieldCheck, LogOut, Building2 } from 'lucide-react'
 import { useAuthStore } from '../app/store'
 import { RequirePermission } from '../components/permissions/RequirePermission'
+import { LanguageSwitcher } from '../components/ui/LanguageSwitcher'
 
 const navItems = [
-  { to: '/', label: 'Dashboard', icon: Home, end: true },
-  { to: '/geography', label: 'Geography', icon: Map, end: false },
-  { to: '/institutions', label: 'Institutions', icon: Landmark, end: false },
-  { to: '/elections', label: 'Elections', icon: Vote, end: false },
-  { to: '/governments', label: 'Government', icon: Building2, end: false },
+  { to: '/', labelKey: 'nav.dashboard', icon: Home, end: true },
+  { to: '/geography', labelKey: 'nav.geography', icon: Map, end: false },
+  { to: '/institutions', labelKey: 'nav.institutions', icon: Landmark, end: false },
+  { to: '/elections', labelKey: 'nav.elections', icon: Vote, end: false },
+  { to: '/governments', labelKey: 'nav.government', icon: Building2, end: false },
 ]
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -19,6 +21,7 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   }`
 
 export function GovernmentLayout() {
+  const { t } = useTranslation()
   const user = useAuthStore((s) => s.user)
   const clearAuth = useAuthStore((s) => s.clearAuth)
 
@@ -35,16 +38,16 @@ export function GovernmentLayout() {
           <span className="text-lg font-semibold tracking-tight">Polity</span>
         </div>
         <nav className="flex-1 px-3 py-4 space-y-1">
-          {navItems.map(({ to, label, icon: Icon, end }) => (
+          {navItems.map(({ to, labelKey, icon: Icon, end }) => (
             <NavLink key={to} to={to} end={end} className={navLinkClass}>
               <Icon size={18} />
-              {label}
+              {t(labelKey)}
             </NavLink>
           ))}
           <RequirePermission perm="authorization.role.manage">
             <NavLink to="/admin/ping" className={navLinkClass}>
               <ShieldCheck size={18} />
-              Admin check
+              {t('nav.adminCheck')}
             </NavLink>
           </RequirePermission>
         </nav>
@@ -58,12 +61,17 @@ export function GovernmentLayout() {
             className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-900 hover:text-red-400 w-full transition-colors"
           >
             <LogOut size={18} />
-            Log out
+            {t('nav.logOut')}
           </button>
         </div>
       </aside>
-      <main className="flex-1 p-8 overflow-y-auto">
-        <Outlet />
+      <main className="flex-1 flex flex-col overflow-y-auto">
+        <div className="flex justify-end px-8 pt-6">
+          <LanguageSwitcher />
+        </div>
+        <div className="flex-1 p-8 pt-4">
+          <Outlet />
+        </div>
       </main>
     </div>
   )

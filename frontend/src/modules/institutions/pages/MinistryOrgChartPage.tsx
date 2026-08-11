@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { ChevronDown, Users } from 'lucide-react'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { Card } from '../../../components/ui/Card'
@@ -21,6 +22,24 @@ export function MinistryOrgChartPage() {
   return (
     <div>
       <PageHeader title={data.name} subtitle={data.description ?? undefined} />
+      {data.departments.length > 0 && (
+        <Card className="mb-6">
+          <h3 className="text-sm font-medium text-slate-300 mb-4">Staff per department</h3>
+          <ResponsiveContainer width="100%" height={Math.max(120, data.departments.length * 40)}>
+            <BarChart
+              data={data.departments.map((d) => ({ name: d.name, members: d.memberships.length }))}
+              layout="vertical"
+              margin={{ left: 16 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" horizontal={false} />
+              <XAxis type="number" allowDecimals={false} stroke="#64748b" fontSize={12} />
+              <YAxis type="category" dataKey="name" stroke="#64748b" fontSize={12} width={160} />
+              <Tooltip contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: 8 }} labelStyle={{ color: '#e2e8f0' }} />
+              <Bar dataKey="members" fill="#14b8a6" radius={[0, 4, 4, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </Card>
+      )}
       <div className="flex flex-col items-center">
         <Card className="mb-2 px-8 py-4 text-center">
           <p className="font-semibold text-slate-100">{data.name}</p>
