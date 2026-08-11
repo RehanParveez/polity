@@ -10,6 +10,7 @@ SEED_PERMISSIONS = [
   ("institution.manage", "Manage ministries, departments, and institution membership"),
   ("election.manage", "Create elections and record votes"),
   ("government.manage", "Form governments and assign cabinet members"),
+  ("finance.manage", "Manage budgets, procurement, and audit findings"),
 ]
 
 SEED_ROLES = [

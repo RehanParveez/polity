@@ -4,6 +4,8 @@ import { queryClient } from './queryClient'
 import { useAuthStore } from './store'
 import { authService } from '../services/authService'
 import { useDocumentDirection } from '../i18n/useDocumentDirection'
+import i18n from '../i18n/config'
+import { I18nextProvider } from 'react-i18next'
 
 function AuthBootstrap({ children }: { children: ReactNode }) {
   const setAuth = useAuthStore((s) => s.setAuth)
@@ -33,10 +35,11 @@ function AuthBootstrap({ children }: { children: ReactNode }) {
 }
 
 export function Providers({ children }: { children: ReactNode }) {
-  useDocumentDirection()
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthBootstrap>{children}</AuthBootstrap>
-    </QueryClientProvider>
+    <I18nextProvider i18n={i18n}>
+      <QueryClientProvider client={queryClient}>
+        <AuthBootstrap>{children}</AuthBootstrap>
+      </QueryClientProvider>
+    </I18nextProvider>
   )
 }

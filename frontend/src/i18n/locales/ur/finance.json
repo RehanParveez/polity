@@ -1,0 +1,34 @@
+{
+  "dashboard": {
+    "title": "مالیات",
+    "subtitle": "آمدنی، بجٹ، خریداری، اور آڈٹ کا جائزہ",
+    "totalRevenue": "کل آمدنی",
+    "totalBudget": "کل بجٹ",
+    "totalProcurement": "خریداری پائپ لائن",
+    "openAudits": "آڈٹ کی کھلی یافتیں"
+  },
+  "budgets": {
+    "title": "بجٹ",
+    "subtitle": "وزارتوں کے بجٹ اور مختصات",
+    "fiscalYear": "مالی سال",
+    "total": "کل",
+    "allocated": "مختص",
+    "spent": "خرچ شدہ",
+    "remaining": "باقی",
+    "status": "حالت",
+    "linesTitle": "بجٹ لائنیں",
+    "validationOk": "بجٹ کے اندر",
+    "validationOver": "زیادہ مختص"
+  },
+  "procurement": {
+    "title": "خریداری",
+    "subtitle": "منصوبے، ٹینڈرز، اور معاہدے",
+    "estimate": "تخمینہ",
+    "vendor": "فروش",
+    "status": "حالت"
+  },
+  "revenue": {
+    "title": "آمدنی کے ذرائع",
+    "category": "زمرہ"
+  }
+}

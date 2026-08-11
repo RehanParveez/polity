@@ -20,6 +20,10 @@ import { ElectionResultsPage } from '../modules/elections/pages/ElectionResultsP
 import { GovernmentCreatePage } from '../modules/government/pages/GovernmentCreatePage'
 import { GovernmentDetailPage } from '../modules/government/pages/GovernmentDetailPage'
 import { GovernmentsPage } from '../modules/government/pages/GovernmentsPage'
+import { FinanceDashboardPage } from '../modules/finance/pages/FinanceDashboardPage'
+import { BudgetsPage } from '../modules/finance/pages/BudgetsPage'
+import { BudgetDetailPage } from '../modules/finance/pages/BudgetDetailPage'
+import { ProcurementPage } from '../modules/finance/pages/ProcurementPage'
 
 function ProtectedRoute({ children }: { children: ReactElement }) {
   const accessToken = useAuthStore((s) => s.accessToken)
@@ -57,6 +61,10 @@ export const router = createBrowserRouter([
       { path: '/governments', element: <GovernmentsPage /> },
       { path: '/governments/new', element: <GovernmentCreatePage /> },
       { path: '/governments/:governmentId', element: <GovernmentDetailPage /> },
+      { path: '/finance', element: <FinanceDashboardPage /> },
+      { path: '/finance/budgets', element: <BudgetsPage /> },
+      { path: '/finance/budgets/:budgetId', element: <BudgetDetailPage /> },
+      { path: '/finance/procurement', element: <ProcurementPage /> },
     ],
   },
 ])

@@ -1,0 +1,34 @@
+{
+  "dashboard": {
+    "title": "Finance",
+    "subtitle": "Revenue, budgets, procurement, and audit overview",
+    "totalRevenue": "Total revenue",
+    "totalBudget": "Total budget",
+    "totalProcurement": "Procurement pipeline",
+    "openAudits": "Open audit findings"
+  },
+  "budgets": {
+    "title": "Budgets",
+    "subtitle": "Ministry budgets and allocations",
+    "fiscalYear": "FY",
+    "total": "Total",
+    "allocated": "Allocated",
+    "spent": "Spent",
+    "remaining": "Remaining",
+    "status": "Status",
+    "linesTitle": "Budget lines",
+    "validationOk": "Within budget",
+    "validationOver": "Over-allocated"
+  },
+  "procurement": {
+    "title": "Procurement",
+    "subtitle": "Projects, tenders, and contracts",
+    "estimate": "Estimate",
+    "vendor": "Vendor",
+    "status": "Status"
+  },
+  "revenue": {
+    "title": "Revenue sources",
+    "category": "Category"
+  }
+}

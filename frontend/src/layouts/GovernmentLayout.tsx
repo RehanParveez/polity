@@ -4,6 +4,7 @@ import { Home, Map, Landmark, Vote, ShieldCheck, LogOut, Building2 } from 'lucid
 import { useAuthStore } from '../app/store'
 import { RequirePermission } from '../components/permissions/RequirePermission'
 import { LanguageSwitcher } from '../components/ui/LanguageSwitcher'
+import { Banknote } from 'lucide-react'
 
 const navItems = [
   { to: '/', labelKey: 'nav.dashboard', icon: Home, end: true },
@@ -11,6 +12,7 @@ const navItems = [
   { to: '/institutions', labelKey: 'nav.institutions', icon: Landmark, end: false },
   { to: '/elections', labelKey: 'nav.elections', icon: Vote, end: false },
   { to: '/governments', labelKey: 'nav.government', icon: Building2, end: false },
+  { to: '/finance', labelKey: 'nav.finance', icon: Banknote, end: false },
 ]
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>

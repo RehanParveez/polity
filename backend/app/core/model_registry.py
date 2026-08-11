@@ -4,3 +4,4 @@ from app.modules.identity.models import User, RefreshToken, PasswordResetToken
 from app.modules.institutions.models import Ministry, Department, InstitutionMembership  
 from app.modules.elections.models import Party, Constituency, Candidate, Election, VoteRecord  
 from app.modules.government.models import Government, CabinetMember 
+from app.modules.finance.models import AuditFinding, Budget, BudgetLine, ProcurementProject, RevenueSource 
