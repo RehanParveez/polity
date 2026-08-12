@@ -5,6 +5,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 import uuid
 from sqlalchemy import Uuid, String, Date, ForeignKey, Integer, UniqueConstraint
 from datetime import date
+from sqlalchemy import Integer
 
 if TYPE_CHECKING:
   from app.modules.geography.models import District
@@ -27,6 +28,7 @@ class Constituency(Base, TimestampMixin):
   district_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("districts.id"), nullable=False)
   seat_type: Mapped[str] = mapped_column(String(30), default="national_assembly", nullable=False)
   district: Mapped["District"] = relationship()
+  registered_voters: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
 class Candidate(Base, TimestampMixin):
   __tablename__ = "candidates"

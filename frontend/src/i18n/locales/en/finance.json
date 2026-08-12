@@ -18,7 +18,10 @@
     "status": "Status",
     "linesTitle": "Budget lines",
     "validationOk": "Within budget",
-    "validationOver": "Over-allocated"
+    "validationOver": "Over-allocated",
+    "category": "Category",
+    "federalBudget": "Federal Budget",
+    "couldNotLoad": "Could not load budget."
   },
   "procurement": {
     "title": "Procurement",

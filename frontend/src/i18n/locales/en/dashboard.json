@@ -1,0 +1,7 @@
+{
+  "welcomeBack": "Welcome back, {{name}}",
+  "subtitle": "{{email}}",
+  "accountStatus": "Account status",
+  "permissionsGranted": "Permissions granted",
+  "assignedJurisdictions": "Assigned jurisdictions"
+}

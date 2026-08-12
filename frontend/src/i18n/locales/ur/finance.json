@@ -18,7 +18,10 @@
     "status": "حالت",
     "linesTitle": "بجٹ لائنیں",
     "validationOk": "بجٹ کے اندر",
-    "validationOver": "زیادہ مختص"
+    "validationOver": "زیادہ مختص",
+    "category": "زمرہ",
+    "federalBudget": "وفاقی بجٹ",
+    "couldNotLoad": "بجٹ لوڈ نہیں ہو سکا۔"
   },
   "procurement": {
     "title": "خریداری",

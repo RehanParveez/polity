@@ -65,7 +65,7 @@ export function GovernmentLayout() {
             className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-900 hover:text-red-400 w-full transition-colors"
           >
             <LogOut size={18} />
-            {t('nav.logOut')}
+            {t('logout')}
           </button>
         </div>
       </aside>

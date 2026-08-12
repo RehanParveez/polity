@@ -1,0 +1,7 @@
+{
+  "welcomeBack": "خوش آمدید، {{name}}",
+  "subtitle": "{{email}}",
+  "accountStatus": "اکاؤنٹ کی حالت",
+  "permissionsGranted": "اجازتیں",
+  "assignedJurisdictions": "تفویض شدہ دائرہ اختیار"
+}

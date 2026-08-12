@@ -1,0 +1,21 @@
+{
+  "title": "انتخابات",
+  "subtitle": "انتخابات اور ان کے نتائج",
+  "newElection": "نیا انتخاب",
+  "electionName": "انتخاب کا نام",
+  "electionNamePlaceholder": "عام انتخابات 2027 (تجزیاتی)",
+  "electionDate": "انتخاب کی تاریخ",
+  "createElection": "انتخاب بنائیں",
+  "backToElections": "انتخابات پر واپس جائیں",
+  "createError": "انتخاب نہیں بن سکا، ہوسکتا ہے آپ کے پاس اجازت نہ ہو، یا کوئی فیلڈ درست نہ ہو۔",
+  "noResults": "اس انتخاب کے لیے ابھی تک کوئی نتائج جاری نہیں کیے گئے۔",
+  "seatsByParty": "پارٹیوں کی نشستیں",
+  "constituencyResults": "حلقہ بندی کے نتائج",
+  "constituency": "حلقہ بندی",
+  "winner": "فاتح",
+  "party": "پارٹی",
+  "votes": "ووٹ",
+  "turnout": "شرکت (کاسٹ)",
+  "loadingElection": "انتخاب لوڈ ہو رہا ہے…",
+  "loadError": "انتخاب لوڈ نہیں ہو سکا۔"
+}

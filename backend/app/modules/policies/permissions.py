@@ -1,0 +1,6 @@
+POLICY_CREATE = "policy.create"
+POLICY_REVIEW = "policy.review"
+POLICY_APPROVE = "policy.approve"
+POLICY_IMPLEMENT = "policy.implement"
+POLICY_EVALUATE = "policy.evaluate"
+POLICY_MANAGE = "policy.manage" 

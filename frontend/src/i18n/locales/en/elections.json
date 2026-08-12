@@ -1,0 +1,21 @@
+{
+  "title": "Elections",
+  "subtitle": "Elections and their results",
+  "newElection": "New election",
+  "electionName": "Election name",
+  "electionNamePlaceholder": "General Election 2027 (Simulated)",
+  "electionDate": "Election date",
+  "createElection": "Create election",
+  "backToElections": "Back to elections",
+  "createError": "Could not create election, you may not have permission, or a field is invalid.",
+  "noResults": "No results declared yet for this election.",
+  "seatsByParty": "Seats by party",
+  "constituencyResults": "Constituency results",
+  "constituency": "Constituency",
+  "winner": "Winner",
+  "party": "Party",
+  "votes": "Votes",
+  "turnout": "Turnout (cast)",
+  "loadingElection": "Loading election…",
+  "loadError": "Could not load election."
+}

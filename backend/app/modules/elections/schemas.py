@@ -1,6 +1,7 @@
 from pydantic import BaseModel, ConfigDict
 import uuid
 from datetime import date
+from typing import Optional
 
 class PartyRead(BaseModel):
   model_config = ConfigDict(from_attributes=True)
@@ -49,6 +50,7 @@ class ConstituencyResultRead(BaseModel):
   winner_party_name: str
   winner_votes: int
   total_votes_cast: int
+  registered_voters: Optional[int] = None
 
 class SeatTally(BaseModel):
   party_name: str

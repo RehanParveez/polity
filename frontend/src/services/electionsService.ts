@@ -12,6 +12,7 @@ export type ConstituencyResult = {
   winner_party_name: string
   winner_votes: number
   total_votes_cast: number
+  registered_voters?: number | null
 }
 export type SeatTally = { party_name: string; seats: number }
 export type ElectionResults = {

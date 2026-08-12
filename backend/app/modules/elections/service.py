@@ -24,7 +24,7 @@ async def compute_results(db: AsyncSession, election_id: uuid.UUID) -> ElectionR
     party_name = winner.candidate.party.name if winner.candidate.party else "Independent"
     constituency_results.append(ConstituencyResultRead(constituency_id=constituency.id, constituency_name=constituency.name, constituency_code=constituency.code,
       winner_candidate_name=winner.candidate.full_name, winner_party_name=party_name, winner_votes=winner.votes_count,
-        total_votes_cast=sum(r.votes_count for r in recs),
+        total_votes_cast=sum(r.votes_count for r in recs), registered_voters=constituency.registered_voters, 
       )
     )
     seats_by_party[party_name] += 1

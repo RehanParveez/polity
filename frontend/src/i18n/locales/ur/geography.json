@@ -1,0 +1,15 @@
+{
+  "title": "جغرافیہ",
+  "subtitle": "صوبے اور علاقے",
+  "districts": "اضلاع",
+  "tehsils": "تحصیلیں",
+  "population": "آبادی",
+  "literacyRate": "خواندگی کی شرح",
+  "urbanPopulation": "شہری آبادی",
+  "noProfile": "اس ضلع کے لیے ابھی تک کوئی آبادیاتی پروفائل ریکارڈ نہیں ہے۔",
+  "sourceInfo": "ذریعہ: {{source}} · از {{date}} · اعتماد: {{confidence}}",
+  "noneOnRecord": "ابھی تک ریکارڈ میں کوئی نہیں۔",
+  "province": "صوبہ",
+  "district": "ضلع",
+  "unitType": "یونٹ کی قسم"
+}

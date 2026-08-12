@@ -1,0 +1,15 @@
+{
+  "title": "Geography",
+  "subtitle": "Provinces and territories",
+  "districts": "Districts",
+  "tehsils": "Tehsils",
+  "population": "Population",
+  "literacyRate": "Literacy rate",
+  "urbanPopulation": "Urban population",
+  "noProfile": "No demographic profile on record for this district yet.",
+  "sourceInfo": "Source: {{source}} · as of {{date}} · confidence: {{confidence}}",
+  "noneOnRecord": "None on record yet.",
+  "province": "Province",
+  "district": "District",
+  "unitType": "Unit type"
+}
