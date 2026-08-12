@@ -24,6 +24,13 @@ import { FinanceDashboardPage } from '../modules/finance/pages/FinanceDashboardP
 import { BudgetsPage } from '../modules/finance/pages/BudgetsPage'
 import { BudgetDetailPage } from '../modules/finance/pages/BudgetDetailPage'
 import { ProcurementPage } from '../modules/finance/pages/ProcurementPage'
+import { SectorsDashboardPage } from '../modules/sectors/pages/SectorsDashboardPage'
+import { EducationPage } from '../modules/sectors/pages/EducationPage'
+import { HealthcarePage } from '../modules/sectors/pages/HealthcarePage'
+import { AgriculturePage } from '../modules/sectors/pages/AgriculturePage'
+import { InfrastructurePage } from '../modules/sectors/pages/InfrastructurePage'
+import { LaborPage } from '../modules/sectors/pages/LaborPage'
+import { DefensePage } from '../modules/sectors/pages/DefensePage'
 
 function ProtectedRoute({ children }: { children: ReactElement }) {
   const accessToken = useAuthStore((s) => s.accessToken)
@@ -65,6 +72,13 @@ export const router = createBrowserRouter([
       { path: '/finance/budgets', element: <BudgetsPage /> },
       { path: '/finance/budgets/:budgetId', element: <BudgetDetailPage /> },
       { path: '/finance/procurement', element: <ProcurementPage /> },
+      { path: '/sectors', element: <SectorsDashboardPage /> },
+      { path: '/sectors/education', element: <EducationPage /> },
+      { path: '/sectors/healthcare', element: <HealthcarePage /> },
+      { path: '/sectors/agriculture', element: <AgriculturePage /> },
+      { path: '/sectors/infrastructure', element: <InfrastructurePage /> },
+      { path: '/sectors/labor', element: <LaborPage /> },
+      { path: '/sectors/defense', element: <DefensePage /> },
     ],
   },
 ])

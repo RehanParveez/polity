@@ -1,6 +1,7 @@
 from pydantic import BaseModel, ConfigDict, Field
 import uuid
 from decimal import Decimal
+from datetime import date
 
 class RevenueSourceRead(BaseModel):
   model_config = ConfigDict(from_attributes=True)
@@ -10,7 +11,7 @@ class RevenueSourceRead(BaseModel):
   amount: Decimal
   fiscal_year: int
   source: str
-  as_of_date: str
+  as_of_date: date
   confidence: str
 
 class BudgetLineRead(BaseModel):

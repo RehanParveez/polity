@@ -1,7 +1,7 @@
 """0008 sectors
 
 Revision ID: 0008
-Revises: 0007
+Revises: 96e55625fb3c
 Create Date: 2026-08-11 00:00:00.000000
 
 """
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 revision = '0008'
-down_revision = '0007'
+down_revision = '96e55625fb3c'
 branch_labels = None
 depends_on = None
 

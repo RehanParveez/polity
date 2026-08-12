@@ -6,6 +6,9 @@ export type User = {
   full_name: string
   is_active: boolean
   permissions: string[]
+  created_at: string       
+  role?: string | null      
+  updated_at?: string | null
 }
 
 export type TokenPair = {
