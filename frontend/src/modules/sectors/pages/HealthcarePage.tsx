@@ -1,8 +1,11 @@
+import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
-import {HeartPulse, Bed, Stethoscope, Activity, MapPin, Filter, TrendingUp, AlertCircle, Building, ChevronRight,
+import {
+  HeartPulse, Bed, Stethoscope, Activity, MapPin, Filter, TrendingUp, AlertCircle, Building, ChevronRight,
 } from 'lucide-react'
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell,
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell,
 } from 'recharts'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { Card } from '../../../components/ui/Card'
@@ -12,6 +15,7 @@ import { sectorsService } from '../../../services/sectorsService'
 const TYPE_COLORS = ['#f43f5e', '#e11d48', '#fb7185', '#0ea5e9', '#f59e0b', '#10b981']
 
 export function HealthcarePage() {
+  const { t } = useTranslation(['sectors', 'common'])
   const { data, isLoading } = useQuery({
     queryKey: ['sectors-healthcare'],
     queryFn: sectorsService.listHealthcare,
@@ -42,9 +46,9 @@ export function HealthcarePage() {
     if (!data) return []
     const map = new Map<string, { beds: number; staff: number; capacity: number; count: number }>()
     data.forEach((f: any) => {
-      const t = f.facility_type.replace('_', ' ')
-      const existing = map.get(t) ?? { beds: 0, staff: 0, capacity: 0, count: 0 }
-      map.set(t, {
+      const facType = f.facility_type.replace('_', ' ')
+      const existing = map.get(facType) ?? { beds: 0, staff: 0, capacity: 0, count: 0 }
+      map.set(facType, {
         beds: existing.beds + Number(f.bed_count),
         staff: existing.staff + Number(f.staff_count),
         capacity: existing.capacity + Number(f.daily_patient_capacity),
@@ -66,7 +70,7 @@ export function HealthcarePage() {
     if (!data) return []
     const map = new Map<string, { count: number; beds: number; staff: number; capacity: number }>()
     data.forEach((f: any) => {
-      const d = f.district?.name ?? 'Unknown'
+      const d = f.district?.name ?? t('sectors:healthcare.unknownDistrict')
       const existing = map.get(d) ?? { count: 0, beds: 0, staff: 0, capacity: 0 }
       map.set(d, {
         count: existing.count + 1,
@@ -79,7 +83,7 @@ export function HealthcarePage() {
       .map(([name, stats]) => ({ name, ...stats }))
       .sort((a, b) => b.beds - a.beds)
       .slice(0, 4)
-  }, [data])
+  }, [data, t])
 
   const uniqueTypes = useMemo(
     () => (data ? [...new Set(data.map((f: any) => f.facility_type.replace('_', ' ')))] : []),
@@ -93,32 +97,32 @@ export function HealthcarePage() {
       : data.filter((f: any) => f.facility_type.replace('_', ' ') === typeFilter)
   }, [data, typeFilter])
 
-  if (isLoading) return <p className="text-slate-400">Loading healthcare data…</p>
-  if (!data || data.length === 0) return <p className="text-red-400">Could not load healthcare data.</p>
+  if (isLoading) return <p className="text-slate-400">{t('common:loading')}</p>
+  if (!data || data.length === 0) return <p className="text-red-400">{t('common:couldNotLoad', { resource: t('sectors:healthcare.title') })}</p>
 
   return (
     <div>
       <PageHeader
-        title="Healthcare"
-        subtitle={`${totalFacilities.toLocaleString()} facilities · ${totalBeds.toLocaleString()} beds · ${activePct.toFixed(0)}% active`}
+        title={t('sectors:healthcare.title')}
+        subtitle={`${totalFacilities.toLocaleString()} ${t('sectors:healthcare.facilities')} · ${totalBeds.toLocaleString()} ${t('sectors:healthcare.beds')} · ${activePct.toFixed(0)}% ${t('sectors:healthcare.active')}`}
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard
-          label="Total facilities"
+          label={t('sectors:healthcare.totalFacilities')}
           value={totalFacilities.toLocaleString()}
         />
         <StatCard
-          label="Total beds"
+          label={t('sectors:healthcare.totalBeds')}
           value={totalBeds.toLocaleString()}
-          trend={{ value: '+2.1% YoY', direction: 'up' }}
+          trend={{ value: t('sectors:healthcare.yoy'), direction: 'up' }}
         />
         <StatCard
-          label="Medical staff"
+          label={t('sectors:healthcare.medicalStaff')}
           value={totalStaff.toLocaleString()}
         />
         <StatCard
-          label="Daily capacity"
+          label={t('sectors:healthcare.dailyCapacity')}
           value={`${(totalCapacity / 1000).toFixed(1)}K`}
         />
       </div>
@@ -127,12 +131,12 @@ export function HealthcarePage() {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-medium text-slate-300 flex items-center gap-2">
             <TrendingUp size={16} className="text-slate-500" />
-            Capacity by facility type
+            {t('sectors:healthcare.capacityByType')}
           </h3>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-500">Beds</span>
+            <span className="text-xs text-slate-500">{t('sectors:healthcare.beds')}</span>
             <div className="w-3 h-3 rounded-sm bg-rose-500" />
-            <span className="text-xs text-slate-500 ml-2">Staff</span>
+            <span className="text-xs text-slate-500 ml-2">{t('sectors:healthcare.staff')}</span>
             <div className="w-3 h-3 rounded-sm bg-pink-500/60" />
           </div>
         </div>
@@ -162,8 +166,8 @@ export function HealthcarePage() {
                 return [num.toLocaleString(), '']
               }}
             />
-            <Bar dataKey="beds" fill="#f43f5e" radius={[4, 4, 0, 0]} name="Beds" />
-            <Bar dataKey="staff" fill="#fb7185" radius={[4, 4, 0, 0]} opacity={0.6} name="Staff" />
+            <Bar dataKey="beds" fill="#f43f5e" radius={[4, 4, 0, 0]} name={t('sectors:healthcare.beds')} />
+            <Bar dataKey="staff" fill="#fb7185" radius={[4, 4, 0, 0]} opacity={0.6} name={t('sectors:healthcare.staff')} />
           </BarChart>
         </ResponsiveContainer>
       </Card>
@@ -172,7 +176,7 @@ export function HealthcarePage() {
         <div className="lg:col-span-2">
           <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
             <MapPin size={16} className="text-slate-500" />
-            District overview
+            {t('sectors:healthcare.districtOverview')}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {districtSummary.map((d) => (
@@ -184,24 +188,24 @@ export function HealthcarePage() {
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-medium text-slate-100">{d.name}</p>
                     <span className="text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400">
-                      {d.count} facilities
+                      {d.count} {t('sectors:healthcare.facilities')}
                     </span>
                   </div>
                   <div className="grid grid-cols-3 gap-3 mt-3">
                     <div>
-                      <p className="text-xs text-slate-500">Beds</p>
+                      <p className="text-xs text-slate-500">{t('sectors:healthcare.beds')}</p>
                       <p className="text-lg font-semibold text-slate-200">
                         {d.beds.toLocaleString()}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-slate-500">Staff</p>
+                      <p className="text-xs text-slate-500">{t('sectors:healthcare.staff')}</p>
                       <p className="text-lg font-semibold text-slate-200">
                         {d.staff.toLocaleString()}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-slate-500">Capacity</p>
+                      <p className="text-xs text-slate-500">{t('sectors:healthcare.capacity')}</p>
                       <p className="text-lg font-semibold text-slate-200">
                         {d.capacity.toLocaleString()}
                       </p>
@@ -209,7 +213,7 @@ export function HealthcarePage() {
                   </div>
                   <div className="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between">
                     <span className="text-xs text-slate-500">
-                      Staff/bed: {d.beds > 0 ? (d.staff / d.beds).toFixed(1) : '—'}
+                      {t('sectors:healthcare.staffBedRatio')}: {d.beds > 0 ? (d.staff / d.beds).toFixed(1) : '—'}
                     </span>
                     <ChevronRight size={14} className="text-slate-600 group-hover:text-rose-500 transition-colors" />
                   </div>
@@ -222,7 +226,7 @@ export function HealthcarePage() {
         <div>
           <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
             <Filter size={16} className="text-slate-500" />
-            Facility type
+            {t('sectors:healthcare.facilityType')}
           </h3>
           <Card className="mb-4">
             <div className="flex flex-wrap gap-2">
@@ -234,26 +238,26 @@ export function HealthcarePage() {
                     : 'bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700'
                 }`}
               >
-                All types
+                {t('sectors:healthcare.allTypes')}
               </button>
-              {uniqueTypes.map((t: string) => (
+              {uniqueTypes.map((type: string) => (
                 <button
-                  key={t}
-                  onClick={() => setTypeFilter(t)}
+                  key={type}
+                  onClick={() => setTypeFilter(type)}
                   className={`text-xs px-3 py-1.5 rounded-full transition-colors ${
-                    typeFilter === t
+                    typeFilter === type
                       ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
                       : 'bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700'
                   }`}
                 >
-                  {t}
+                  {type}
                 </button>
               ))}
             </div>
           </Card>
 
           <Card>
-            <h4 className="text-xs font-medium text-slate-400 mb-3 uppercase tracking-wider">Facilities by type</h4>
+            <h4 className="text-xs font-medium text-slate-400 mb-3 uppercase tracking-wider">{t('sectors:healthcare.facilitiesByType')}</h4>
             <ResponsiveContainer width="100%" height={180}>
               <PieChart>
                 <Pie
@@ -277,19 +281,19 @@ export function HealthcarePage() {
                   }}
                   formatter={(value: any) => {
                     const num = typeof value === 'number' ? value : Number(value)
-                    return [`${num.toLocaleString()} facilities`, 'Count']
+                    return [`${num.toLocaleString()} ${t('sectors:healthcare.facilities')}`, t('common:total')]
                   }}
                 />
               </PieChart>
             </ResponsiveContainer>
             <div className="space-y-1.5 mt-1">
-              {typeSummary.slice(0, 4).map((t, i) => (
-                <div key={t.name} className="flex items-center justify-between text-xs">
+              {typeSummary.slice(0, 4).map((typeItem, i) => (
+                <div key={typeItem.name} className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: TYPE_COLORS[i % TYPE_COLORS.length] }} />
-                    <span className="text-slate-400">{t.name}</span>
+                    <span className="text-slate-400">{typeItem.name}</span>
                   </div>
-                  <span className="text-slate-300">{t.count}</span>
+                  <span className="text-slate-300">{typeItem.count}</span>
                 </div>
               ))}
             </div>
@@ -300,12 +304,12 @@ export function HealthcarePage() {
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-sm font-medium text-slate-300 flex items-center gap-2">
           <HeartPulse size={16} className="text-slate-500" />
-          Facility directory
+          {t('sectors:healthcare.facilityDirectory')}
           {typeFilter !== 'all' && (
-            <span className="text-xs text-slate-500">· filtered by {typeFilter}</span>
+            <span className="text-xs text-slate-500">{t('sectors:healthcare.filteredBy', { type: typeFilter })}</span>
           )}
         </h3>
-        <span className="text-xs text-slate-500">{filteredFacilities.length} results</span>
+        <span className="text-xs text-slate-500">{filteredFacilities.length} {t('sectors:healthcare.results')}</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -325,7 +329,7 @@ export function HealthcarePage() {
                   </div>
                   <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
                     <MapPin size={10} />
-                    {fac.district?.name ?? 'Unknown district'}
+                    {fac.district?.name ?? t('sectors:healthcare.unknownDistrict')}
                   </p>
                 </div>
                 <span className={`text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 rounded-full ${
@@ -333,7 +337,7 @@ export function HealthcarePage() {
                     ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                     : 'bg-slate-800 text-slate-400 border border-slate-700'
                 }`}>
-                  {fac.status}
+                  {t(`common:statuses.${fac.status}` as any) || fac.status}
                 </span>
               </div>
 
@@ -341,7 +345,7 @@ export function HealthcarePage() {
                 <div className="bg-slate-900/50 rounded-lg p-2.5">
                   <div className="flex items-center gap-1 mb-1">
                     <Bed size={10} className="text-slate-500" />
-                    <span className="text-[10px] text-slate-500 uppercase">Beds</span>
+                    <span className="text-[10px] text-slate-500 uppercase">{t('sectors:healthcare.beds')}</span>
                   </div>
                   <p className="text-sm font-semibold text-slate-200">
                     {Number(fac.bed_count).toLocaleString()}
@@ -350,7 +354,7 @@ export function HealthcarePage() {
                 <div className="bg-slate-900/50 rounded-lg p-2.5">
                   <div className="flex items-center gap-1 mb-1">
                     <Stethoscope size={10} className="text-slate-500" />
-                    <span className="text-[10px] text-slate-500 uppercase">Staff</span>
+                    <span className="text-[10px] text-slate-500 uppercase">{t('sectors:healthcare.staff')}</span>
                   </div>
                   <p className="text-sm font-semibold text-slate-200">
                     {Number(fac.staff_count).toLocaleString()}
@@ -359,7 +363,7 @@ export function HealthcarePage() {
                 <div className="bg-slate-900/50 rounded-lg p-2.5">
                   <div className="flex items-center gap-1 mb-1">
                     <Activity size={10} className="text-slate-500" />
-                    <span className="text-[10px] text-slate-500 uppercase">Daily</span>
+                    <span className="text-[10px] text-slate-500 uppercase">{t('sectors:healthcare.dailyShort')}</span>
                   </div>
                   <p className="text-sm font-semibold text-slate-200">
                     {Number(fac.daily_patient_capacity).toLocaleString()}
@@ -375,7 +379,7 @@ export function HealthcarePage() {
                   {!isWellStaffed && (
                     <div className="flex items-center gap-1 text-[10px] text-amber-500/80">
                       <AlertCircle size={10} />
-                      Understaffed
+                      {t('sectors:healthcare.understaffed')}
                     </div>
                   )}
                 </div>

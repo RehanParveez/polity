@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import {Wheat, Droplets, Scale, Sprout, Tractor, Sun, MapPin, TrendingUp, AlertTriangle, Filter, ChevronRight, ArrowUpRight,
@@ -12,6 +13,7 @@ import { sectorsService } from '../../../services/sectorsService'
 const CROP_COLORS = ['#22c55e', '#eab308', '#f97316', '#0ea5e9', '#a855f7', '#ef4444']
 
 export function AgriculturePage() {
+  const { t } = useTranslation(['sectors', 'common'])
   const { data, isLoading } = useQuery({
     queryKey: ['sectors-agriculture'],
     queryFn: sectorsService.listAgriculture,
@@ -62,7 +64,7 @@ export function AgriculturePage() {
     if (!data) return []
     const map = new Map<string, { farms: number; area: number; yield: number }>()
     data.forEach((f: any) => {
-      const d = f.district?.name ?? 'Unknown'
+      const d = f.district?.name ?? t('sectors:agriculture.unknownDistrict')
       const existing = map.get(d) ?? { farms: 0, area: 0, yield: 0 }
       map.set(d, {
         farms: existing.farms + 1,
@@ -74,7 +76,7 @@ export function AgriculturePage() {
       .map(([name, stats]) => ({ name, ...stats }))
       .sort((a, b) => b.area - a.area)
       .slice(0, 4)
-  }, [data])
+  }, [data, t])
 
   const uniqueCrops = useMemo(
     () => (data ? [...new Set(data.map((f: any) => f.primary_crop))] : []),
@@ -88,8 +90,8 @@ export function AgriculturePage() {
       : data.filter((f: any) => f.primary_crop === cropFilter)
   }, [data, cropFilter])
 
-  if (isLoading) return <p className="text-slate-400">Loading agriculture data…</p>
-  if (!data || data.length === 0) return <p className="text-red-400">Could not load agriculture data.</p>
+  if (isLoading) return <p className="text-slate-400">{t('common:loading')}</p>
+  if (!data || data.length === 0) return <p className="text-red-400">{t('common:couldNotLoad', { resource: t('sectors:agriculture.title') })}</p>
 
   const yieldColor =
     avgYieldPerHa >= 4 ? 'text-emerald-400' : avgYieldPerHa >= 2.5 ? 'text-amber-400' : 'text-red-400'
@@ -97,26 +99,26 @@ export function AgriculturePage() {
   return (
     <div>
       <PageHeader
-        title="Agriculture"
-        subtitle={`${totalFarms.toLocaleString()} registered farms · ${totalArea.toLocaleString()} ha · Last updated: ${data[0]?.as_of_date ?? '—'}`}
+        title={t('sectors:agriculture.title')}
+        subtitle={`${t('sectors:agriculture.registeredFarms', { count: totalFarms })} · ${t('sectors:agriculture.hectares', { count: totalArea })} · ${t('sectors:agriculture.lastUpdated', { date: data[0]?.as_of_date ?? '—' })}`}
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard
-          label="Total cultivated area"
+          label={t('sectors:agriculture.totalCultivatedArea')}
           value={`${(totalArea / 1000).toFixed(1)}K ha`}
         />
         <StatCard
-          label="Annual production"
+          label={t('sectors:agriculture.annualProduction')}
           value={`${(totalYield / 1000).toFixed(1)}K t`}
-          trend={{ value: '+5.3% vs last season', direction: 'up' }}
+          trend={{ value: t('sectors:agriculture.vsLastSeason'), direction: 'up' }}
         />
         <StatCard
-          label="Yield efficiency"
-          value={`${avgYieldPerHa.toFixed(1)} t/ha`}
+          label={t('sectors:agriculture.yieldEfficiency')}
+          value={`${avgYieldPerHa.toFixed(1)} ${t('sectors:agriculture.efficiencyUnit')}`}
         />
         <StatCard
-          label="Irrigated farms"
+          label={t('sectors:agriculture.irrigatedFarms')}
           value={`${irrigatedPct.toFixed(0)}%`}
         />
       </div>
@@ -125,12 +127,12 @@ export function AgriculturePage() {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-medium text-slate-300 flex items-center gap-2">
             <Sprout size={16} className="text-slate-500" />
-            Yield performance by crop
+            {t('sectors:agriculture.yieldPerformance')}
           </h3>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-500">Area (ha)</span>
+            <span className="text-xs text-slate-500">{t('sectors:agriculture.areaHa')}</span>
             <div className="w-3 h-3 rounded-sm bg-emerald-500/60" />
-            <span className="text-xs text-slate-500 ml-2">Yield (tons)</span>
+            <span className="text-xs text-slate-500 ml-2">{t('sectors:agriculture.yieldTons')}</span>
             <div className="w-3 h-3 rounded-sm bg-amber-500" />
           </div>
         </div>
@@ -160,8 +162,8 @@ export function AgriculturePage() {
                 return [num.toLocaleString(), '']
               }}
             />
-            <Bar dataKey="area" fill="#10b981" radius={[4, 4, 0, 0]} opacity={0.6} name="Area (ha)" />
-            <Bar dataKey="yield" fill="#f59e0b" radius={[4, 4, 0, 0]} name="Yield (tons)" />
+            <Bar dataKey="area" fill="#10b981" radius={[4, 4, 0, 0]} opacity={0.6} name={t('sectors:agriculture.areaHa')} />
+            <Bar dataKey="yield" fill="#f59e0b" radius={[4, 4, 0, 0]} name={t('sectors:agriculture.yieldTons')} />
           </BarChart>
         </ResponsiveContainer>
       </Card>
@@ -170,7 +172,7 @@ export function AgriculturePage() {
         <div className="lg:col-span-2">
           <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
             <MapPin size={16} className="text-slate-500" />
-            District overview
+            {t('sectors:agriculture.districtOverview')}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {districtSummary.map((d) => (
@@ -182,18 +184,18 @@ export function AgriculturePage() {
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-medium text-slate-100">{d.name}</p>
                     <span className="text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400">
-                      {d.farms} farms
+                      {d.farms} {t('sectors:agriculture.farms')}
                     </span>
                   </div>
                   <div className="grid grid-cols-2 gap-4 mt-3">
                     <div>
-                      <p className="text-xs text-slate-500">Area</p>
+                      <p className="text-xs text-slate-500">{t('sectors:agriculture.area')}</p>
                       <p className="text-lg font-semibold text-slate-200">
                         {d.area.toLocaleString()} <span className="text-xs font-normal text-slate-500">ha</span>
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-slate-500">Yield</p>
+                      <p className="text-xs text-slate-500">{t('sectors:agriculture.yield')}</p>
                       <p className="text-lg font-semibold text-slate-200">
                         {d.yield.toLocaleString()} <span className="text-xs font-normal text-slate-500">t</span>
                       </p>
@@ -201,7 +203,7 @@ export function AgriculturePage() {
                   </div>
                   <div className="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between">
                     <span className="text-xs text-slate-500">
-                      Efficiency: {(d.yield / d.area).toFixed(1)} t/ha
+                      {t('sectors:agriculture.efficiency')}: {(d.yield / d.area).toFixed(1)} {t('sectors:agriculture.efficiencyUnit')}
                     </span>
                     <ChevronRight size={14} className="text-slate-600 group-hover:text-emerald-500 transition-colors" />
                   </div>
@@ -214,7 +216,7 @@ export function AgriculturePage() {
         <div>
           <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
             <Filter size={16} className="text-slate-500" />
-            Crop filter
+            {t('sectors:agriculture.cropFilter')}
           </h3>
           <Card className="mb-4">
             <div className="flex flex-wrap gap-2">
@@ -226,7 +228,7 @@ export function AgriculturePage() {
                     : 'bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700'
                 }`}
               >
-                All crops
+                {t('sectors:agriculture.allCrops')}
               </button>
               {uniqueCrops.map((crop: string) => (
                 <button
@@ -245,7 +247,7 @@ export function AgriculturePage() {
           </Card>
 
           <Card>
-            <h4 className="text-xs font-medium text-slate-400 mb-3 uppercase tracking-wider">Land use</h4>
+            <h4 className="text-xs font-medium text-slate-400 mb-3 uppercase tracking-wider">{t('sectors:agriculture.landUse')}</h4>
             <ResponsiveContainer width="100%" height={180}>
               <PieChart>
                 <Pie
@@ -269,7 +271,7 @@ export function AgriculturePage() {
                   }}
                   formatter={(value: any) => {
                     const num = typeof value === 'number' ? value : Number(value)
-                    return [`${num.toLocaleString()} ha`, 'Area']
+                    return [`${num.toLocaleString()} ha`, t('sectors:agriculture.area')]
                   }}
                 />
               </PieChart>
@@ -292,12 +294,12 @@ export function AgriculturePage() {
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-sm font-medium text-slate-300 flex items-center gap-2">
           <Tractor size={16} className="text-slate-500" />
-          Farm directory
+          {t('sectors:agriculture.farmDirectory')}
           {cropFilter !== 'all' && (
-            <span className="text-xs text-slate-500">· filtered by {cropFilter}</span>
+            <span className="text-xs text-slate-500">{t('sectors:agriculture.filteredBy', { crop: cropFilter })}</span>
           )}
         </h3>
-        <span className="text-xs text-slate-500">{filteredFarms.length} results</span>
+        <span className="text-xs text-slate-500">{filteredFarms.length} {t('sectors:agriculture.results')}</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -316,7 +318,7 @@ export function AgriculturePage() {
                   </div>
                   <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
                     <MapPin size={10} />
-                    {farm.district?.name ?? 'Unknown district'}
+                    {farm.district?.name ?? t('sectors:agriculture.unknownDistrict')}
                   </p>
                 </div>
                 <span className="text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 rounded-full bg-lime-500/10 text-lime-400 border border-lime-500/20">
@@ -328,7 +330,7 @@ export function AgriculturePage() {
                 <div className="bg-slate-900/50 rounded-lg p-2.5">
                   <div className="flex items-center gap-1 mb-1">
                     <Scale size={10} className="text-slate-500" />
-                    <span className="text-[10px] text-slate-500 uppercase">Area</span>
+                    <span className="text-[10px] text-slate-500 uppercase">{t('sectors:agriculture.area')}</span>
                   </div>
                   <p className="text-sm font-semibold text-slate-200">
                     {Number(farm.area_hectares).toLocaleString()}
@@ -338,7 +340,7 @@ export function AgriculturePage() {
                 <div className="bg-slate-900/50 rounded-lg p-2.5">
                   <div className="flex items-center gap-1 mb-1">
                     <Wheat size={10} className="text-slate-500" />
-                    <span className="text-[10px] text-slate-500 uppercase">Yield</span>
+                    <span className="text-[10px] text-slate-500 uppercase">{t('sectors:agriculture.yield')}</span>
                   </div>
                   <p className="text-sm font-semibold text-slate-200">
                     {Number(farm.annual_yield_tons).toLocaleString()}
@@ -348,7 +350,7 @@ export function AgriculturePage() {
                 <div className="bg-slate-900/50 rounded-lg p-2.5">
                   <div className="flex items-center gap-1 mb-1">
                     <TrendingUp size={10} className="text-slate-500" />
-                    <span className="text-[10px] text-slate-500 uppercase">Eff.</span>
+                    <span className="text-[10px] text-slate-500 uppercase">{t('sectors:agriculture.efficiencyShort')}</span>
                   </div>
                   <p className={`text-sm font-semibold ${yieldEff >= 4 ? 'text-emerald-400' : yieldEff >= 2.5 ? 'text-amber-400' : 'text-red-400'}`}>
                     {yieldEff.toFixed(1)}
@@ -367,7 +369,7 @@ export function AgriculturePage() {
                   {isLowIrrigation && (
                     <div className="flex items-center gap-1 text-[10px] text-amber-500/80">
                       <AlertTriangle size={10} />
-                      Rainfed
+                      {t('sectors:agriculture.rainfed')}
                     </div>
                   )}
                 </div>

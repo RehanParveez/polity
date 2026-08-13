@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import {Construction, Ruler, Calendar, AlertTriangle, MapPin, Filter, TrendingUp, HardHat, Zap, Waves, Road, ChevronRight,
@@ -26,6 +27,7 @@ const CONDITION_ICONS: Record<string, any> = {
 }
 
 export function InfrastructurePage() {
+  const { t } = useTranslation(['sectors', 'common'])
   const { data, isLoading } = useQuery({
     queryKey: ['sectors-infrastructure'],
     queryFn: sectorsService.listInfrastructure,
@@ -75,7 +77,7 @@ export function InfrastructurePage() {
     if (!data) return []
     const map = new Map<string, { count: number; capacity: number; poor: number }>()
     data.forEach((a: any) => {
-      const d = a.district?.name ?? 'Unknown'
+      const d = a.district?.name ?? t('sectors:infrastructure.unknownDistrict')
       const existing = map.get(d) ?? { count: 0, capacity: 0, poor: 0 }
       map.set(d, {
         count: existing.count + 1,
@@ -87,7 +89,7 @@ export function InfrastructurePage() {
       .map(([name, stats]) => ({ name, ...stats }))
       .sort((a, b) => b.capacity - a.capacity)
       .slice(0, 4)
-  }, [data])
+  }, [data, t])
 
   const uniqueTypes = useMemo(
     () => (data ? [...new Set(data.map((a: any) => a.asset_type.replace('_', ' ')))] : []),
@@ -101,32 +103,32 @@ export function InfrastructurePage() {
       : data.filter((a: any) => a.asset_type.replace('_', ' ') === typeFilter)
   }, [data, typeFilter])
 
-  if (isLoading) return <p className="text-slate-400">Loading infrastructure data…</p>
-  if (!data || data.length === 0) return <p className="text-red-400">Could not load infrastructure data.</p>
+  if (isLoading) return <p className="text-slate-400">{t('common:loading')}</p>
+  if (!data || data.length === 0) return <p className="text-red-400">{t('common:couldNotLoad', { resource: t('sectors:infrastructure.title') })}</p>
 
   return (
     <div>
       <PageHeader
-        title="Infrastructure"
-        subtitle={`${totalAssets.toLocaleString()} assets · ${totalCapacity.toLocaleString()} km/capacity units · ${poorConditionCount} need attention`}
+        title={t('sectors:infrastructure.title')}
+        subtitle={`${t('sectors:infrastructure.assets', { count: totalAssets })} · ${t('sectors:infrastructure.capacityUnits', { count: totalCapacity })} · ${t('sectors:infrastructure.needAttention', { count: poorConditionCount })}`}
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard
-          label="Total assets"
+          label={t('sectors:infrastructure.totalAssets')}
           value={totalAssets.toLocaleString()}
         />
         <StatCard
-          label="Total capacity"
+          label={t('sectors:infrastructure.totalCapacity')}
           value={totalCapacity.toLocaleString()}
-          trend={{ value: '+1.8% YoY', direction: 'up' }}
+          trend={{ value: t('sectors:infrastructure.yoy'), direction: 'up' }}
         />
         <StatCard
-          label="Average age"
-          value={`${avgAge.toFixed(0)} yrs`}
+          label={t('sectors:infrastructure.averageAge')}
+          value={`${avgAge.toFixed(0)} ${t('sectors:infrastructure.years')}`}
         />
         <StatCard
-          label="Needs attention"
+          label={t('sectors:infrastructure.needsAttention')}
           value={`${poorConditionPct.toFixed(0)}%`}
         />
       </div>
@@ -135,10 +137,10 @@ export function InfrastructurePage() {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-medium text-slate-300 flex items-center gap-2">
             <TrendingUp size={16} className="text-slate-500" />
-            Capacity by asset type
+            {t('sectors:infrastructure.capacityByType')}
           </h3>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-500">Capacity / Length</span>
+            <span className="text-xs text-slate-500">{t('sectors:infrastructure.capacityLength')}</span>
             <div className="w-3 h-3 rounded-sm bg-amber-500" />
           </div>
         </div>
@@ -168,7 +170,7 @@ export function InfrastructurePage() {
                 return [num.toLocaleString(), '']
               }}
             />
-            <Bar dataKey="capacity" fill="#f59e0b" radius={[4, 4, 0, 0]} name="Capacity" />
+            <Bar dataKey="capacity" fill="#f59e0b" radius={[4, 4, 0, 0]} name={t('sectors:infrastructure.capacity')} />
           </BarChart>
         </ResponsiveContainer>
       </Card>
@@ -177,7 +179,7 @@ export function InfrastructurePage() {
         <div className="lg:col-span-2">
           <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
             <MapPin size={16} className="text-slate-500" />
-            District overview
+            {t('sectors:infrastructure.districtOverview')}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {districtSummary.map((d) => (
@@ -189,18 +191,18 @@ export function InfrastructurePage() {
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-medium text-slate-100">{d.name}</p>
                     <span className="text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400">
-                      {d.count} assets
+                      {t('sectors:infrastructure.assets', { count: d.count })}
                     </span>
                   </div>
                   <div className="grid grid-cols-2 gap-4 mt-3">
                     <div>
-                      <p className="text-xs text-slate-500">Capacity</p>
+                      <p className="text-xs text-slate-500">{t('sectors:infrastructure.capacity')}</p>
                       <p className="text-lg font-semibold text-slate-200">
                         {d.capacity.toLocaleString()}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-slate-500">Poor condition</p>
+                      <p className="text-xs text-slate-500">{t('sectors:infrastructure.poorCondition')}</p>
                       <p className={`text-lg font-semibold ${d.poor > 0 ? 'text-red-400' : 'text-slate-200'}`}>
                         {d.poor}
                       </p>
@@ -208,7 +210,7 @@ export function InfrastructurePage() {
                   </div>
                   <div className="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between">
                     <span className="text-xs text-slate-500">
-                      {d.poor > 0 ? `${d.poor} need immediate repair` : 'All assets in acceptable condition'}
+                      {d.poor > 0 ? t('sectors:infrastructure.immediateRepair', { count: d.poor }) : t('sectors:infrastructure.acceptableCondition')}
                     </span>
                     <ChevronRight size={14} className="text-slate-600 group-hover:text-amber-500 transition-colors" />
                   </div>
@@ -221,7 +223,7 @@ export function InfrastructurePage() {
         <div>
           <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
             <Filter size={16} className="text-slate-500" />
-            Asset type
+            {t('sectors:infrastructure.assetType')}
           </h3>
           <Card className="mb-4">
             <div className="flex flex-wrap gap-2">
@@ -233,26 +235,26 @@ export function InfrastructurePage() {
                     : 'bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700'
                 }`}
               >
-                All types
+                {t('sectors:infrastructure.allTypes')}
               </button>
-              {uniqueTypes.map((t: string) => (
+              {uniqueTypes.map((type: string) => (
                 <button
-                  key={t}
-                  onClick={() => setTypeFilter(t)}
+                  key={type}
+                  onClick={() => setTypeFilter(type)}
                   className={`text-xs px-3 py-1.5 rounded-full transition-colors ${
-                    typeFilter === t
+                    typeFilter === type
                       ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
                       : 'bg-slate-800 text-slate-400 border border-slate-700 hover:bg-slate-700'
                   }`}
                 >
-                  {t}
+                  {type}
                 </button>
               ))}
             </div>
           </Card>
 
           <Card>
-            <h4 className="text-xs font-medium text-slate-400 mb-3 uppercase tracking-wider">Assets by type</h4>
+            <h4 className="text-xs font-medium text-slate-400 mb-3 uppercase tracking-wider">{t('sectors:infrastructure.assetsByType')}</h4>
             <ResponsiveContainer width="100%" height={180}>
               <PieChart>
                 <Pie
@@ -276,19 +278,19 @@ export function InfrastructurePage() {
                   }}
                   formatter={(value: any) => {
                     const num = typeof value === 'number' ? value : Number(value)
-                    return [`${num.toLocaleString()} assets`, 'Count']
+                    return [t('sectors:infrastructure.assets', { count: num }), t('common:total')]
                   }}
                 />
               </PieChart>
             </ResponsiveContainer>
             <div className="space-y-1.5 mt-1">
-              {typeSummary.slice(0, 4).map((t, i) => (
-                <div key={t.name} className="flex items-center justify-between text-xs">
+              {typeSummary.slice(0, 4).map((typeItem, i) => (
+                <div key={typeItem.name} className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: TYPE_COLORS[i % TYPE_COLORS.length] }} />
-                    <span className="text-slate-400">{t.name}</span>
+                    <span className="text-slate-400">{typeItem.name}</span>
                   </div>
-                  <span className="text-slate-300">{t.count}</span>
+                  <span className="text-slate-300">{typeItem.count}</span>
                 </div>
               ))}
             </div>
@@ -299,12 +301,12 @@ export function InfrastructurePage() {
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-sm font-medium text-slate-300 flex items-center gap-2">
           <HardHat size={16} className="text-slate-500" />
-          Asset directory
+          {t('sectors:infrastructure.assetDirectory')}
           {typeFilter !== 'all' && (
-            <span className="text-xs text-slate-500">· filtered by {typeFilter}</span>
+            <span className="text-xs text-slate-500">{t('sectors:infrastructure.filteredBy', { type: typeFilter })}</span>
           )}
         </h3>
-        <span className="text-xs text-slate-500">{filteredAssets.length} results</span>
+        <span className="text-xs text-slate-500">{filteredAssets.length} {t('sectors:infrastructure.results')}</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -325,11 +327,11 @@ export function InfrastructurePage() {
                   </div>
                   <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
                     <MapPin size={10} />
-                    {asset.district?.name ?? 'Unknown district'}
+                    {asset.district?.name ?? t('sectors:infrastructure.unknownDistrict')}
                   </p>
                 </div>
                 <span className={`text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 rounded-full border ${conditionStyle}`}>
-                  {condition}
+                  {t(`sectors:infrastructure.${condition}` as any) || condition}
                 </span>
               </div>
 
@@ -337,7 +339,7 @@ export function InfrastructurePage() {
                 <div className="bg-slate-900/50 rounded-lg p-2.5">
                   <div className="flex items-center gap-1 mb-1">
                     <Ruler size={10} className="text-slate-500" />
-                    <span className="text-[10px] text-slate-500 uppercase">Capacity</span>
+                    <span className="text-[10px] text-slate-500 uppercase">{t('sectors:infrastructure.capacity')}</span>
                   </div>
                   <p className="text-sm font-semibold text-slate-200">
                     {asset.length_km_or_capacity ?? '—'}
@@ -346,7 +348,7 @@ export function InfrastructurePage() {
                 <div className="bg-slate-900/50 rounded-lg p-2.5">
                   <div className="flex items-center gap-1 mb-1">
                     <Calendar size={10} className="text-slate-500" />
-                    <span className="text-[10px] text-slate-500 uppercase">Built</span>
+                    <span className="text-[10px] text-slate-500 uppercase">{t('sectors:infrastructure.built')}</span>
                   </div>
                   <p className={`text-sm font-semibold ${isOld ? 'text-amber-400' : 'text-slate-200'}`}>
                     {asset.year_constructed ?? '—'}
@@ -355,11 +357,11 @@ export function InfrastructurePage() {
                 <div className="bg-slate-900/50 rounded-lg p-2.5">
                   <div className="flex items-center gap-1 mb-1">
                     <ConditionIcon size={10} className="text-slate-500" />
-                    <span className="text-[10px] text-slate-500 uppercase">Age</span>
+                    <span className="text-[10px] text-slate-500 uppercase">{t('sectors:infrastructure.age')}</span>
                   </div>
                   <p className="text-sm font-semibold text-slate-200">
                     {asset.year_constructed
-                      ? `${new Date().getFullYear() - Number(asset.year_constructed)} yrs`
+                      ? `${new Date().getFullYear() - Number(asset.year_constructed)} ${t('sectors:infrastructure.years')}`
                       : '—'}
                   </p>
                 </div>
@@ -373,7 +375,7 @@ export function InfrastructurePage() {
                   {isOld && (
                     <div className="flex items-center gap-1 text-[10px] text-amber-500/80">
                       <Calendar size={10} />
-                      Aging
+                      {t('sectors:infrastructure.aging')}
                     </div>
                   )}
                 </div>

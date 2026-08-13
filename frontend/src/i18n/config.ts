@@ -17,19 +17,25 @@ import enPolicies from './locales/en/policies.json'
 import urPolicies from './locales/ur/policies.json'
 import enInstitutions from './locales/en/institutions.json'
 import urInstitutions from './locales/ur/institutions.json'
+import enDashboard from './locales/en/dashboard.json'
+import urDashboard from './locales/ur/dashboard.json'
+import enSectors from './locales/en/sectors.json'
+import urSectors from './locales/ur/sectors.json'
+import enProcess from './locales/en/process.json'
+import urProcess from './locales/ur/process.json'
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
-      en: { common: enCommon, auth: enAuth, finance: enFinance, government: enGovernment, elections: enElections, geography: enGeography, institutions: enInstitutions, policies: enPolicies,},
-      ur: { common: urCommon, auth: urAuth, finance: urFinance, government: urGovernment, elections: urElections, geography: urGeography, institutions: urInstitutions, policies: urPolicies,},
+      en: { common: enCommon, auth: enAuth, finance: enFinance, government: enGovernment, elections: enElections, geography: enGeography, institutions: enInstitutions, dashboard: enDashboard, sectors: enSectors, policies: enPolicies, process: enProcess,},
+      ur: { common: urCommon, auth: urAuth, finance: urFinance, government: urGovernment, elections: urElections, geography: urGeography, institutions: urInstitutions, dashboard: urDashboard, sectors: urSectors, policies: urPolicies, process: urProcess, },
     },
     fallbackLng: 'en',
     supportedLngs: ['en', 'ur'],
     defaultNS: 'common',
-    ns: ['common', 'auth', 'finance', 'government', 'elections', 'geography', 'instituitions', 'policies'],
+    ns: ['common', 'auth', 'finance', 'government', 'elections', 'geography', 'instituitions', 'dashboard','sectors', 'policies', 'process'],
     interpolation: { escapeValue: false },
     detection: {
       order: ['localStorage', 'navigator'],

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import {GraduationCap, HeartPulse, Wheat, Construction, Briefcase, Shield, ArrowUpRight,
@@ -10,124 +11,131 @@ import { sectorsService } from '../../../services/sectorsService'
 const SECTORS = [
   {
     key: 'education',
-    label: 'Education',
+    labelKey: 'sectors:education.title',
     icon: GraduationCap,
     path: '/sectors/education',
     color: 'text-blue-400',
     bg: 'bg-blue-500/10',
     border: 'hover:border-blue-500/50',
     metric: (d: any) => d.education_institutions.toLocaleString(),
-    unit: 'institutions',
-    sub: (d: any) => `${d.total_enrollment.toLocaleString()} students enrolled`,
+    unitKey: 'sectors:education.institutions',
+    subKey: 'sectors:education.studentsEnrolled',
+    subData: (d: any) => ({ count: d.total_enrollment }),
   },
   {
     key: 'healthcare',
-    label: 'Healthcare',
+    labelKey: 'sectors:healthcare.title',
     icon: HeartPulse,
     path: '/sectors/healthcare',
     color: 'text-rose-400',
     bg: 'bg-rose-500/10',
     border: 'hover:border-rose-500/50',
     metric: (d: any) => d.healthcare_institutions.toLocaleString(),
-    unit: 'facilities',
-    sub: (d: any) => `${d.total_beds.toLocaleString()} beds total`,
+    unitKey: 'sectors:healthcare.facilities',
+    subKey: 'sectors:healthcare.bedsTotal',
+    subData: (d: any) => ({ count: d.total_beds }),
   },
   {
     key: 'agriculture',
-    label: 'Agriculture',
+    labelKey: 'sectors:agriculture.title',
     icon: Wheat,
     path: '/sectors/agriculture',
     color: 'text-amber-400',
     bg: 'bg-amber-500/10',
     border: 'hover:border-amber-500/50',
     metric: (d: any) => d.farms.toLocaleString(),
-    unit: 'farms',
-    sub: (d: any) => `${Number(d.total_farm_area).toLocaleString()} ha cultivated`,
+    unitKey: 'sectors:agriculture.farms',
+    subKey: 'sectors:agriculture.hectares',
+    subData: (d: any) => ({ count: Number(d.total_farm_area) }),
   },
   {
     key: 'infrastructure',
-    label: 'Infrastructure',
+    labelKey: 'sectors:infrastructure.title',
     icon: Construction,
     path: '/sectors/infrastructure',
     color: 'text-orange-400',
     bg: 'bg-orange-500/10',
     border: 'hover:border-orange-500/50',
     metric: null,
-    unit: null,
-    sub: null,
+    unitKey: null,
+    subKey: null,
+    subData: null,
   },
   {
     key: 'labor',
-    label: 'Labor',
+    labelKey: 'sectors:labor.title',
     icon: Briefcase,
     path: '/sectors/labor',
     color: 'text-violet-400',
     bg: 'bg-violet-500/10',
     border: 'hover:border-violet-500/50',
     metric: (d: any) => d.total_workforce.toLocaleString(),
-    unit: 'workers',
-    sub: (d: any) => `${d.labor_records} districts tracked`,
+    unitKey: 'sectors:labor.workforceLabel',
+    subKey: 'sectors:labor.districts',
+    subData: (d: any) => ({ count: d.labor_records }),
   },
   {
     key: 'defense',
-    label: 'Defense',
+    labelKey: 'sectors:defense.title',
     icon: Shield,
     path: '/sectors/defense',
     color: 'text-emerald-400',
     bg: 'bg-emerald-500/10',
     border: 'hover:border-emerald-500/50',
     metric: null,
-    unit: null,
-    sub: null,
+    unitKey: null,
+    subKey: null,
+    subData: null,
   },
 ]
 
 export function SectorsDashboardPage() {
+  const { t } = useTranslation(['sectors', 'common'])
   const { data, isLoading } = useQuery({
     queryKey: ['sectors-summary'],
     queryFn: sectorsService.getSummary,
   })
 
-  if (isLoading) return <p className="text-slate-400">Loading sector summary…</p>
-  if (!data) return <p className="text-red-400">Could not load sector summary.</p>
+  if (isLoading) return <p className="text-slate-400">{t('common:loading')}</p>
+  if (!data) return <p className="text-red-400">{t('common:couldNotLoad', { resource: t('sectors:title') })}</p>
 
   return (
     <div>
       <PageHeader
-        title="Sectors"
-        subtitle="National sector overview and performance indicators"
+        title={t('sectors:title')}
+        subtitle={t('sectors:subtitle')}
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard
-          label="Education institutions"
+          label={t('sectors:education.statLabel')}
           value={data.education_institutions.toLocaleString()}
-          caption={`${data.total_enrollment.toLocaleString()} students enrolled`}
+          caption={t('sectors:education.studentsEnrolled', { count: data.total_enrollment })}
         />
         <StatCard
-          label="Healthcare facilities"
+          label={t('sectors:healthcare.statLabel')}
           value={data.healthcare_institutions.toLocaleString()}
-          caption={`${data.total_beds.toLocaleString()} beds total`}
+          caption={t('sectors:healthcare.bedsTotal', { count: data.total_beds })}
         />
         <StatCard
-          label="Farms"
+          label={t('sectors:agriculture.statLabel')}
           value={data.farms.toLocaleString()}
-          caption={`${Number(data.total_farm_area).toLocaleString()} ha total`}
+          caption={t('sectors:agriculture.hectares', { count: Number(data.total_farm_area) })}
         />
         <StatCard
-          label="Workforce"
+          label={t('sectors:labor.workforceLabel')}
           value={data.total_workforce.toLocaleString()}
-          caption={`${data.labor_records} districts tracked`}
+          caption={t('sectors:labor.districts', { count: data.labor_records })}
         />
       </div>
 
       <h3 className="text-sm font-medium text-slate-300 mb-4 flex items-center gap-2">
         <span className="w-1 h-4 rounded-full bg-slate-500" />
-        Sector overview
+        {t('sectors:sectorOverview')}
       </h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {SECTORS.map(({ key, label, icon: Icon, path, color, bg, border, metric, unit, sub }) => (
+        {SECTORS.map(({ key, labelKey, icon: Icon, path, color, bg, border, metric, unitKey, subKey, subData }) => (
           <Link key={key} to={path}>
             <Card className={`group transition-all h-full ${border}`}>
               <div className="flex items-start justify-between">
@@ -137,20 +145,26 @@ export function SectorsDashboardPage() {
                   </div>
                   <div>
                     <p className="font-semibold text-slate-100 group-hover:text-white transition-colors">
-                      {label}
+                      {t(labelKey)}
                     </p>
                     {metric && data ? (
                       <div className="mt-1">
                         <p className="text-lg font-bold text-slate-200">
                           {metric(data)}
-                          <span className="text-xs font-normal text-slate-500 ml-1">{unit}</span>
+                          <span className="text-xs font-normal text-slate-500 ml-1">
+                            {unitKey ? t(unitKey) : ''}
+                          </span>
                         </p>
-                        {sub && (
-                          <p className="text-xs text-slate-500 mt-0.5">{sub(data)}</p>
+                        {subKey && subData && (
+                          <p className="text-xs text-slate-500 mt-0.5">
+                            {t(subKey, subData(data))}
+                          </p>
                         )}
                       </div>
                     ) : (
-                      <p className="text-xs text-slate-500 mt-1">View detailed records</p>
+                      <p className="text-xs text-slate-500 mt-1">
+                        {t('sectors:viewDetailed')}
+                      </p>
                     )}
                   </div>
                 </div>

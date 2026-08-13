@@ -5,7 +5,7 @@ import { useAuthStore } from '../app/store'
 import { RequirePermission } from '../components/permissions/RequirePermission'
 import { LanguageSwitcher } from '../components/ui/LanguageSwitcher'
 import { Banknote } from 'lucide-react'
-import { Factory } from 'lucide-react'
+import { Factory, FlaskConical } from 'lucide-react'
 
 const navItems = [
   { to: '/', labelKey: 'nav.dashboard', icon: Home, end: true },
@@ -16,6 +16,7 @@ const navItems = [
   { to: '/finance', labelKey: 'nav.finance', icon: Banknote, end: false },
   { to: '/sectors', labelKey: 'Sectors', icon: Factory, end: false },
   { to: '/policies', labelKey: 'Policies', icon: FileText, end: false },
+  { to: '/process', labelKey: 'Process', icon: FlaskConical, end: false },
 ]
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>

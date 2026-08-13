@@ -45,6 +45,7 @@
   "items": "اشیاء",
   "perPage": "فی صفحہ",
   "logout": "لاگ آؤٹ",
+
   "sidebar": {
     "dashboard": "ڈیش بورڈ",
     "geography": "جغرافیہ",
@@ -56,7 +57,8 @@
     "adminCheck": "ایڈمن چیک",
     "polity": "پولیٹی",
     "tagline": "گورننس · پاکستان",
-    "logout": "لاگ آؤٹ"
+    "logout": "لاگ آؤٹ",
+    "policies": "پالیسیاں"
   },
 
   "nav": {
@@ -68,7 +70,8 @@
     "finance": "مالیات",
     "sectors": "شعبے",
     "adminCheck": "ایڈمن چیک",
-    "logout": "لاگ آؤٹ"
+    "logout": "لاگ آؤٹ",
+    "policies": "پالیسیاں"
   },
 
   "statuses": {

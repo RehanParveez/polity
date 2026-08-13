@@ -3,6 +3,7 @@
   "subtitle": "National sector overview and performance indicators",
   "sectorOverview": "Sector overview",
   "viewDetailed": "View detailed records",
+
   "education": {
     "title": "Education",
     "institutions": "institutions",
@@ -24,8 +25,10 @@
     "unknownDistrict": "Unknown district",
     "ratio": "Ratio",
     "yoy": "+3.8% YoY",
-    "active": "active"
+    "active": "active",
+    "statLabel": "Education institutions"
   },
+
   "healthcare": {
     "title": "Healthcare",
     "facilities": "facilities",
@@ -48,8 +51,12 @@
     "staffBedRatio": "Staff/bed",
     "understaffed": "Understaffed",
     "yoy": "+2.1% YoY",
-    "active": "active"
+    "active": "active",
+    "capacity": "Capacity",
+    "dailyShort": "Daily",
+    "statLabel": "Healthcare facilities"
   },
+
   "agriculture": {
     "title": "Agriculture",
     "registeredFarms": "{{count}} registered farms",
@@ -77,8 +84,12 @@
     "efficiencyUnit": "t/ha",
     "rainfed": "Rainfed",
     "highYield": "High yield",
-    "lowIrrigation": "Low irrigation"
+    "lowIrrigation": "Low irrigation",
+    "vsLastSeason": "+5.3% vs last season",
+    "efficiencyShort": "Eff.",
+    "statLabel": "Farms"
   },
+
   "infrastructure": {
     "title": "Infrastructure",
     "assets": "{{count}} assets",
@@ -161,6 +172,11 @@
     "ready": "{{pct}}% ready",
     "personnelAndEquipment": "{{personnel}} personnel · {{equipment}} equipment",
     "keyIndicators": "Key indicators",
-    "confidence": "Confidence: {{confidence}} · {{date}}"
+    "confidence": "Confidence: {{confidence}} · {{date}}",
+    "budgetPersonnel": "Personnel",
+    "budgetEquipment": "Equipment",
+    "budgetInfrastructure": "Infrastructure",
+    "budgetResearch": "Research",
+    "women": "women"
   }
 }

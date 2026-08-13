@@ -1,11 +1,14 @@
+import { useTranslation } from 'react-i18next'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { StatCard } from '../../../components/ui/StatCard'
 import { Card } from '../../../components/ui/Card'
 import { useAuthStore } from '../../../app/store'
-import {LayoutDashboard, User, Shield, MapPin, Mail, Calendar, CheckCircle2, XCircle, ShieldCheck, ShieldAlert, Activity, Clock, KeyRound, Fingerprint,
+import {
+  LayoutDashboard, User, Shield, MapPin, Mail, Calendar, CheckCircle2, XCircle, ShieldCheck, ShieldAlert, Activity, Clock, KeyRound, Fingerprint,
 } from 'lucide-react'
 
 export function DashboardPage() {
+  const { t } = useTranslation(['dashboard', 'common'])
   const user = useAuthStore((s) => s.user)
 
   const permissionCount = user?.permissions.length ?? 0
@@ -17,30 +20,30 @@ export function DashboardPage() {
   return (
     <div>
       <PageHeader
-        title={`Welcome back, ${user?.full_name ?? 'User'}`}
-        subtitle={user?.email ?? 'No email on record'}
+        title={t('dashboard:welcomeBack', { name: user?.full_name || t('common:unknown') })}
+        subtitle={user?.email ?? t('dashboard:noEmailOnRecord')}
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard
-          label="Account status"
-          value={user?.is_active ? 'Active' : 'Inactive'}
-          trend={{ value: user?.is_active ? 'Verified' : 'Suspended', direction: user?.is_active ? 'up' : 'down' }}
+          label={t('dashboard:accountStatus')}
+          value={user?.is_active ? t('common:statuses.active') : t('common:statuses.inactive')}
+          trend={{ value: user?.is_active ? t('dashboard:verified') : t('dashboard:suspended'), direction: user?.is_active ? 'up' : 'down' }}
         />
         <StatCard
-          label="Permissions granted"
+          label={t('dashboard:permissionsGranted')}
           value={String(permissionCount)}
-          trend={{ value: permissionCount > 5 ? 'Elevated access' : 'Standard access', direction: 'up' }}
+          trend={{ value: permissionCount > 5 ? t('dashboard:elevatedAccess') : t('dashboard:standardAccess'), direction: 'up' }}
         />
         <StatCard
-          label="Assigned jurisdictions"
+          label={t('dashboard:assignedJurisdictions')}
           value={String(jurisdictionCount)}
-          trend={{ value: jurisdictionCount > 0 ? 'Mapped' : 'None assigned', direction: jurisdictionCount > 0 ? 'up' : 'down' }}
+          trend={{ value: jurisdictionCount > 0 ? t('dashboard:mapped') : t('dashboard:noneAssigned'), direction: jurisdictionCount > 0 ? 'up' : 'down' }}
         />
         <StatCard
-          label="Account age"
-          value={accountAge !== null ? `${accountAge} days` : '—'}
-          caption={user?.created_at ? `Since ${new Date(user.created_at).toLocaleDateString()}` : undefined}
+          label={t('dashboard:accountAge')}
+          value={accountAge !== null ? `${accountAge} ${t('dashboard:days')}` : '—'}
+          caption={user?.created_at ? t('dashboard:since', { date: new Date(user.created_at).toLocaleDateString() }) : undefined}
         />
       </div>
 
@@ -48,7 +51,7 @@ export function DashboardPage() {
         <Card className="lg:col-span-1">
           <h3 className="text-sm font-medium text-slate-300 mb-4 flex items-center gap-2">
             <User size={16} className="text-blue-400" />
-            Profile overview
+            {t('dashboard:profileOverview')}
           </h3>
           <div className="flex items-center gap-4 mb-4">
             <div className="h-16 w-16 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center shrink-0">
@@ -57,14 +60,14 @@ export function DashboardPage() {
               </span>
             </div>
             <div className="min-w-0">
-              <p className="text-base font-medium text-slate-100 truncate">{user?.full_name ?? 'Unnamed user'}</p>
+              <p className="text-base font-medium text-slate-100 truncate">{user?.full_name ?? t('common:unknown')}</p>
               <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
                 <Mail size={10} />
-                {user?.email ?? 'No email'}
+                {user?.email ?? t('dashboard:noEmail')}
               </p>
               <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
                 <Fingerprint size={10} />
-                ID: {user?.id ?? '—'}
+                {t('dashboard:id')}: {user?.id ?? '—'}
               </p>
             </div>
           </div>
@@ -72,26 +75,26 @@ export function DashboardPage() {
             <div className="flex items-center justify-between text-sm">
               <span className="text-slate-500 flex items-center gap-1.5">
                 <Shield size={12} className="text-slate-600" />
-                Role
+                {t('dashboard:role')}
               </span>
               <span className="text-slate-200 font-medium">{user?.role ?? '—'}</span>
             </div>
             <div className="flex items-center justify-between text-sm">
               <span className="text-slate-500 flex items-center gap-1.5">
                 <Activity size={12} className="text-slate-600" />
-                Status
+                {t('common:status')}
               </span>
               <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full ${
                 user?.is_active ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'
               }`}>
                 {user?.is_active ? <CheckCircle2 size={10} /> : <XCircle size={10} />}
-                {user?.is_active ? 'Active' : 'Inactive'}
+                {user?.is_active ? t('common:statuses.active') : t('common:statuses.inactive')}
               </span>
             </div>
             <div className="flex items-center justify-between text-sm">
               <span className="text-slate-500 flex items-center gap-1.5">
                 <Clock size={12} className="text-slate-600" />
-                Member since
+                {t('dashboard:memberSince')}
               </span>
               <span className="text-slate-200">
                 {user?.created_at ? new Date(user.created_at).toLocaleDateString() : '—'}
@@ -103,19 +106,21 @@ export function DashboardPage() {
         <Card className="lg:col-span-2">
           <h3 className="text-sm font-medium text-slate-300 mb-4 flex items-center gap-2">
             <ShieldCheck size={16} className="text-emerald-400" />
-            Permissions & access
+            {t('dashboard:permissionsAndAccess')}
           </h3>
 
           {permissionCount === 0 ? (
             <div className="text-center py-8 border border-dashed border-slate-800 rounded-lg">
               <ShieldAlert size={24} className="text-slate-700 mx-auto mb-2" />
-              <p className="text-sm text-slate-500">No permissions assigned to this account.</p>
+              <p className="text-sm text-slate-500">{t('dashboard:noPermissions')}</p>
             </div>
           ) : (
             <div className="space-y-3">
               <div className="flex justify-between text-sm mb-2">
-                <span className="text-slate-400">Access level</span>
-                <span className="text-slate-100 font-medium">{permissionCount} permission{permissionCount > 1 ? 's' : ''}</span>
+                <span className="text-slate-400">{t('dashboard:accessLevel')}</span>
+                <span className="text-slate-100 font-medium">
+                  {permissionCount} {permissionCount === 1 ? t('dashboard:permission') : t('dashboard:permissions')}
+                </span>
               </div>
               <div className="w-full bg-slate-800 rounded-full h-2 mb-4">
                 <div
@@ -149,9 +154,9 @@ export function DashboardPage() {
               {user?.is_active ? <ShieldCheck size={12} /> : <ShieldAlert size={12} />}
               {user?.is_active
                 ? permissionCount > 10
-                  ? 'High privilege account'
-                  : 'Standard access'
-                : 'Account disabled'}
+                  ? t('dashboard:highPrivilege')
+                  : t('dashboard:standardAccess')
+                : t('dashboard:accountDisabled')}
             </div>
           </div>
         </Card>
@@ -164,8 +169,8 @@ export function DashboardPage() {
               <Shield size={18} className="text-blue-400" />
             </div>
             <div>
-              <p className="text-xs text-slate-500">Security status</p>
-              <p className="text-sm font-medium text-slate-200">{user?.is_active ? 'Protected' : 'Restricted'}</p>
+              <p className="text-xs text-slate-500">{t('dashboard:securityStatus')}</p>
+              <p className="text-sm font-medium text-slate-200">{user?.is_active ? t('dashboard:protected') : t('dashboard:restricted')}</p>
             </div>
           </div>
         </Card>
@@ -175,8 +180,8 @@ export function DashboardPage() {
               <MapPin size={18} className="text-amber-400" />
             </div>
             <div>
-              <p className="text-xs text-slate-500">Jurisdictions</p>
-              <p className="text-sm font-medium text-slate-200">{jurisdictionCount} mapped</p>
+              <p className="text-xs text-slate-500">{t('dashboard:jurisdictions')}</p>
+              <p className="text-sm font-medium text-slate-200">{jurisdictionCount} {t('dashboard:mapped')}</p>
             </div>
           </div>
         </Card>
@@ -186,7 +191,7 @@ export function DashboardPage() {
               <Calendar size={18} className="text-purple-400" />
             </div>
             <div>
-              <p className="text-xs text-slate-500">Last updated</p>
+              <p className="text-xs text-slate-500">{t('dashboard:lastUpdated')}</p>
               <p className="text-sm font-medium text-slate-200">
                 {user?.updated_at ? new Date(user.updated_at).toLocaleDateString() : '—'}
               </p>

@@ -3,6 +3,7 @@
   "subtitle": "قومی شعبہ جائزہ اور کارکردگی کے اشاریے",
   "sectorOverview": "شعبہ جائزہ",
   "viewDetailed": "تفصیلی ریکارڈ دیکھیں",
+
   "education": {
     "title": "تعلیم",
     "institutions": "ادارے",
@@ -24,8 +25,10 @@
     "unknownDistrict": "نامعلوم ضلع",
     "ratio": "تناسب",
     "yoy": "+3.8% گزشتہ سال",
-    "active": "فعال"
+    "active": "فعال",
+    "statLabel": "تعلیمی ادارے"
   },
+
   "healthcare": {
     "title": "صحت",
     "facilities": "سہولیات",
@@ -48,8 +51,12 @@
     "staffBedRatio": "عملہ/بستر",
     "understaffed": "عملہ کم",
     "yoy": "+2.1% گزشتہ سال",
-    "active": "فعال"
+    "active": "فعال",
+    "capacity": "گنجائش",
+    "dailyShort": "روزانہ",
+    "statLabel": "صحت کی سہولیات"
   },
+
   "agriculture": {
     "title": "زراعت",
     "registeredFarms": "{{count}} رجسٹرڈ فارم",
@@ -77,8 +84,12 @@
     "efficiencyUnit": "ٹن/ہیکٹر",
     "rainfed": "بارانی",
     "highYield": "زیادہ پیداوار",
-    "lowIrrigation": "کم آبپاشی"
+    "lowIrrigation": "کم آبپاشی",
+    "vsLastSeason": "+5.3% پچھلے سیزن کے مقابلے میں",
+    "efficiencyShort": "کارکردگی",
+    "statLabel": "فارم"
   },
+
   "infrastructure": {
     "title": "انفراسٹرکچر",
     "assets": "{{count}} اثاثے",
@@ -113,6 +124,7 @@
     "poor": "خراب",
     "yoy": "+1.8% گزشتہ سال"
   },
+
   "labor": {
     "title": "مزدوری",
     "districts": "{{count}} اضلاع",
@@ -139,6 +151,7 @@
     "dominantSectors": "غالب شعبے",
     "rate": "شرح"
   },
+
   "defense": {
     "title": "دفاع",
     "personnel": "{{count}} اہلکار",
@@ -161,6 +174,11 @@
     "ready": "{{pct}}% تیار",
     "personnelAndEquipment": "{{personnel}} اہلکار · {{equipment}} سازوسامان",
     "keyIndicators": "اہم اشاریے",
-    "confidence": "اعتماد: {{confidence}} · {{date}}"
+    "confidence": "اعتماد: {{confidence}} · {{date}}",
+    "budgetPersonnel": "اہلکار",
+    "budgetEquipment": "سازوسامان",
+    "budgetInfrastructure": "انفراسٹرکچر",
+    "budgetResearch": "تحقیق",
+    "women": "خواتین"
   }
 }

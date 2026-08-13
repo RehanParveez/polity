@@ -34,6 +34,10 @@ import { DefensePage } from '../modules/sectors/pages/DefensePage'
 import { PoliciesPage } from '../modules/policies/pages/PoliciesPage'
 import { PolicyCreatePage } from '../modules/policies/pages/PolicyCreatePage'
 import { PolicyDetailPage } from '../modules/policies/pages/PolicyDetailPage'
+import { ScenariosPage } from '../modules/process/pages/ScenariosPage'
+import { ScenarioCreatePage } from '../modules/process/pages/ScenarioCreatePage'
+import { ScenarioDetailPage } from '../modules/process/pages/ScenarioDetailPage'
+import { ComparisonsPage } from '../modules/process/pages/ComparisonsPage'
 
 function ProtectedRoute({ children }: { children: ReactElement }) {
   const accessToken = useAuthStore((s) => s.accessToken)
@@ -85,6 +89,10 @@ export const router = createBrowserRouter([
       { path: '/policies', element: <PoliciesPage /> },
       { path: '/policies/new', element: <PolicyCreatePage /> },
       { path: '/policies/:policyId', element: <PolicyDetailPage /> },
+      { path: '/process', element: <ScenariosPage /> },
+      { path: '/process/new', element: <ScenarioCreatePage /> },
+      { path: '/process/:scenarioId', element: <ScenarioDetailPage /> },
+      { path: '/process/comparisons', element: <ComparisonsPage /> },
     ],
   },
 ])
