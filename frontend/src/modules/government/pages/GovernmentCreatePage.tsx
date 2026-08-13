@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import {Calendar, Landmark, Crown, UserCheck, ArrowLeft, Shield, FileText, AlertCircle, CheckCircle2,
 } from 'lucide-react'
 import { PageHeader } from '../../../components/ui/PageHeader'
@@ -9,6 +10,7 @@ import { Button } from '../../../components/ui/Button'
 import { governmentService } from '../../../services/governmentService'
 
 export function GovernmentCreatePage() {
+  const { t } = useTranslation(['government', 'common'])
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [formedDate, setFormedDate] = useState('')
@@ -30,7 +32,7 @@ export function GovernmentCreatePage() {
       })
       navigate(`/governments/${gov.id}`)
     } catch {
-      setError('Could not form government — check permissions and fields.')
+      setError(t('createError'))
     } finally {
       setLoading(false)
     }
@@ -41,8 +43,8 @@ export function GovernmentCreatePage() {
   return (
     <div>
       <PageHeader
-        title="Form new government"
-        subtitle="Establish a new administration record with executive leadership"
+        title={t('formNewGovernment')}
+        subtitle={t('createSubtitle')}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -53,24 +55,24 @@ export function GovernmentCreatePage() {
                 <Landmark size={20} className="text-amber-400" />
               </div>
               <div>
-                <h3 className="text-sm font-medium text-slate-200">Administration details</h3>
-                <p className="text-xs text-slate-500">Required fields marked with *</p>
+                <h3 className="text-sm font-medium text-slate-200">{t('administrationDetails')}</h3>
+                <p className="text-xs text-slate-500">{t('requiredFieldsMarked')}</p>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <TextField
-                  label="Government name *"
+                  label={`${t('governmentName')} *`}
                   icon={Landmark}
-                  placeholder="Government of National Unity 2026"
+                  placeholder={t('namePlaceholder')}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
                   autoFocus
                 />
                 <TextField
-                  label="Formed date *"
+                  label={`${t('formedDate')} *`}
                   icon={Calendar}
                   type="date"
                   value={formedDate}
@@ -81,16 +83,16 @@ export function GovernmentCreatePage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <TextField
-                  label="Head of State title"
+                  label={t('headOfStateTitle')}
                   icon={Crown}
-                  placeholder="President of Pakistan"
+                  placeholder={t('headOfStatePlaceholder')}
                   value={headOfState}
                   onChange={(e) => setHeadOfState(e.target.value)}
                 />
                 <TextField
-                  label="Head of Government title"
+                  label={t('headOfGovernmentTitle')}
                   icon={UserCheck}
-                  placeholder="Prime Minister of Pakistan"
+                  placeholder={t('headOfGovernmentPlaceholder')}
                   value={headOfGovt}
                   onChange={(e) => setHeadOfGovt(e.target.value)}
                 />
@@ -106,14 +108,14 @@ export function GovernmentCreatePage() {
               <div className="flex items-center gap-4 pt-2">
                 <Button type="submit" loading={loading} disabled={!isValid}>
                   <Shield size={16} className="mr-1.5" />
-                  Form government
+                  {t('formGovernmentBtn')}
                 </Button>
                 <Link
                   to="/governments"
                   className="text-sm text-slate-500 hover:text-slate-300 transition-colors flex items-center gap-1.5"
                 >
                   <ArrowLeft size={14} />
-                  Back to governments
+                  {t('backToGovernments')}
                 </Link>
               </div>
             </form>
@@ -123,7 +125,7 @@ export function GovernmentCreatePage() {
         <div>
           <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
             <FileText size={16} className="text-slate-500" />
-            Formation preview
+            {t('formationPreview')}
           </h3>
           <Card className="border-amber-500/20 bg-amber-500/5">
             <div className="flex items-center gap-3 mb-4">
@@ -132,10 +134,10 @@ export function GovernmentCreatePage() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-slate-100">
-                  {name.trim() || 'Untitled Government'}
+                  {name.trim() || t('untitledGovernment')}
                 </p>
                 <p className="text-xs text-slate-500">
-                  {formedDate ? `Formed ${formedDate}` : 'Formation date pending'}
+                  {formedDate ? t('formedOn', { date: formedDate }) : t('formationDatePending')}
                 </p>
               </div>
             </div>
@@ -144,14 +146,14 @@ export function GovernmentCreatePage() {
               <div className="flex items-center gap-3 text-sm">
                 <Crown size={14} className="text-amber-500/60 shrink-0" />
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wider">Head of State</p>
+                  <p className="text-xs text-slate-500 uppercase tracking-wider">{t('headOfState')}</p>
                   <p className="text-slate-300">{headOfState.trim() || '—'}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <UserCheck size={14} className="text-amber-500/60 shrink-0" />
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wider">Head of Government</p>
+                  <p className="text-xs text-slate-500 uppercase tracking-wider">{t('headOfGovernment')}</p>
                   <p className="text-slate-300">{headOfGovt.trim() || '—'}</p>
                 </div>
               </div>
@@ -162,12 +164,12 @@ export function GovernmentCreatePage() {
                 {isValid ? (
                   <>
                     <CheckCircle2 size={12} className="text-emerald-400" />
-                    <span className="text-emerald-400">Ready to form</span>
+                    <span className="text-emerald-400">{t('readyToForm')}</span>
                   </>
                 ) : (
                   <>
                     <AlertCircle size={12} className="text-amber-400" />
-                    <span>Complete required fields</span>
+                    <span>{t('completeRequiredFields')}</span>
                   </>
                 )}
               </div>
@@ -177,20 +179,20 @@ export function GovernmentCreatePage() {
           <div className="mt-4">
             <Card>
               <h4 className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
-                Guidelines
+                {t('guidelines')}
               </h4>
               <ul className="space-y-2 text-xs text-slate-500">
                 <li className="flex items-start gap-2">
                   <span className="text-amber-500 mt-0.5">•</span>
-                  Government name should reflect the official administration title.
+                  {t('guidelineName')}
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-amber-500 mt-0.5">•</span>
-                  Formation date marks the official commencement of duties.
+                  {t('guidelineDate')}
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-amber-500 mt-0.5">•</span>
-                  Executive titles can be updated after formation.
+                  {t('guidelineUpdate')}
                 </li>
               </ul>
             </Card>

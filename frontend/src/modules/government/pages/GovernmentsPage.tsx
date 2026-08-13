@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Landmark, Plus, Crown, UserCheck, Building2, History, Users, ArrowRight } from 'lucide-react'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { Card } from '../../../components/ui/Card'
@@ -8,6 +9,8 @@ import { governmentService } from '../../../services/governmentService'
 import { RequirePermission } from '../../../components/permissions/RequirePermission'
 
 export function GovernmentsPage() {
+  const { t } = useTranslation(['government', 'common'])
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['governments'],
     queryFn: governmentService.listGovernments,
@@ -17,40 +20,40 @@ export function GovernmentsPage() {
   const pastGovs = data?.filter((g) => g.status !== 'active') ?? []
   const totalCabinetMembers = data?.reduce((acc, g) => acc + (g.cabinet_members?.length ?? 0), 0) ?? 0
 
-  if (isLoading) return <p className="text-slate-400">Loading governments…</p>
-  if (error) return <p className="text-red-400">Could not load governments.</p>
+  if (isLoading) return <p className="text-slate-400">{t('loading')}</p>
+  if (error) return <p className="text-red-400">{t('couldNotLoad', { resource: t('title') })}</p>
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <PageHeader title="Government" subtitle="Cabinet formation and administration" />
+        <PageHeader title={t('title')} subtitle={t('subtitle')} />
         <RequirePermission perm="government.manage">
           <Link
             to="/governments/new"
             className="flex items-center gap-2 bg-indigo-500 text-white font-semibold rounded-lg px-4 py-2 text-sm hover:bg-indigo-400 transition-colors h-fit"
           >
             <Plus size={16} />
-            Form government
+            {t('formGovernment')}
           </Link>
         </RequirePermission>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard
-          label="Total governments"
+          label={t('totalGovernments')}
           value={String(data?.length ?? 0)}
         />
         <StatCard
-          label="Active government"
-          value={activeGov?.name ?? 'None'}
-          caption={activeGov ? `Since ${activeGov.formed_date}` : 'No active government'}
+          label={t('activeGovernment')}
+          value={activeGov?.name ?? t('unknown')}
+          caption={activeGov ? t('sinceDate', { date: activeGov.formed_date }) : t('noActiveGovernment')}
         />
         <StatCard
-          label="Past governments"
+          label={t('pastGovernments')}
           value={String(pastGovs.length)}
         />
         <StatCard
-          label="Total cabinet members"
+          label={t('totalCabinetMembers')}
           value={String(totalCabinetMembers)}
         />
       </div>
@@ -66,30 +69,30 @@ export function GovernmentsPage() {
                 <div className="flex items-center gap-2 mb-1">
                   <p className="font-semibold text-slate-100 text-lg">{activeGov.name}</p>
                   <span className="text-[10px] uppercase tracking-wider font-medium bg-indigo-500/20 text-indigo-400 px-2.5 py-1 rounded-full">
-                    Active
+                    {t('activeTag')}
                   </span>
                 </div>
-                <p className="text-xs text-slate-500">Formed {activeGov.formed_date}</p>
+                <p className="text-xs text-slate-500">{t('formedOn', { date: activeGov.formed_date })}</p>
                 <div className="flex flex-wrap gap-4 mt-3">
                   {activeGov.head_of_state_name && (
                     <div className="flex items-center gap-1.5 text-xs text-slate-400 bg-slate-900/60 px-2.5 py-1.5 rounded-lg border border-slate-800">
                       <Crown size={12} className="text-amber-400" />
-                      <span className="text-slate-500">Head of State:</span>
+                      <span className="text-slate-500">{t('headOfState')}:</span>
                       <span className="text-slate-200">{activeGov.head_of_state_name}</span>
                     </div>
                   )}
                   {activeGov.head_of_government_name && (
                     <div className="flex items-center gap-1.5 text-xs text-slate-400 bg-slate-900/60 px-2.5 py-1.5 rounded-lg border border-slate-800">
                       <UserCheck size={12} className="text-indigo-400" />
-                      <span className="text-slate-500">Head of Govt:</span>
+                      <span className="text-slate-500">{t('headOfGovernment')}:</span>
                       <span className="text-slate-200">{activeGov.head_of_government_name}</span>
                     </div>
                   )}
                   {activeGov.cabinet_members && (
                     <div className="flex items-center gap-1.5 text-xs text-slate-400 bg-slate-900/60 px-2.5 py-1.5 rounded-lg border border-slate-800">
                       <Users size={12} className="text-emerald-400" />
-                      <span className="text-slate-500">Cabinet:</span>
-                      <span className="text-slate-200">{activeGov.cabinet_members.length} members</span>
+                      <span className="text-slate-500">{t('cabinet')}:</span>
+                      <span className="text-slate-200">{activeGov.cabinet_members.length} {t('members')}</span>
                     </div>
                   )}
                 </div>
@@ -103,13 +106,13 @@ export function GovernmentsPage() {
       <Card>
         <h3 className="text-sm font-medium text-slate-300 mb-4 flex items-center gap-2">
           <History size={16} className="text-slate-500" />
-          Government history
+          {t('governmentHistory')}
         </h3>
 
         {pastGovs.length === 0 ? (
           <div className="text-center py-8 border border-dashed border-slate-800 rounded-lg">
             <Building2 size={24} className="text-slate-700 mx-auto mb-2" />
-            <p className="text-sm text-slate-500">No historical governments on record.</p>
+            <p className="text-sm text-slate-500">{t('noHistoricalGovernments')}</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -130,11 +133,11 @@ export function GovernmentsPage() {
                             ? 'bg-amber-500/10 text-amber-400'
                             : 'bg-slate-800 text-slate-400'
                         }`}>
-                          {gov.status.replace('_', ' ')}
+                          {t(`statuses.${gov.status}`, { defaultValue: gov.status.replace('_', ' ') })}
                         </span>
                       </div>
                       <div className="flex items-center gap-3 mt-1">
-                        <span className="text-xs text-slate-500">Formed {gov.formed_date}</span>
+                        <span className="text-xs text-slate-500">{t('formedOn', { date: gov.formed_date })}</span>
                         {gov.head_of_state_name && (
                           <span className="text-xs text-slate-600 flex items-center gap-1">
                             <Crown size={10} /> {gov.head_of_state_name}

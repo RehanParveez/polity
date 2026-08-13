@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Globe, MapPin, Landmark, Building2, ChevronRight,
   BarChart3,
@@ -21,6 +22,7 @@ const TYPE_COLORS: Record<string, string> = {
 }
 
 export function ProvincesPage() {
+  const { t } = useTranslation(['geography', 'common'])
   const { data, isLoading, error } = useQuery({
     queryKey: ['provinces'],
     queryFn: geographyService.listProvinces,
@@ -36,31 +38,31 @@ export function ProvincesPage() {
     [data]
   )
 
-  if (isLoading) return <p className="text-slate-400">Loading geography data…</p>
-  if (error) return <p className="text-red-400">Could not load provinces.</p>
+  if (isLoading) return <p className="text-slate-400">{t('loading')}</p>
+  if (error) return <p className="text-red-400">{t('couldNotLoad', { resource: t('title') })}</p>
 
   return (
     <div>
       <PageHeader
-        title="Geography"
-        subtitle={`${totalUnits.toLocaleString()} administrative units · National territorial overview`}
+        title={t('title')}
+        subtitle={`${totalUnits.toLocaleString()} ${t('administrativeUnits')} · ${t('nationalTerritorialOverview')}`}
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard
-          label="Total units"
+          label={t('totalUnits')}
           value={totalUnits.toLocaleString()}
         />
         <StatCard
-          label="Provinces"
+          label={t('provinces')}
           value={provinceCount.toString()}
         />
         <StatCard
-          label="Territories"
+          label={t('territories')}
           value={territoryCount.toString()}
         />
         <StatCard
-          label="Regions"
+          label={t('regions')}
           value={totalUnits.toLocaleString()}
         />
       </div>
@@ -69,7 +71,7 @@ export function ProvincesPage() {
         <div className="lg:col-span-2">
           <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
             <Globe size={16} className="text-slate-500" />
-            Administrative units
+            {t('administrativeUnits')}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {data?.map((province: any) => {
@@ -89,7 +91,7 @@ export function ProvincesPage() {
                         </p>
                         <div className="flex items-center gap-2 mt-1">
                           <span className={`text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 rounded-full border ${typeStyle}`}>
-                            {province.unit_type}
+                            {t(province.unit_type, { defaultValue: province.unit_type })}
                           </span>
                           <span className="text-xs text-slate-500 font-mono">{province.code}</span>
                         </div>
@@ -106,7 +108,7 @@ export function ProvincesPage() {
         <div>
           <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
             <BarChart3 size={16} className="text-slate-500" />
-            Unit composition
+            {t('unitComposition')}
           </h3>
           <Card>
             <div className="space-y-4">
@@ -114,7 +116,7 @@ export function ProvincesPage() {
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-slate-400 flex items-center gap-2">
                     <Landmark size={14} className="text-cyan-500" />
-                    Provinces
+                    {t('provinces')}
                   </span>
                   <span className="text-slate-200 font-medium">{provinceCount}</span>
                 </div>
@@ -129,7 +131,7 @@ export function ProvincesPage() {
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-slate-400 flex items-center gap-2">
                     <Building2 size={14} className="text-sky-500" />
-                    Territories
+                    {t('territories')}
                   </span>
                   <span className="text-slate-200 font-medium">{territoryCount}</span>
                 </div>
@@ -143,7 +145,7 @@ export function ProvincesPage() {
             </div>
             <div className="mt-4 pt-4 border-t border-slate-800">
               <p className="text-xs text-slate-500">
-                {provinceCount} provinces and {territoryCount} territories constitute the national administrative structure.
+                {t('unitCompositionDescription', { provinceCount, territoryCount })}
               </p>
             </div>
           </Card>

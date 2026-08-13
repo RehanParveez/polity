@@ -9,14 +9,14 @@ import { StatCard } from '../../../components/ui/StatCard'
 import { electionsService } from '../../../services/electionsService'
 
 export function ElectionsPage() {
-  const { t } = useTranslation('elections')
+  const { t } = useTranslation(['elections', 'common'])
   const { data, isLoading, error } = useQuery({
     queryKey: ['elections'],
     queryFn: electionsService.listElections,
   })
 
-  if (isLoading) return <p className="text-slate-400">{t('common:loading', { ns: 'common' })}</p>
-  if (error) return <p className="text-red-400">{t('common:couldNotLoad', { ns: 'common', resource: t('title') })}</p>
+  if (isLoading) return <p className="text-slate-400">{t('loading')}</p>
+  if (error) return <p className="text-red-400">{t('couldNotLoad', { resource: t('title') })}</p>
 
   const now = new Date()
   const totalElections = data?.length ?? 0
@@ -42,17 +42,17 @@ export function ElectionsPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <StatCard label="Total elections" value={String(totalElections)} />
+        <StatCard label={t('totalElections')} value={String(totalElections)} />
         <StatCard
-          label="Upcoming"
+          label={t('upcoming')}
           value={String(upcomingElections.length)}
-          trend={{ value: `${pastElections.length} concluded`, direction: 'up' }}
+          trend={{ value: `${pastElections.length} ${t('concluded')}`, direction: 'up' }}
         />
-        <StatCard label="Scheduled" value={String(scheduledCount)} />
+        <StatCard label={t('scheduled')} value={String(scheduledCount)} />
         <StatCard
-          label="Completed"
+          label={t('statuses.completed', { ns: 'common' })}
           value={String(completedCount)}
-          trend={{ value: `${totalElections - completedCount} pending`, direction: 'up' }}
+          trend={{ value: `${totalElections - completedCount} ${t('statuses.pending', { ns: 'common' })}`, direction: 'up' }}
         />
       </div>
 
@@ -67,7 +67,7 @@ export function ElectionsPage() {
                 <div className="flex items-center gap-2 mb-1">
                   <p className="font-semibold text-slate-100 text-lg">{nextElection.name}</p>
                   <span className="text-[10px] uppercase tracking-wider font-medium bg-violet-500/20 text-violet-400 px-2.5 py-1 rounded-full">
-                    Next election
+                    {t('nextElection')}
                   </span>
                 </div>
                 <p className="text-xs text-slate-500">
@@ -81,18 +81,18 @@ export function ElectionsPage() {
                 <div className="flex flex-wrap gap-3 mt-3">
                   <div className="flex items-center gap-1.5 text-xs text-slate-400 bg-slate-900/60 px-2.5 py-1.5 rounded-lg border border-slate-800">
                     <Calendar size={12} className="text-violet-400" />
-                    <span className="text-slate-500">Date:</span>
+                    <span className="text-slate-500">{t('date')}:</span>
                     <span className="text-slate-200">{nextElection.election_date}</span>
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-slate-400 bg-slate-900/60 px-2.5 py-1.5 rounded-lg border border-slate-800">
                     <BarChart3 size={12} className="text-blue-400" />
-                    <span className="text-slate-500">System:</span>
+                    <span className="text-slate-500">{t('system')}:</span>
                     <span className="text-slate-200">{nextElection.system}</span>
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-slate-400 bg-slate-900/60 px-2.5 py-1.5 rounded-lg border border-slate-800">
                     <Clock size={12} className="text-amber-400" />
-                    <span className="text-slate-500">Status:</span>
-                    <span className="text-slate-200 capitalize">{nextElection.status.replace('_', ' ')}</span>
+                    <span className="text-slate-500">{t('status')}:</span>
+                    <span className="text-slate-200 capitalize">{t(`statuses.${nextElection.status}`, { defaultValue: nextElection.status.replace('_', ' ') })}</span>
                   </div>
                 </div>
               </div>
@@ -105,13 +105,13 @@ export function ElectionsPage() {
       <Card>
         <h3 className="text-sm font-medium text-slate-300 mb-4 flex items-center gap-2">
           <TrendingUp size={16} className="text-slate-500" />
-          All elections
+          {t('allElections')}
         </h3>
 
         {data?.length === 0 ? (
           <div className="text-center py-8 border border-dashed border-slate-800 rounded-lg">
             <Vote size={24} className="text-slate-700 mx-auto mb-2" />
-            <p className="text-sm text-slate-500">No elections on record.</p>
+            <p className="text-sm text-slate-500">{t('noElectionsOnRecord')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -164,18 +164,18 @@ export function ElectionsPage() {
                         {election.status === 'completed' && <CheckCircle2 size={10} />}
                         {election.status === 'active' && <BarChart3 size={10} />}
                         {election.status === 'scheduled' && <Clock size={10} />}
-                        {election.status.replace('_', ' ')}
+                        {t(`statuses.${election.status}`, { defaultValue: election.status.replace('_', ' ') })}
                       </span>
                       <span className="text-[10px] text-slate-600 flex items-center gap-1">
                         {isPast ? (
                           <>
                             <CheckCircle2 size={10} />
-                            {daysDiff} day{daysDiff !== 1 ? 's' : ''} ago
+                            {t('daysAgo', { count: daysDiff })}
                           </>
                         ) : (
                           <>
                             <Clock size={10} />
-                            {daysDiff} day{daysDiff !== 1 ? 's' : ''} left
+                            {t('daysLeft', { count: daysDiff })}
                           </>
                         )}
                       </span>

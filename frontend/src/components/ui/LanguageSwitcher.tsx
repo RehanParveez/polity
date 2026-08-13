@@ -11,7 +11,6 @@ export function LanguageSwitcher() {
 
   return (
     <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-lg p-1">
-      <Languages size={14} className="text-slate-500 ms-1.5" />
       {LANGUAGES.map((lang) => (
         <button
           key={lang.code}

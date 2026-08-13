@@ -10,7 +10,7 @@ import { Button } from '../../../components/ui/Button'
 import { electionsService } from '../../../services/electionsService'
 
 export function ElectionCreatePage() {
-  const { t } = useTranslation('elections')
+  const { t } = useTranslation(['elections', 'common'])
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [electionDate, setElectionDate] = useState('')
@@ -47,7 +47,7 @@ export function ElectionCreatePage() {
         <div className="mb-6 bg-red-500/5 border border-red-500/20 rounded-xl p-4 flex items-center gap-3">
           <AlertCircle size={20} className="text-red-400 shrink-0" />
           <div>
-            <p className="text-sm font-medium text-red-400">Failed to create election</p>
+            <p className="text-sm font-medium text-red-400">{t('failedToCreate')}</p>
             <p className="text-xs text-slate-500">{error}</p>
           </div>
         </div>
@@ -61,8 +61,8 @@ export function ElectionCreatePage() {
                 <Vote size={20} className="text-violet-400" />
               </div>
               <div>
-                <h3 className="text-sm font-medium text-slate-100">Election details</h3>
-                <p className="text-xs text-slate-500">Configure the new election parameters</p>
+                <h3 className="text-sm font-medium text-slate-100">{t('electionDetails')}</h3>
+                <p className="text-xs text-slate-500">{t('configureParameters')}</p>
               </div>
             </div>
 
@@ -107,7 +107,7 @@ export function ElectionCreatePage() {
           <Card>
             <h3 className="text-sm font-medium text-slate-300 mb-4 flex items-center gap-2">
               <Info size={16} className="text-violet-400" />
-              Preview
+              {t('preview')}
             </h3>
 
             <div className="space-y-4">
@@ -116,7 +116,7 @@ export function ElectionCreatePage() {
                   <Flag size={20} className="text-slate-600" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs text-slate-500">Election name</p>
+                  <p className="text-xs text-slate-500">{t('electionName')}</p>
                   <p className="text-sm font-medium text-slate-100 truncate">
                     {name.trim() || '—'}
                   </p>
@@ -128,7 +128,7 @@ export function ElectionCreatePage() {
                   <Calendar size={20} className="text-slate-600" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs text-slate-500">Election date</p>
+                  <p className="text-xs text-slate-500">{t('electionDate')}</p>
                   <p className="text-sm font-medium text-slate-100">
                     {electionDate
                       ? new Date(electionDate).toLocaleDateString(undefined, {
@@ -148,11 +148,11 @@ export function ElectionCreatePage() {
                     <Clock size={20} className={daysUntil >= 0 ? 'text-violet-400' : 'text-red-400'} />
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500">Time until election</p>
+                    <p className="text-xs text-slate-500">{t('timeUntilElection')}</p>
                     <p className={`text-sm font-medium ${daysUntil >= 0 ? 'text-violet-300' : 'text-red-400'}`}>
                       {daysUntil >= 0
-                        ? `${daysUntil} day${daysUntil !== 1 ? 's' : ''} remaining`
-                        : 'Date is in the past'}
+                        ? t('daysLeft', { count: daysUntil })
+                        : t('dateIsInThePast')}
                     </p>
                   </div>
                 </div>
@@ -166,7 +166,7 @@ export function ElectionCreatePage() {
                   : 'bg-slate-800 text-slate-500'
               }`}>
                 {isFormValid ? <CheckCircle2 size={12} /> : <Info size={12} />}
-                {isFormValid ? 'Ready to create' : 'Fill in all fields'}
+                {isFormValid ? t('readyToCreate') : t('fillInAllFields')}
               </div>
             </div>
           </Card>
@@ -174,7 +174,7 @@ export function ElectionCreatePage() {
           <Card>
             <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
               <Users size={16} className="text-slate-500" />
-              What's next?
+              {t('whatsNext')}
             </h3>
             <div className="space-y-3">
               <div className="flex gap-3">
@@ -182,7 +182,7 @@ export function ElectionCreatePage() {
                   <span className="text-[10px] font-bold text-violet-400">1</span>
                 </div>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  Create the election with a name and scheduled date.
+                  {t('step1')}
                 </p>
               </div>
               <div className="flex gap-3">
@@ -190,7 +190,7 @@ export function ElectionCreatePage() {
                   <span className="text-[10px] font-bold text-slate-500">2</span>
                 </div>
                 <p className="text-xs text-slate-500 leading-relaxed">
-                  Add constituencies and candidate nominations.
+                  {t('step2')}
                 </p>
               </div>
               <div className="flex gap-3">
@@ -198,7 +198,7 @@ export function ElectionCreatePage() {
                   <span className="text-[10px] font-bold text-slate-500">3</span>
                 </div>
                 <p className="text-xs text-slate-500 leading-relaxed">
-                  Publish results after the election concludes.
+                  {t('step3')}
                 </p>
               </div>
             </div>

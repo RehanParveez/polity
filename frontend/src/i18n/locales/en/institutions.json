@@ -7,5 +7,20 @@
   "noMembers": "No members assigned yet.",
   "orgChart": "Organization chart",
   "ministry": "Ministry",
-  "code": "Code"
+  "code": "Code",
+  "institutionsSubtitle": "{{count}} ministries and departments · National government structure",
+  "totalMinistries": "Total ministries",
+  "activePortfolios": "Active portfolios",
+  "sectorsCovered": "Sectors covered",
+  "ministryDirectory": "Ministry directory",
+  "portfolioBreakdown": "Portfolio breakdown",
+  "ministriesManagingSectors": "{{totalMinistries}} ministries managing national portfolios across {{sectorCount}} sectors.",
+  "personnel": "Personnel",
+  "totalPersonnel": "Total personnel",
+  "avgPerDepartment": "Avg per department",
+  "ministryCode": "Ministry code",
+  "staffDistributionByDepartment": "Staff distribution by department",
+  "organizationalStructure": "Organizational structure",
+  "member": "member",
+  "ministrySubtitle": "{{departments}} departments · {{members}} personnel · {{code}}"
 }

@@ -7,5 +7,20 @@
   "noMembers": "ابھی تک کوئی اراکین تفویض نہیں کیے گئے۔",
   "orgChart": "تنظیمی چارٹ",
   "ministry": "وزارت",
-  "code": "کوڈ"
+  "code": "کوڈ",
+  "institutionsSubtitle": "{{count}} وزارتیں اور محکمے · قومی حکومت کی ساخت",
+  "totalMinistries": "کل وزارتیں",
+  "activePortfolios": "فعال پورٹ فولیوز",
+  "sectorsCovered": "شعبے",
+  "ministryDirectory": "وزارتوں کی فہرست",
+  "portfolioBreakdown": "پورٹ فولیو تقسیم",
+  "ministriesManagingSectors": "{{totalMinistries}} وزارتیں {{sectorCount}} شعبوں میں قومی پورٹ فولیوز کا انتظام کر رہی ہیں۔",
+  "personnel": "اہلکار",
+  "totalPersonnel": "کل اہلکار",
+  "avgPerDepartment": "فی محکمہ اوسط",
+  "ministryCode": "وزارت کوڈ",
+  "staffDistributionByDepartment": "محکمہ وار عملہ تقسیم",
+  "organizationalStructure": "تنظیمی ساخت",
+  "member": "رکن",
+  "ministrySubtitle": "{{departments}} محکمے · {{members}} اہلکار · {{code}}"
 }

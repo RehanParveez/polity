@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import {Landmark, GraduationCap, HeartPulse, Wheat, Construction, Briefcase, Shield, Building2, ArrowUpRight, LayoutGrid, type LucideIcon,
 } from 'lucide-react'
 import { PageHeader } from '../../../components/ui/PageHeader'
@@ -29,6 +30,7 @@ const CODE_COLORS: Record<string, string> = {
 }
 
 export function MinistriesPage() {
+  const { t } = useTranslation(['institutions', 'common'])
   const { data, isLoading, error } = useQuery({
     queryKey: ['ministries'],
     queryFn: institutionsService.listMinistries,
@@ -45,31 +47,31 @@ export function MinistriesPage() {
     return Array.from(map.entries()).map(([code, count]) => ({ code, count }))
   }, [data])
 
-  if (isLoading) return <p className="text-slate-400">Loading institutions…</p>
-  if (error) return <p className="text-red-400">Could not load ministries.</p>
+  if (isLoading) return <p className="text-slate-400">{t('loading')}</p>
+  if (error) return <p className="text-red-400">{t('couldNotLoad', { resource: t('ministries') })}</p>
 
   return (
     <div>
       <PageHeader
-        title="Institutions"
-        subtitle={`${totalMinistries.toLocaleString()} ministries and departments · National government structure`}
+        title={t('title')}
+        subtitle={t('institutionsSubtitle', { count: totalMinistries.toLocaleString() })}
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard
-          label="Total ministries"
+          label={t('totalMinistries')}
           value={totalMinistries.toLocaleString()}
         />
         <StatCard
-          label="Departments"
+          label={t('departments')}
           value={totalMinistries.toLocaleString()}
         />
         <StatCard
-          label="Active portfolios"
+          label={t('activePortfolios')}
           value={totalMinistries.toString()}
         />
         <StatCard
-          label="Sectors covered"
+          label={t('sectorsCovered')}
           value={codeBreakdown.length.toString()}
         />
       </div>
@@ -78,7 +80,7 @@ export function MinistriesPage() {
         <div className="lg:col-span-2">
           <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
             <LayoutGrid size={16} className="text-slate-500" />
-            Ministry directory
+            {t('ministryDirectory')}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {data?.map((ministry: any) => {
@@ -114,7 +116,7 @@ export function MinistriesPage() {
         <div>
           <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
             <Building2 size={16} className="text-slate-500" />
-            Portfolio breakdown
+            {t('portfolioBreakdown')}
           </h3>
           <Card>
             <div className="space-y-3">
@@ -142,7 +144,7 @@ export function MinistriesPage() {
             </div>
             <div className="mt-4 pt-4 border-t border-slate-800">
               <p className="text-xs text-slate-500">
-                {totalMinistries} ministries managing national portfolios across {codeBreakdown.length} sectors.
+                {t('ministriesManagingSectors', { totalMinistries, sectorCount: codeBreakdown.length })}
               </p>
             </div>
           </Card>

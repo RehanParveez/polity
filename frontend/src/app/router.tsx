@@ -31,6 +31,9 @@ import { AgriculturePage } from '../modules/sectors/pages/AgriculturePage'
 import { InfrastructurePage } from '../modules/sectors/pages/InfrastructurePage'
 import { LaborPage } from '../modules/sectors/pages/LaborPage'
 import { DefensePage } from '../modules/sectors/pages/DefensePage'
+import { PoliciesPage } from '../modules/policies/pages/PoliciesPage'
+import { PolicyCreatePage } from '../modules/policies/pages/PolicyCreatePage'
+import { PolicyDetailPage } from '../modules/policies/pages/PolicyDetailPage'
 
 function ProtectedRoute({ children }: { children: ReactElement }) {
   const accessToken = useAuthStore((s) => s.accessToken)
@@ -79,6 +82,9 @@ export const router = createBrowserRouter([
       { path: '/sectors/infrastructure', element: <InfrastructurePage /> },
       { path: '/sectors/labor', element: <LaborPage /> },
       { path: '/sectors/defense', element: <DefensePage /> },
+      { path: '/policies', element: <PoliciesPage /> },
+      { path: '/policies/new', element: <PolicyCreatePage /> },
+      { path: '/policies/:policyId', element: <PolicyDetailPage /> },
     ],
   },
 ])

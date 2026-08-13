@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell,
@@ -17,6 +18,7 @@ import { geographyService } from '../../../services/geographyService'
 const DEMO_COLORS = ['#06b6d4', '#0ea5e9', '#14b8a6', '#8b5cf6']
 
 export function DistrictDetailPage() {
+  const { t, i18n } = useTranslation(['geography', 'common'])
   const { districtId } = useParams<{ districtId: string }>()
   const { data, isLoading, error } = useQuery({
     queryKey: ['district', districtId],
@@ -33,57 +35,57 @@ export function DistrictDetailPage() {
     if (!data?.demographic_profile) return []
     const urban = Number(data.demographic_profile.urban_pct)
     return [
-      { name: 'Urban', value: urban },
-      { name: 'Rural', value: 100 - urban },
+      { name: t('urban'), value: urban },
+      { name: t('rural'), value: 100 - urban },
     ]
-  }, [data])
+  }, [data, i18n.language])
 
   const literacyData = useMemo(() => {
     if (!data?.demographic_profile) return []
     const lit = Number(data.demographic_profile.literacy_rate_pct)
     return [
-      { name: 'Literate', value: lit },
-      { name: 'Non-literate', value: 100 - lit },
+      { name: t('literate'), value: lit },
+      { name: t('nonLiterate'), value: 100 - lit },
     ]
-  }, [data])
+  }, [data, i18n.language])
 
   const populationBreakdown = useMemo(() => {
     if (!data?.demographic_profile) return []
     const pop = Number(data.demographic_profile.population)
     const urban = Math.round(pop * (Number(data.demographic_profile.urban_pct) / 100))
     return [
-      { name: 'Urban residents', value: urban },
-      { name: 'Rural residents', value: pop - urban },
+      { name: t('urbanResidents'), value: urban },
+      { name: t('ruralResidents'), value: pop - urban },
     ]
-  }, [data])
+  }, [data, i18n.language])
 
-  if (isLoading) return <p className="text-slate-400">Loading district profile…</p>
-  if (error || !data) return <p className="text-red-400">Could not load district.</p>
+  if (isLoading) return <p className="text-slate-400">{t('loading')}</p>
+  if (error || !data) return <p className="text-red-400">{t('couldNotLoad', { resource: t('district') })}</p>
 
   return (
     <div>
       <PageHeader
         title={data.name}
-        subtitle={`${data.tehsils.length} tehsils · Regional demographic profile`}
+        subtitle={`${data.tehsils.length} ${t('tehsils')} · ${t('regionalDemographicProfile')}`}
       />
 
       {data.demographic_profile ? (
         <>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <StatCard
-              label="Total population"
+              label={t('totalPopulation')}
               value={data.demographic_profile.population.toLocaleString()}
             />
             <StatCard
-              label="Literacy rate"
+              label={t('literacyRate')}
               value={`${data.demographic_profile.literacy_rate_pct}%`}
             />
             <StatCard
-              label="Urban share"
+              label={t('urbanShare')}
               value={`${data.demographic_profile.urban_pct}%`}
             />
             <StatCard
-              label="Rural share"
+              label={t('ruralShare')}
               value={`${ruralPct.toFixed(1)}%`}
             />
           </div>
@@ -92,7 +94,7 @@ export function DistrictDetailPage() {
             <Card className="lg:col-span-2">
               <h3 className="text-sm font-medium text-slate-300 mb-4 flex items-center gap-2">
                 <Users size={16} className="text-slate-500" />
-                Population composition
+                {t('populationComposition')}
               </h3>
               <ResponsiveContainer width="100%" height={220}>
                 <BarChart data={populationBreakdown} barGap={8}>
@@ -116,7 +118,7 @@ export function DistrictDetailPage() {
                     }}
                     formatter={(value: any) => {
                       const num = typeof value === 'number' ? value : Number(value)
-                      return [num.toLocaleString(), 'Residents']
+                      return [num.toLocaleString(), t('residents')]
                     }}
                   />
                   <Bar dataKey="value" fill="#06b6d4" radius={[4, 4, 0, 0]} />
@@ -128,7 +130,7 @@ export function DistrictDetailPage() {
               <Card>
                 <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
                   <Building2 size={16} className="text-slate-500" />
-                  Urban / Rural split
+                  {t('urbanRuralSplit')}
                 </h3>
                 <ResponsiveContainer width="100%" height={140}>
                   <PieChart>
@@ -168,7 +170,7 @@ export function DistrictDetailPage() {
               <Card>
                 <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
                   <BookOpen size={16} className="text-slate-500" />
-                  Literacy breakdown
+                  {t('literacyBreakdown')}
                 </h3>
                 <div className="space-y-3">
                   {literacyData.map((item, i) => (
@@ -194,40 +196,39 @@ export function DistrictDetailPage() {
           </div>
 
           <p className="text-xs text-slate-600 mb-6">
-            Source: {data.demographic_profile.source} · as of {data.demographic_profile.as_of_date} · confidence:{' '}
-            {data.demographic_profile.confidence}
+            {t('sourceInfo', { source: data.demographic_profile.source, date: data.demographic_profile.as_of_date, confidence: data.demographic_profile.confidence })}
           </p>
         </>
       ) : (
         <Card className="mb-6 border-dashed border-slate-700">
           <div className="flex items-center gap-3 py-4">
             <MapPin size={20} className="text-slate-600" />
-            <p className="text-sm text-slate-500">No demographic profile on record for this district yet.</p>
+            <p className="text-sm text-slate-500">{t('noProfile')}</p>
           </div>
         </Card>
       )}
 
       <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center gap-2">
         <Layers size={16} className="text-slate-500" />
-        Administrative subdivisions
-        <span className="text-xs text-slate-500">({data.tehsils.length} tehsils)</span>
+        {t('administrativeSubdivisions')}
+        <span className="text-xs text-slate-500">({data.tehsils.length} {t('tehsils')})</span>
       </h3>
 
       {data.tehsils.length === 0 ? (
         <Card>
-          <p className="text-sm text-slate-500 py-2">No tehsils on record yet.</p>
+          <p className="text-sm text-slate-500 py-2">{t('noneOnRecord')}</p>
         </Card>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {data.tehsils.map((t) => (
-            <Card key={t.id} className="group hover:border-cyan-900/50 transition-all">
+          {data.tehsils.map((tehsil) => (
+            <Card key={tehsil.id} className="group hover:border-cyan-900/50 transition-all">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-lg bg-cyan-500/10 flex items-center justify-center shrink-0">
                   <Mountain size={20} className="text-cyan-500" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-100 truncate">{t.name}</p>
-                  <p className="text-xs text-slate-500">Tehsil · {data.name}</p>
+                  <p className="text-sm font-medium text-slate-100 truncate">{tehsil.name}</p>
+                  <p className="text-xs text-slate-500">{t('tehsil')} · {data.name}</p>
                 </div>
                 <ChevronRight size={16} className="text-slate-600 group-hover:text-cyan-500 transition-colors shrink-0" />
               </div>

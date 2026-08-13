@@ -16,7 +16,7 @@ const PARTY_COLORS = [
 ]
 
 export function ElectionResultsPage() {
-  const { t } = useTranslation('elections')
+  const { t } = useTranslation(['elections', 'common'])
   const { electionId } = useParams<{ electionId: string }>()
   const electionQuery = useQuery({
     queryKey: ['election', electionId],
@@ -29,7 +29,7 @@ export function ElectionResultsPage() {
     enabled: !!electionId,
   })
 
-  if (electionQuery.isLoading) return <p className="text-slate-400">{t('common:loading', { ns: 'common' })}</p>
+  if (electionQuery.isLoading) return <p className="text-slate-400">{t('loading')}</p>
   if (electionQuery.error || !electionQuery.data) return <p className="text-red-400">{t('loadError')}</p>
 
   const election = electionQuery.data
@@ -41,13 +41,11 @@ export function ElectionResultsPage() {
   const partyCount = results?.seats_by_party?.length ?? 0
   const leadingParty = results?.seats_by_party?.[0]
 
-  const statusLabel = election.status.replace('_', ' ')
-
   return (
     <div>
       <PageHeader
         title={election.name}
-        subtitle={`${election.election_date} · ${statusLabel}`}
+        subtitle={`${election.election_date} · ${t(`statuses.${election.status}`, { defaultValue: election.status.replace('_', ' ') })}`}
       />
 
       {!results || totalSeats === 0 ? (
@@ -55,30 +53,30 @@ export function ElectionResultsPage() {
           <div className="text-center py-10">
             <Vote size={32} className="text-slate-700 mx-auto mb-3" />
             <p className="text-sm font-medium text-slate-300">{t('noResults')}</p>
-            <p className="text-xs text-slate-500 mt-1">Results will appear once constituencies begin reporting.</p>
+            <p className="text-xs text-slate-500 mt-1">{t('willAppearOnce')}</p>
           </div>
         </Card>
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <StatCard
-              label="Total seats"
+              label={t('totalSeats')}
               value={String(totalSeats)}
-              trend={{ value: `${partyCount} parties`, direction: 'up' }}
+              trend={{ value: `${partyCount} ${t('parties')}`, direction: 'up' }}
             />
             <StatCard
-              label="Total votes cast"
+              label={t('totalVotesCast')}
               value={totalVotes.toLocaleString()}
             />
             <StatCard
-              label="Leading party"
+              label={t('leadingParty')}
               value={leadingParty?.party_name ?? '—'}
-              trend={{ value: leadingParty ? `${leadingParty.seats} seats` : '—', direction: 'up' }}
+              trend={{ value: leadingParty ? `${leadingParty.seats} ${t('seats')}` : '—', direction: 'up' }}
             />
             <StatCard
-              label="Constituencies"
+              label={t('constituencies')}
               value={String(results.constituency_results.length)}
-              trend={{ value: `${results.constituency_results.filter((r) => r.winner_candidate_name).length} declared`, direction: 'up' }}
+              trend={{ value: `${results.constituency_results.filter((r) => r.winner_candidate_name).length} ${t('declared')}`, direction: 'up' }}
             />
           </div>
 
@@ -104,7 +102,7 @@ export function ElectionResultsPage() {
                     labelStyle={{ color: '#e2e8f0' }}
                     formatter={(value: any) => {
                       const num = typeof value === 'number' ? value : Number(value) || 0
-                      return [`${num} seat${num !== 1 ? 's' : ''}`, '']
+                      return [`${num} ${num === 1 ? t('seat') : t('seats')}`, '']
                     }}
                    />
                   <Bar dataKey="seats" radius={[0, 4, 4, 0]}>
@@ -130,7 +128,7 @@ export function ElectionResultsPage() {
             <Card>
               <h3 className="text-sm font-medium text-slate-300 mb-4 flex items-center gap-2">
                 <Trophy size={16} className="text-violet-400" />
-                Results overview
+                {t('resultsOverview')}
               </h3>
               <div className="space-y-4">
                 {results.seats_by_party.slice(0, 5).map((party, i) => {
@@ -156,22 +154,22 @@ export function ElectionResultsPage() {
                           }}
                         />
                       </div>
-                      <p className="text-[10px] text-slate-600 mt-0.5">{pct.toFixed(1)}% of seats</p>
+                      <p className="text-[10px] text-slate-600 mt-0.5">{t('ofSeats', { pct: pct.toFixed(1) })}</p>
                     </div>
                   )
                 })}
 
                 <div className="pt-4 border-t border-slate-800 space-y-2.5">
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-500">Total votes</span>
+                    <span className="text-slate-500">{t('totalVotes')}</span>
                     <span className="text-slate-200 font-medium">{totalVotes.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-500">Winner votes</span>
+                    <span className="text-slate-500">{t('winnerVotes')}</span>
                     <span className="text-slate-200 font-medium">{totalWinnerVotes.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-slate-500">Parties contested</span>
+                    <span className="text-slate-500">{t('partiesContested')}</span>
                     <span className="text-slate-200 font-medium">{partyCount}</span>
                   </div>
                 </div>
@@ -185,7 +183,7 @@ export function ElectionResultsPage() {
                       : 'bg-slate-800 text-slate-400'
                   }`}>
                     {election.status === 'completed' ? <CheckCircle2 size={12} /> : <Clock size={12} />}
-                    {statusLabel}
+                    {t(`statuses.${election.status}`, { defaultValue: election.status.replace('_', ' ') })}
                   </div>
                 </div>
               </div>
@@ -201,7 +199,7 @@ export function ElectionResultsPage() {
             {results.constituency_results.length === 0 ? (
               <div className="text-center py-8 border border-dashed border-slate-800 rounded-lg">
                 <Flag size={24} className="text-slate-700 mx-auto mb-2" />
-                <p className="text-sm text-slate-500">No constituency results reported yet.</p>
+                <p className="text-sm text-slate-500">{t('noConstituencyResults')}</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -238,7 +236,7 @@ export function ElectionResultsPage() {
                           <td className="py-3 pr-4 text-right">
                             <p className="text-slate-200 font-medium">{r.winner_votes.toLocaleString()}</p>
                             <p className="text-[10px] text-slate-600">
-                              of {r.total_votes_cast.toLocaleString()}
+                              {t('ofTotal', { total: r.total_votes_cast.toLocaleString() })}
                             </p>
                           </td>
                           <td className="py-3 text-right">

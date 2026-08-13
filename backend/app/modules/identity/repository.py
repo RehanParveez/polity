@@ -27,7 +27,7 @@ async def store_refresh_token(
   await db.flush()
   return row
 
-async def get_refresh_token(db: AsyncSession, token_hash: str) -> RefreshToken | None:
+async def get_refresh_token_by_hash(db: AsyncSession, token_hash: str) -> RefreshToken | None:
   result = await db.execute(select(RefreshToken).where(RefreshToken.token_hash == token_hash))
   return result.scalar_one_or_none()
 

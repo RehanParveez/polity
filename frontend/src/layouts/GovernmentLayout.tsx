@@ -1,6 +1,6 @@
 import { Outlet, NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Home, Map, Landmark, Vote, ShieldCheck, LogOut, Building2 } from 'lucide-react'
+import { Home, Map, Landmark, Vote, ShieldCheck, LogOut, Building2, FileText } from 'lucide-react'
 import { useAuthStore } from '../app/store'
 import { RequirePermission } from '../components/permissions/RequirePermission'
 import { LanguageSwitcher } from '../components/ui/LanguageSwitcher'
@@ -15,6 +15,7 @@ const navItems = [
   { to: '/governments', labelKey: 'nav.government', icon: Building2, end: false },
   { to: '/finance', labelKey: 'nav.finance', icon: Banknote, end: false },
   { to: '/sectors', labelKey: 'Sectors', icon: Factory, end: false },
+  { to: '/policies', labelKey: 'Policies', icon: FileText, end: false },
 ]
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>

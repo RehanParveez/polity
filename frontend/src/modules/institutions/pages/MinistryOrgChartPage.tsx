@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts'
 import {ChevronDown, Users, Network, UserCircle, Building2, Mail, Shield,
@@ -11,6 +12,7 @@ import { StatCard } from '../../../components/ui/StatCard'
 import { institutionsService } from '../../../services/institutionsService'
 
 export function MinistryOrgChartPage() {
+  const { t } = useTranslation(['institutions', 'common'])
   const { ministryId } = useParams<{ ministryId: string }>()
   const [expanded, setExpanded] = useState<string | null>(null)
 
@@ -29,31 +31,31 @@ export function MinistryOrgChartPage() {
     members: d.memberships.length,
   })) ?? []
 
-  if (isLoading) return <p className="text-slate-400">Loading ministry data…</p>
-  if (error || !data) return <p className="text-red-400">Could not load ministry.</p>
+  if (isLoading) return <p className="text-slate-400">{t('loading')}</p>
+  if (error || !data) return <p className="text-red-400">{t('couldNotLoad', { resource: t('ministry') })}</p>
 
   return (
     <div>
       <PageHeader
         title={data.name}
-        subtitle={`${totalDepartments} departments · ${totalMembers} personnel · ${data.code}`}
+        subtitle={t('ministrySubtitle', { departments: totalDepartments, members: totalMembers, code: data.code })}
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatCard
-          label="Departments"
+          label={t('departments')}
           value={totalDepartments.toString()}
         />
         <StatCard
-          label="Total personnel"
+          label={t('totalPersonnel')}
           value={totalMembers.toLocaleString()}
         />
         <StatCard
-          label="Avg per department"
+          label={t('avgPerDepartment')}
           value={avgMembersPerDept.toFixed(1)}
         />
         <StatCard
-          label="Ministry code"
+          label={t('ministryCode')}
           value={data.code}
         />
       </div>
@@ -62,7 +64,7 @@ export function MinistryOrgChartPage() {
         <Card className="mb-6">
           <h3 className="text-sm font-medium text-slate-300 mb-4 flex items-center gap-2">
             <Users size={16} className="text-slate-500" />
-            Staff distribution by department
+            {t('staffDistributionByDepartment')}
           </h3>
           <ResponsiveContainer width="100%" height={Math.max(200, chartData.length * 50)}>
             <BarChart data={chartData} layout="vertical" margin={{ left: 16 }}>
@@ -83,7 +85,10 @@ export function MinistryOrgChartPage() {
                   borderRadius: 8,
                 }}
                 labelStyle={{ color: '#e2e8f0' }}
-                formatter={(value: any) => [`${value} member${value === 1 ? '' : 's'}`, '']}
+                formatter={(value: any) => {
+                  const num = typeof value === 'number' ? value : Number(value) || 0
+                  return [`${num} ${num === 1 ? t('member') : t('members')}`, '']
+                }}
               />
               <Bar dataKey="members" fill="#8b5cf6" radius={[0, 4, 4, 0]} />
             </BarChart>
@@ -93,7 +98,7 @@ export function MinistryOrgChartPage() {
 
       <h3 className="text-sm font-medium text-slate-300 mb-4 flex items-center gap-2">
         <Network size={16} className="text-slate-500" />
-        Organizational structure
+        {t('organizationalStructure')}
       </h3>
 
       <div className="flex flex-col items-center">
@@ -131,7 +136,7 @@ export function MinistryOrgChartPage() {
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-2">
                     <Users size={12} />
-                    {dept.memberships.length} member{dept.memberships.length === 1 ? '' : 's'}
+                    {dept.memberships.length} {dept.memberships.length === 1 ? t('member') : t('members')}
                   </div>
                 </Card>
               </button>
@@ -139,7 +144,7 @@ export function MinistryOrgChartPage() {
               {expanded === dept.id && (
                 <div className="mt-2 w-full space-y-1.5">
                   {dept.memberships.length === 0 ? (
-                    <p className="text-xs text-slate-600 px-1">No members assigned yet.</p>
+                    <p className="text-xs text-slate-600 px-1">{t('noMembers')}</p>
                   ) : (
                     dept.memberships.map((m: any) => (
                       <div

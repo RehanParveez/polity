@@ -17,5 +17,12 @@
   "votes": "Votes",
   "turnout": "Turnout (cast)",
   "loadingElection": "Loading election…",
-  "loadError": "Could not load election."
+  "loadError": "Could not load election.",
+  "step1": "Create the election with a name and scheduled date.",
+  "step2": "Add constituencies and candidate nominations.",
+  "step3": "Publish results after the election concludes.",
+  "constituencies": "Constituencies",
+  "declared": "declared",
+  "seat": "seat",
+  "parties": "Parties"
 }
