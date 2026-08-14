@@ -1,0 +1,139 @@
+{
+  "fallbackMessage": "AI سروس فی الحال دستیاب نہیں ہے۔ فال بیک ریسپانس دکھایا جا رہا ہے۔",
+  "confidence": {
+    "high": "اعلیٰ اعتماد",
+    "medium": "درمیانی اعتماد",
+    "low": "کم اعتماد"
+  },
+  "humanReview": "انسانی جائزہ",
+  "sections": {
+    "evidence": "شواہد",
+    "assumptions": "مفروضات",
+    "risks": "خطرات"
+  },
+  "latencyMs": "{{ms}}ms",
+  "title": "اے آئی معاون",
+  "subtitle": "سوالات پوچھیں، پالیسیوں اور بجٹ کا تجزیہ کریں، مواد کا ترجمہ کریں اور رپورٹس تیار کریں۔",
+
+  "langEn": "EN",
+  "langUr": "اردو",
+  "clear": "صاف کریں",
+
+  "statMessages": "پیغامات",
+  "statModel": "ماڈل",
+  "statModelCaption": "اے آئی انفرنس ماڈل",
+  "statLatency": "اوسط تاخیر",
+  "statStatus": "حیثیت",
+  "statusOnline": "آن لائن",
+  "statusReady": "تیار",
+
+  "aiLabel": "اے آئی معاون",
+  "userLabel": "آپ",
+
+  "agents": {
+    "citizen": "شہری",
+    "citizenDesc": "سوالات پوچھیں اور واضح جوابات حاصل کریں",
+    "policy": "پالیسی",
+    "policyDesc": "حکومتی پالیسیوں کا تجزیہ اور وضاحت کریں",
+    "budget": "بجٹ",
+    "budgetDesc": "بجٹ اور مالیاتی اعداد و شمار کا تجزیہ کریں",
+    "translate": "ترجمہ",
+    "translateDesc": "انگریزی اور اردو کے درمیان ترجمہ کریں",
+    "report": "رپورٹ",
+    "reportDesc": "حکومتی رپورٹس تیار کریں",
+    "simulation": "سمولیشن",
+    "simulationDesc": "سمولیشن کے نتائج کی وضاحت کریں"
+  },
+
+  "emptyStateTitle": "میں آپ کی کیسے مدد کر سکتا ہوں؟",
+  "emptyStateDesc": "اے آئی معاون کا موڈ منتخب کریں اور درخواست شروع کریں۔",
+
+  "quickAskLiteracy": "شرح خواندگی کے بارے میں پوچھیں",
+  "quickAskLiteracyText": "پاکستان میں شرح خواندگی کیا ہے؟",
+  "quickTranslateText": "متن کا ترجمہ کریں",
+  "quickTranslateTextContent": "اس متن کا اردو میں ترجمہ کریں۔",
+  "quickAnalyzeBudget": "بجٹ کا تجزیہ کریں",
+  "quickAnalyzeBudgetText": "اس بجٹ کا تجزیہ کریں اور اہم نکات نمایاں کریں۔",
+
+  "translationCardTitle": "ترجمہ",
+  "translationDirectionEnToUr": "انگریزی → اردو",
+  "translationDirectionUrToEn": "اردو → انگریزی",
+
+  "sourceLabel": "ماخذ",
+  "targetLabel": "ہدف",
+  "english": "انگریزی",
+  "urdu": "اردو",
+  "swapButton": "تبدیل کریں",
+
+  "citizenPlaceholder": "سوال پوچھیں...",
+  "translatePlaceholder": "ترجمہ کے لیے متن درج کریں...",
+  "policyPlaceholder": "اس پالیسی کے بارے میں سوال پوچھیں...",
+  "budgetPlaceholder": "اس بجٹ کے بارے میں سوال پوچھیں...",
+  "simulationPlaceholder": "سمولیشن رن آئی ڈی درج کریں...",
+  "reportPlaceholder": "رپورٹ کے لیے اختیاری ہدایات...",
+
+  "selectBudget": "بجٹ منتخب کریں",
+  "federal": "وفاقی",
+  "fy": "مالی سال {{year}}",
+
+  "policyIdPlaceholder": "پالیسی آئی ڈی درج کریں",
+  "simulationRunIdPlaceholder": "سمولیشن رن آئی ڈی درج کریں",
+
+  "allMinistries": "تمام وزارتیں",
+  "fiscalYearPlaceholder": "مالی سال",
+
+  "sendButton": "بھیجیں",
+  "generateButton": "تیار کریں",
+  "explainButton": "وضاحت کریں",
+  "analyzeButton": "تجزیہ کریں",
+  "submitHint": "جمع کرانے کے لیے Ctrl+Enter یا Cmd+Enter دبائیں۔",
+
+  "aiThinking": "اے آئی سوچ رہا ہے...",
+  "aiThinkingSub": "آپ کی درخواست کا تجزیہ کیا جا رہا ہے...",
+
+  "systemStatus": "سسٹم کی حیثیت",
+  "inferenceEngine": "انفرنس انجن",
+  "modelLabel": "ماڈل",
+  "rateLimit": "ریٹ لمٹ",
+  "responseFormat": "جواب کی شکل",
+  "responseFormatValue": "ساختی شکل",
+
+  "recentActivity": "حالیہ سرگرمی",
+  "showHistory": "ہسٹری دکھائیں",
+  "hideHistory": "ہسٹری چھپائیں",
+  "loadingHistory": "ہسٹری لوڈ ہو رہی ہے...",
+  "noRecentRequests": "کوئی حالیہ درخواست نہیں۔",
+
+  "howItWorks": "یہ کیسے کام کرتا ہے",
+  "howItWorksDesc": "معاون اے آئی کے ذریعے آپ کی درخواست کا تجزیہ کرتا ہے اور معاون معلومات کے ساتھ ایک منظم جواب فراہم کرتا ہے۔",
+
+  "reportTypes": {
+    "summary": "خلاصہ",
+    "sector": "شعبہ",
+    "budget": "بجٹ",
+    "policy": "پالیسی"
+  },
+
+  "displayReport": "{{type}} رپورٹ تیار کریں",
+  "displayReportWithMinistry": "منتخب وزارت کے لیے {{type}} رپورٹ تیار کریں",
+  "displaySimulation": "سمولیشن {{id}} کی وضاحت کریں",
+  "displayPolicy": "پالیسی {{id}} کی وضاحت کریں",
+  "displayPolicyWithQuery": "پالیسی {{id}} کی وضاحت کریں: {{query}}",
+  "displayBudget": "بجٹ {{id}} کی وضاحت کریں",
+  "displayBudgetWithQuery": "بجٹ {{id}} کی وضاحت کریں: {{query}}",
+
+  "historyStatus": {
+    "success": "کامیاب",
+    "fallback": "فال بیک",
+    "error": "خرابی"
+  },
+
+  "errors": {
+    "policyIdRequired": "پالیسی آئی ڈی ضروری ہے۔",
+    "budgetIdRequired": "بجٹ آئی ڈی ضروری ہے۔",
+    "textRequired": "متن ضروری ہے۔",
+    "runIdRequired": "سمولیشن رن آئی ڈی ضروری ہے۔",
+    "unknownAgentMode": "نامعلوم معاون موڈ۔",
+    "genericError": "کچھ غلط ہو گیا۔ براہ کرم دوبارہ کوشش کریں۔"
+  }
+}

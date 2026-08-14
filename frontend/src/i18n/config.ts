@@ -23,19 +23,21 @@ import enSectors from './locales/en/sectors.json'
 import urSectors from './locales/ur/sectors.json'
 import enProcess from './locales/en/process.json'
 import urProcess from './locales/ur/process.json'
+import enAssistant from './locales/en/assistant.json'
+import urAssistant from './locales/ur/assistant.json'
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
-      en: { common: enCommon, auth: enAuth, finance: enFinance, government: enGovernment, elections: enElections, geography: enGeography, institutions: enInstitutions, dashboard: enDashboard, sectors: enSectors, policies: enPolicies, process: enProcess,},
-      ur: { common: urCommon, auth: urAuth, finance: urFinance, government: urGovernment, elections: urElections, geography: urGeography, institutions: urInstitutions, dashboard: urDashboard, sectors: urSectors, policies: urPolicies, process: urProcess, },
+      en: { common: enCommon, auth: enAuth, finance: enFinance, government: enGovernment, elections: enElections, geography: enGeography, institutions: enInstitutions, dashboard: enDashboard, sectors: enSectors, policies: enPolicies, process: enProcess, assistant: enAssistant,},
+      ur: { common: urCommon, auth: urAuth, finance: urFinance, government: urGovernment, elections: urElections, geography: urGeography, institutions: urInstitutions, dashboard: urDashboard, sectors: urSectors, policies: urPolicies, process: urProcess, assistant: urAssistant,},
     },
     fallbackLng: 'en',
     supportedLngs: ['en', 'ur'],
     defaultNS: 'common',
-    ns: ['common', 'auth', 'finance', 'government', 'elections', 'geography', 'instituitions', 'dashboard','sectors', 'policies', 'process'],
+    ns: ['common', 'auth', 'finance', 'government', 'elections', 'geography', 'instituitions', 'dashboard','sectors', 'policies', 'process', 'assistant'],
     interpolation: { escapeValue: false },
     detection: {
       order: ['localStorage', 'navigator'],

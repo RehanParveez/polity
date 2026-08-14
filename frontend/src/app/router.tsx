@@ -38,6 +38,7 @@ import { ScenariosPage } from '../modules/process/pages/ScenariosPage'
 import { ScenarioCreatePage } from '../modules/process/pages/ScenarioCreatePage'
 import { ScenarioDetailPage } from '../modules/process/pages/ScenarioDetailPage'
 import { ComparisonsPage } from '../modules/process/pages/ComparisonsPage'
+import { AssistantPage } from '../modules/assistant/pages/AssistantPage'
 
 function ProtectedRoute({ children }: { children: ReactElement }) {
   const accessToken = useAuthStore((s) => s.accessToken)
@@ -93,6 +94,7 @@ export const router = createBrowserRouter([
       { path: '/process/new', element: <ScenarioCreatePage /> },
       { path: '/process/:scenarioId', element: <ScenarioDetailPage /> },
       { path: '/process/comparisons', element: <ComparisonsPage /> },
+      { path: '/assistant', element: <AssistantPage /> },
     ],
   },
 ])

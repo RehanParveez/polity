@@ -14,6 +14,7 @@ from app.modules.finance.router import router as finance_router
 from app.modules.sectors.router import router as sectors_router
 from app.modules.policies.router import router as policies_router
 from app.modules.process.router import router as process_router
+from app.modules.assistant.router import router as assistant_router
 
 settings = get_settings()
 
@@ -56,6 +57,7 @@ def create_app() -> FastAPI:
   app.include_router(sectors_router)
   app.include_router(policies_router)
   app.include_router(process_router)
+  app.include_router(assistant_router)
   return app
 
 app = create_app()

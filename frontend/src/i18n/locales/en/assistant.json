@@ -1,0 +1,140 @@
+{
+  "fallbackMessage": "AI service is currently unavailable. Showing a fallback response.",
+  "confidence": {
+    "high": "High confidence",
+    "medium": "Medium confidence",
+    "low": "Low confidence"
+  },
+  "humanReview": "Human review",
+  "sections": {
+    "evidence": "Evidence",
+    "assumptions": "Assumptions",
+    "risks": "Risks"
+  },
+  "latencyMs": "{{ms}}ms",
+
+  "title": "AI Assistant",
+  "subtitle": "Ask questions, analyze policies and budgets, translate content, and generate reports.",
+
+  "langEn": "EN",
+  "langUr": "اردو",
+  "clear": "Clear",
+
+  "statMessages": "Messages",
+  "statModel": "Model",
+  "statModelCaption": "AI inference model",
+  "statLatency": "Avg. latency",
+  "statStatus": "Status",
+  "statusOnline": "Online",
+  "statusReady": "Ready",
+
+  "aiLabel": "AI Assistant",
+  "userLabel": "You",
+
+  "agents": {
+    "citizen": "Citizen",
+    "citizenDesc": "Ask questions and get clear answers",
+    "policy": "Policy",
+    "policyDesc": "Analyze and explain government policies",
+    "budget": "Budget",
+    "budgetDesc": "Analyze budgets and financial data",
+    "translate": "Translate",
+    "translateDesc": "Translate between English and Urdu",
+    "report": "Report",
+    "reportDesc": "Generate government reports",
+    "simulation": "Simulation",
+    "simulationDesc": "Explain simulation results"
+  },
+
+  "emptyStateTitle": "How can I help you?",
+  "emptyStateDesc": "Choose an AI assistant mode and start a request.",
+  
+  "quickAskLiteracy": "Ask about literacy",
+  "quickAskLiteracyText": "What is the literacy rate in Pakistan?",
+  "quickTranslateText": "Translate text",
+  "quickTranslateTextContent": "Translate this text into Urdu.",
+  "quickAnalyzeBudget": "Analyze a budget",
+  "quickAnalyzeBudgetText": "Analyze this budget and highlight the key points.",
+
+  "translationCardTitle": "Translation",
+  "translationDirectionEnToUr": "English → Urdu",
+  "translationDirectionUrToEn": "Urdu → English",
+
+  "sourceLabel": "Source",
+  "targetLabel": "Target",
+  "english": "English",
+  "urdu": "Urdu",
+  "swapButton": "Swap",
+
+  "citizenPlaceholder": "Ask a question...",
+  "translatePlaceholder": "Enter text to translate...",
+  "policyPlaceholder": "Ask a question about this policy...",
+  "budgetPlaceholder": "Ask a question about this budget...",
+  "simulationPlaceholder": "Enter a simulation run ID...",
+  "reportPlaceholder": "Optional instructions for the report...",
+
+  "selectBudget": "Select a budget",
+  "federal": "Federal",
+  "fy": "FY {{year}}",
+
+  "policyIdPlaceholder": "Enter policy ID",
+  "simulationRunIdPlaceholder": "Enter simulation run ID",
+
+  "allMinistries": "All ministries",
+  "fiscalYearPlaceholder": "Fiscal year",
+
+  "sendButton": "Send",
+  "generateButton": "Generate",
+  "explainButton": "Explain",
+  "analyzeButton": "Analyze",
+  "submitHint": "Press Ctrl+Enter or Cmd+Enter to submit.",
+
+  "aiThinking": "AI is thinking...",
+  "aiThinkingSub": "Analyzing your request...",
+
+  "systemStatus": "System status",
+  "inferenceEngine": "Inference engine",
+  "modelLabel": "Model",
+  "rateLimit": "Rate limit",
+  "responseFormat": "Response format",
+  "responseFormatValue": "Structured",
+
+  "recentActivity": "Recent activity",
+  "showHistory": "Show history",
+  "hideHistory": "Hide history",
+  "loadingHistory": "Loading history...",
+  "noRecentRequests": "No recent requests.",
+
+  "howItWorks": "How it works",
+  "howItWorksDesc": "The assistant uses AI to analyze your request and return a structured response with supporting information.",
+
+  "reportTypes": {
+    "summary": "Summary",
+    "sector": "Sector",
+    "budget": "Budget",
+    "policy": "Policy"
+  },
+
+  "displayReport": "Generate {{type}} report",
+  "displayReportWithMinistry": "Generate {{type}} report for the selected ministry",
+  "displaySimulation": "Explain simulation {{id}}",
+  "displayPolicy": "Explain policy {{id}}",
+  "displayPolicyWithQuery": "Explain policy {{id}}: {{query}}",
+  "displayBudget": "Explain budget {{id}}",
+  "displayBudgetWithQuery": "Explain budget {{id}}: {{query}}",
+
+  "historyStatus": {
+    "success": "Success",
+    "fallback": "Fallback",
+    "error": "Error"
+  },
+
+  "errors": {
+    "policyIdRequired": "Policy ID is required.",
+    "budgetIdRequired": "Budget ID is required.",
+    "textRequired": "Text is required.",
+    "runIdRequired": "Simulation run ID is required.",
+    "unknownAgentMode": "Unknown assistant mode.",
+    "genericError": "Something went wrong. Please try again."
+  }
+}

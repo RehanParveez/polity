@@ -1,0 +1,7 @@
+AI_POLICY_EXPLAIN = "ai.policy.explain"
+AI_BUDGET_EXPLAIN = "ai.budget.explain"
+AI_CHAT = "ai.chat"
+AI_TRANSLATE = "ai.translate"
+AI_REPORT_GENERATE = "ai.report.generate"
+AI_SIMULATION_EXPLAIN = "ai.simulation.explain"
+AI_MANAGE = "ai.manage"

@@ -7,3 +7,4 @@ from app.modules.government.models import Government, CabinetMember
 from app.modules.finance.models import AuditFinding, Budget, BudgetLine, ProcurementProject, RevenueSource 
 from app.modules.sectors.models import DefenseBranch, DefenseBudget, DefenseIndicator, DefenseMinistry, DefenseProcurementProject, DisasterResponseUnit, EducationInstitution, Farm, HealthcareInstitution, InfrastructureAsset, LaborRecord, MilitaryPersonnel
 from app.modules.process.models import Indicator, IndicatorValue, SimulationRule, Scenario, ScenarioInput, SimulationResult, ScenarioComparison, SimulationRun
+from app.modules.assistant.models import AIRequest, AIResponse
