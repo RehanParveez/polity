@@ -12,6 +12,14 @@ SEED_PERMISSIONS = [
   ("government.manage", "Form governments and assign cabinet members"),
   ("finance.manage", "Manage budgets, procurement, and audit findings"),
   ("sector.manage", "Manage sector data across education, health, agriculture, infrastructure, labor, and defense"),
+  ("ai.policy.explain", "Use AI to explain policies"),
+  ("ai.budget.explain", "Use AI to explain budgets"),
+  ("ai.chat", "Use citizen AI assistant"),
+  ("ai.translate", "Use AI translation"),
+  ("ai.report.generate", "Generate AI draft reports"),
+  ("ai.simulation.explain", "Explain simulation results via AI"),
+  ("session.create", "Create and save simulation sessions"),
+  ("session.share", "Share sessions with others"),
 ]
 
 SEED_ROLES = [

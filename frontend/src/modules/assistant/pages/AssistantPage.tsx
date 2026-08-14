@@ -86,10 +86,9 @@ const REPORT_TYPES = ['summary', 'sector', 'budget', 'policy'] as const
 type ReportType = (typeof REPORT_TYPES)[number]
 
 export function AssistantPage() {
-  const { t } = useTranslation(['assistant', 'common'])
+  const { t, i18n } = useTranslation(['assistant', 'common'])
 
   const [agentMode, setAgentMode] = useState<AgentMode>('citizen')
-  const [language, setLanguage] = useState<Language>('en')
   const [targetLang, setTargetLang] = useState<Language>('ur')
   const [messages, setMessages] = useState<Message[]>([])
   const [inputText, setInputText] = useState('')
@@ -99,6 +98,8 @@ export function AssistantPage() {
   const [ministryId, setMinistryId] = useState('')
   const [showHistory, setShowHistory] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const language: Language = i18n.language.startsWith('ur') ? 'ur' : 'en'
 
   const { data: budgets } = useQuery({
     queryKey: ['budgets'],
@@ -245,10 +246,6 @@ export function AssistantPage() {
     setAgentMode(nextAgent)
     setContextId('')
     setInputText('')
-
-    if (nextAgent !== 'report') {
-      setMinistryId((previous) => previous)
-    }
   }
 
   const handleSend = async () => {
@@ -462,6 +459,7 @@ export function AssistantPage() {
 
         default: {
           const exhaustiveCheck: never = agentMode
+
           throw new Error(
             `${t('errors.unknownAgentMode')}: ${String(exhaustiveCheck)}`,
           )
@@ -510,6 +508,11 @@ export function AssistantPage() {
     setMessages([])
   }
 
+  const requiresContext =
+    agentMode === 'policy' ||
+    agentMode === 'budget' ||
+    agentMode === 'simulation'
+
   return (
     <div>
       <div className="flex items-start justify-between mb-6">
@@ -519,32 +522,6 @@ export function AssistantPage() {
         />
 
         <div className="flex items-center gap-2">
-          <div className="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-0.5">
-            <button
-              type="button"
-              onClick={() => setLanguage('en')}
-              className={`text-xs font-medium px-3 py-1.5 rounded-md transition-colors ${
-                language === 'en'
-                  ? 'bg-violet-500/20 text-violet-400'
-                  : 'text-slate-500 hover:text-slate-300'
-              }`}
-            >
-              {t('langEn')}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setLanguage('ur')}
-              className={`text-xs font-medium px-3 py-1.5 rounded-md transition-colors ${
-                language === 'ur'
-                  ? 'bg-violet-500/20 text-violet-400'
-                  : 'text-slate-500 hover:text-slate-300'
-              }`}
-            >
-              {t('langUr')}
-            </button>
-          </div>
-
           {messages.length > 0 && (
             <button
               type="button"
@@ -623,7 +600,6 @@ export function AssistantPage() {
         <div className="lg:col-span-2 space-y-4">
           <Card className="min-h-[520px] flex flex-col">
             <div className="flex-1 overflow-y-auto max-h-[640px] space-y-4 p-1">
-            
               {messages.length === 0 && (
                 <div className="flex flex-col items-center justify-center h-full text-center py-16">
                   <div className="h-16 w-16 rounded-2xl bg-violet-500/10 flex items-center justify-center mb-4">
@@ -707,7 +683,6 @@ export function AssistantPage() {
                       </div>
                     </div>
                   ) : message.text && !message.output ? (
-                
                     <div className="mr-12">
                       <Card className="border-red-500/20 bg-red-500/5">
                         <p className="text-sm text-red-300">
@@ -717,7 +692,6 @@ export function AssistantPage() {
                     </div>
                   ) : message.translatedText &&
                     message.agentMode === 'translate' ? (
-                    
                     <div className="mr-12">
                       <Card className="border-violet-500/20 bg-violet-500/5">
                         <div className="flex items-center gap-2 mb-2">
@@ -751,7 +725,6 @@ export function AssistantPage() {
                       </Card>
                     </div>
                   ) : message.output ? (
-                    
                     <div className="mr-12">
                       <AIResponseCard
                         output={message.output}
@@ -808,7 +781,6 @@ export function AssistantPage() {
             </div>
 
             <div className="border-t border-slate-800 pt-4 mt-2 space-y-3">
-              
               {agentMode === 'budget' && (
                 <div className="flex gap-2">
                   <select
@@ -977,49 +949,32 @@ export function AssistantPage() {
                   className="flex-1 bg-slate-950/60 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/50 transition-colors resize-none"
                 />
 
-                <div className="flex gap-2">
-                 <textarea
-                   value={inputText}
-                   onChange={(event) =>
-                     setInputText(event.target.value)
-                   }
-                   onKeyDown={handleKeyDown}
-                   placeholder={inputPlaceholder}
-                   rows={
-                    agentMode === 'citizen' ||
-                    agentMode === 'translate'
-                      ? 3
-                      : 2
-                   }
-                   className="flex-1 bg-slate-950/60 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/50 transition-colors resize-none"
-                />
-
                 <div className="flex flex-col justify-end">
                   {agentMode === 'report' ||
                   agentMode === 'simulation' ||
                   agentMode === 'policy' ||
                   agentMode === 'budget' ? (
-                   <Button
-                     onClick={() => void handleSend()}
-                     loading={isLoading}
-                     disabled={
-                      isLoading ||
-                      !contextId.trim()
-                    }
-                    className="w-auto px-4 h-fit"
-                   >
-                    <Sparkles
-                      size={16}
-                      className="mr-1.5"
-                    />
+                    <Button
+                      onClick={() => void handleSend()}
+                      loading={isLoading}
+                      disabled={
+                        isLoading ||
+                        (requiresContext && !contextId.trim())
+                      }
+                      className="w-auto px-4 h-fit"
+                    >
+                      <Sparkles
+                        size={16}
+                        className="mr-1.5"
+                      />
 
-                    {agentMode === 'report'
-                     ? t('generateButton')
-                     : agentMode === 'simulation'
-                       ? t('explainButton')
-                       : t('analyzeButton')}
+                      {agentMode === 'report'
+                        ? t('generateButton')
+                        : agentMode === 'simulation'
+                          ? t('explainButton')
+                          : t('analyzeButton')}
                     </Button>
-                   ) : (
+                  ) : (
                     <Button
                       onClick={() => void handleSend()}
                       loading={isLoading}
@@ -1035,10 +990,9 @@ export function AssistantPage() {
 
                       {t('sendButton')}
                     </Button>
-                   )}
+                  )}
                 </div>
-             </div>
-            </div>
+              </div>
 
               <p className="text-[10px] text-slate-600">
                 {t('submitHint')}
@@ -1048,7 +1002,6 @@ export function AssistantPage() {
         </div>
 
         <div className="space-y-6">
-         
           <Card className="sticky top-6">
             <h3 className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
               <Sparkles size={12} />

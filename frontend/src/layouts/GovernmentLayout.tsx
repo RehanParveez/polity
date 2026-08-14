@@ -1,6 +1,6 @@
 import { Outlet, NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Home, Map, Landmark, Vote, ShieldCheck, LogOut, Building2, FileText, BrainCircuit } from 'lucide-react'
+import { Home, Map, Landmark, Vote, ShieldCheck, LogOut, Building2, FileText, BrainCircuit, Bookmark } from 'lucide-react'
 import { useAuthStore } from '../app/store'
 import { RequirePermission } from '../components/permissions/RequirePermission'
 import { LanguageSwitcher } from '../components/ui/LanguageSwitcher'
@@ -18,6 +18,7 @@ const navItems = [
   { to: '/policies', labelKey: 'Policies', icon: FileText, end: false },
   { to: '/process', labelKey: 'Process', icon: FlaskConical, end: false },
   { to: '/assistant', labelKey: 'Assistant', icon: BrainCircuit, end: false },
+  { to: '/sessions', labelKey: 'Sessions', icon: Bookmark, end: false },
 ]
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>

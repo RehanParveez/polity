@@ -22,12 +22,14 @@ Rules:
 - Set requires_human_review to false unless the question involves a personal grievance or legal advice.
 """
 
-def build_prompt(user_message: str, indicator_context: list[dict]) -> str:
+def build_prompt(user_message: str, indicator_context: list[dict], language: str = "en", ) -> str:
   context_str = "\n".join(
     f"- {c['name']} ({c['category']}): {c['value']} {c['unit']} (as of {c['as_of_date']}, confidence: {c['confidence']})"
     for c in indicator_context
   ) if indicator_context else "No indicator context provided."
   return f"""Citizen Question: {user_message}
+
+Requested Language: {language}
 
 Relevant Indicators:
 {context_str}

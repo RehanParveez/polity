@@ -15,6 +15,8 @@ from app.modules.sectors.router import router as sectors_router
 from app.modules.policies.router import router as policies_router
 from app.modules.process.router import router as process_router
 from app.modules.assistant.router import router as assistant_router
+from app.modules.sessions.router import router as sessions_router
+from app.modules.audits.router import router as audit_router
 
 settings = get_settings()
 
@@ -32,6 +34,8 @@ def create_app() -> FastAPI:
       {"name": "governments", "description": "Cabinet formation and government administration"},
       {"name": "finance", "description": "Revenue, budgets, procurement, and audit findings"},
       {"name": "sectors", "description": "Education, healthcare, agriculture, infrastructure, labor, and defense sector data"},
+      {"name": "ai", "description": "AI assistants — policy, budget, citizen chat, translation, reports, simulation explanation"},
+      {"name": "sessions", "description": "Saved simulation sessions — resume, duplicate, share, re-run"},
     ],
   )
   
@@ -58,6 +62,8 @@ def create_app() -> FastAPI:
   app.include_router(policies_router)
   app.include_router(process_router)
   app.include_router(assistant_router)
+  app.include_router(sessions_router)
+  app.include_router(audit_router)
   return app
 
 app = create_app()
