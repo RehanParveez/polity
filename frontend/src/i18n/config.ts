@@ -27,19 +27,21 @@ import enAssistant from './locales/en/assistant.json'
 import urAssistant from './locales/ur/assistant.json'
 import enSessions from './locales/en/sessions.json'
 import urSessions from './locales/ur/sessions.json'
+import enAudits from './locales/en/audits.json'
+import urAudits from './locales/ur/audits.json'
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
-      en: { common: enCommon, auth: enAuth, finance: enFinance, government: enGovernment, elections: enElections, geography: enGeography, institutions: enInstitutions, dashboard: enDashboard, sectors: enSectors, policies: enPolicies, process: enProcess, assistant: enAssistant, sessions: enSessions,},
-      ur: { common: urCommon, auth: urAuth, finance: urFinance, government: urGovernment, elections: urElections, geography: urGeography, institutions: urInstitutions, dashboard: urDashboard, sectors: urSectors, policies: urPolicies, process: urProcess, assistant: urAssistant, sessions: enSessions,},
+      en: { common: enCommon, auth: enAuth, finance: enFinance, government: enGovernment, elections: enElections, geography: enGeography, institutions: enInstitutions, dashboard: enDashboard, sectors: enSectors, policies: enPolicies, process: enProcess, assistant: enAssistant, sessions: enSessions, audits: enAudits,},
+      ur: { common: urCommon, auth: urAuth, finance: urFinance, government: urGovernment, elections: urElections, geography: urGeography, institutions: urInstitutions, dashboard: urDashboard, sectors: urSectors, policies: urPolicies, process: urProcess, assistant: urAssistant, sessions: urSessions, audits: urAudits,},
     },
     fallbackLng: 'en',
     supportedLngs: ['en', 'ur'],
     defaultNS: 'common',
-    ns: ['common', 'auth', 'finance', 'government', 'elections', 'geography', 'instituitions', 'dashboard','sectors', 'policies', 'process', 'assistant', 'sessions'],
+    ns: ['common', 'auth', 'finance', 'government', 'elections', 'geography', 'instituitions', 'dashboard','sectors', 'policies', 'process', 'assistant', 'sessions', 'audits',],
     interpolation: { escapeValue: false },
     detection: {
       order: ['localStorage', 'navigator'],

@@ -1,0 +1,67 @@
+{
+  "title": "Audit & Transparency",
+  "subtitle": "System-wide audit trail, change tracking, and activity analytics",
+  "refresh": "Refresh",
+  "stats": {
+    "totalEvents": "Total events",
+    "matchingFilters": "Matching filters",
+    "eventsToday": "Events today",
+    "liveTrail": "live trail",
+    "uniqueActors": "Unique actors",
+    "modulesActive": "Modules active"
+  },
+  "charts": {
+    "eventsByModule": "Events by module",
+    "eventsByAction": "Events by action",
+    "count": "Count"
+  },
+  "filters": {
+    "title": "Filters",
+    "clearAll": "Clear all",
+    "entityType": "Entity type",
+    "action": "Action",
+    "module": "Module",
+    "actorId": "Actor ID",
+    "from": "From",
+    "to": "To",
+    "allTypes": "All types",
+    "allActions": "All actions",
+    "allModules": "All modules",
+    "uuidPlaceholder": "UUID prefix…"
+  },
+  "trail": {
+    "title": "Audit trail",
+    "loading": "Loading events…",
+    "noResultsTitle": "No audit events match your filters",
+    "noResultsDesc": "Try clearing filters or expanding the date range",
+    "pageXofY": "Page {{page}} of {{total}}",
+    "stateChanged": "state changed",
+    "of": "of"
+  },
+  "detail": {
+    "backToTrail": "Back to audit trail",
+    "loading": "Loading event…",
+    "notFound": "Audit event not found",
+    "stateDiff": "State diff",
+    "beforeKeys": "Before keys: {{count}}",
+    "afterKeys": "After keys: {{count}}",
+    "eventMetadata": "Event metadata",
+    "actor": "Actor",
+    "name": "Name",
+    "system": "System",
+    "id": "ID",
+    "targetEntity": "Target entity",
+    "type": "Type",
+    "immutableRecord": "Immutable record",
+    "immutableDesc": "This audit event is append-only. Before and after states were captured at the time of the action and cannot be modified.",
+    "diff": {
+      "noState": "No state captured for this event",
+      "added": "added",
+      "removed": "removed",
+      "changed": "changed",
+      "before": "Before",
+      "after": "After",
+      "value": "Value"
+    }
+  }
+}

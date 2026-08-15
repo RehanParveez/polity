@@ -1,0 +1,67 @@
+{
+  "title": "آڈٹ اور شفافیت",
+  "subtitle": "سسٹم وائڈ آڈٹ ٹریل، تبدیلیوں کی نگرانی، اور سرگرمی تجزیات",
+  "refresh": "تازہ کریں",
+  "stats": {
+    "totalEvents": "کل واقعات",
+    "matchingFilters": "فلٹرز کے مطابق",
+    "eventsToday": "آج کے واقعات",
+    "liveTrail": "براہ راست ٹریل",
+    "uniqueActors": "منفرد اداکار",
+    "modulesActive": "فعال ماڈیولز"
+  },
+  "charts": {
+    "eventsByModule": "ماڈیول کے لحاظ سے واقعات",
+    "eventsByAction": "عمل کے لحاظ سے واقعات",
+    "count": "شمار"
+  },
+  "filters": {
+    "title": "فلٹرز",
+    "clearAll": "سب صاف کریں",
+    "entityType": "ہستی کی قسم",
+    "action": "عمل",
+    "module": "ماڈیول",
+    "actorId": "اداکار آئی ڈی",
+    "from": "سے",
+    "to": "تک",
+    "allTypes": "تمام اقسام",
+    "allActions": "تمام اعمال",
+    "allModules": "تمام ماڈیولز",
+    "uuidPlaceholder": "یو یو آئی ڈی سابقہ…"
+  },
+  "trail": {
+    "title": "آڈٹ ٹریل",
+    "loading": "واقعات لوڈ ہو رہے ہیں…",
+    "noResultsTitle": "آپ کے فلٹرز کے مطابق کوئی آڈٹ واقعات نہیں",
+    "noResultsDesc": "فلٹرز صاف کرنے یا تاریخ کی حد بڑھانے کی کوشش کریں",
+    "pageXofY": "صفحہ {{page}} میں سے {{total}}",
+    "stateChanged": "حالت تبدیل ہوئی",
+    "of": "میں سے"
+  },
+  "detail": {
+    "backToTrail": "آڈٹ ٹریل پر واپس جائیں",
+    "loading": "واقعہ لوڈ ہو رہا ہے…",
+    "notFound": "آڈٹ واقعہ نہیں ملا",
+    "stateDiff": "حالت کا فرق",
+    "beforeKeys": "پہلے کیز: {{count}}",
+    "afterKeys": "بعد کیز: {{count}}",
+    "eventMetadata": "واقعہ میٹاڈیٹا",
+    "actor": "اداکار",
+    "name": "نام",
+    "system": "سسٹم",
+    "id": "آئی ڈی",
+    "targetEntity": "ہدف ہستی",
+    "type": "قسم",
+    "immutableRecord": "ناقابل تبدیل ریکارڈ",
+    "immutableDesc": "یہ آڈٹ واقعہ صرف شامل کیا جا سکتا ہے۔ عمل کے وقت پہلے اور بعد کی حالتیں قبض کی گئیں اور انہیں تبدیل نہیں کیا جا سکتا۔",
+    "diff": {
+      "noState": "اس واقعہ کے لیے کوئی حالت قبض نہیں کی گئی",
+      "added": "شامل شدہ",
+      "removed": "حذف شدہ",
+      "changed": "تبدیل شدہ",
+      "before": "پہلے",
+      "after": "بعد",
+      "value": "قدر"
+    }
+  }
+}

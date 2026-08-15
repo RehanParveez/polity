@@ -6,6 +6,7 @@ from app.modules.process import repository
 from decimal import Decimal, ROUND_HALF_UP
 from app.modules.process.schemas import ScenarioCreate, ScenarioUpdate, ScenarioInputCreate, SimulationResultChartRow
 from typing import Optional
+from app.core.audit import AuditService, serialize_model
 
 class SimulationError(Exception):
   pass
@@ -156,6 +157,9 @@ async def create_scenario(db: AsyncSession, payload: ScenarioCreate, owner_id: u
   data["owner_id"] = owner_id
   data["status"] = "draft"
   scenario = await repository.create_scenario(db, **data)
+  await AuditService.log(db, entity_type = "scenario", entity_id=scenario.id, action = "create",
+    actor_id=owner_id, after_state=serialize_model(scenario), module = "process",
+  )
   await db.commit()
   await db.refresh(scenario)
   return scenario
@@ -163,34 +167,53 @@ async def create_scenario(db: AsyncSession, payload: ScenarioCreate, owner_id: u
 async def get_scenario_detail(db: AsyncSession, scenario_id: uuid.UUID) -> Scenario | None:
   return await repository.get_scenario(db, scenario_id)
 
-async def update_scenario(db: AsyncSession, scenario: Scenario, payload: ScenarioUpdate) -> Scenario:
+async def update_scenario(db: AsyncSession, scenario: Scenario, payload: ScenarioUpdate, actor_id: uuid.UUID) -> Scenario:
+  before_state = serialize_model(scenario)
   data = payload.model_dump(exclude_unset=True)
   await repository.update_scenario(db, scenario, **data)
+  await AuditService.log(
+    db,entity_type = "scenario", entity_id=scenario.id, action = "update", actor_id=actor_id,
+    before_state=before_state, after_state=serialize_model(scenario), module = "process",
+  )
   await db.commit()
   await db.refresh(scenario)
   return scenario
 
-async def delete_scenario(db: AsyncSession, scenario: Scenario) -> None:
+async def delete_scenario(db: AsyncSession, scenario: Scenario, actor_id: uuid.UUID) -> None:
   if scenario.simulation_runs:
     raise SimulationError("cannot delete scenario with existing porcess runs")
+  before_state = serialize_model(scenario)
+  await AuditService.log(db,
+    entity_type = "scenario", entity_id=scenario.id, action = "delete", actor_id=actor_id,
+    before_state=before_state, module = "process",
+  )
   await repository.delete_scenario(db, scenario)
   await db.commit()
 
-async def add_input(db: AsyncSession, scenario: Scenario, payload: ScenarioInputCreate) -> ScenarioInput:
+async def add_input(db: AsyncSession, scenario: Scenario, payload: ScenarioInputCreate, actor_id: uuid.UUID) -> ScenarioInput:
   if scenario.status == "archived":
     raise SimulationError("cannot modify archived scenario")
   data = payload.model_dump(exclude_unset=True)
   inp = await repository.add_scenario_input(db, scenario.id, **data)
+  await AuditService.log(
+    db, entity_type = "scenario_input", entity_id=inp.id, action = "create",
+    actor_id=actor_id, after_state=serialize_model(inp), module = "process",
+  )
   await db.commit()
   await db.refresh(inp)
   return inp
 
-async def remove_input(db: AsyncSession, scenario: Scenario, input_id: uuid.UUID) -> None:
+async def remove_input(db: AsyncSession, scenario: Scenario, input_id: uuid.UUID, actor_id: uuid.UUID) -> None:
   if scenario.status == "archived":
     raise SimulationError("cannot modify archived scenario")
   inp = await repository.get_scenario_input(db, input_id)
   if not inp or inp.scenario_id != scenario.id:
     raise SimulationError("input not found")
+  before_state = serialize_model(inp)
+
+  await AuditService.log(db, entity_type = "scenario_input", entity_id=inp.id,
+    action = "delete", actor_id=actor_id, before_state = before_state, module = "process",
+  )
   await repository.delete_scenario_input(db, inp)
   await db.commit()
 
@@ -201,9 +224,11 @@ async def trigger_simulation_run(db: AsyncSession, scenario_id: uuid.UUID, trigg
   if not scenario.inputs:
     raise SimulationError("scenario has no inputs, add parameters before running")
 
-  run = await repository.create_run(db, scenario_id=scenario_id, triggered_by=triggered_by)
-  await db.commit()
-  await db.refresh(run)
+  run = await repository.create_run(db, scenario_id=scenario_id, triggered_by=triggered_by,
+)
+  await AuditService.log(db, entity_type = "simulation_run", entity_id=run.id, action = "create", actor_id=triggered_by,
+  after_state=serialize_model(run), module = "process",
+)
 
   try:
     await repository.update_run_status(db, run, "running")
@@ -257,12 +282,14 @@ async def create_comparison(db: AsyncSession, baseline_run_id: uuid.UUID, compar
         "absolute_diff": str(diff), "percent_diff": str(pct_diff),
       })
 
-  comp = await repository.create_comparison(db,
-    title=title,
-    baseline_run_id=baseline_run_id,
-    comparison_run_id=comparison_run_id,
-    diff_summary={"items": diff_items},
-    created_by=created_by,
+  comp = await repository.create_comparison(db, title=title, baseline_run_id=baseline_run_id,
+  comparison_run_id=comparison_run_id,
+  diff_summary={"items": diff_items},
+  created_by=created_by,
+  )
+
+  await AuditService.log(db, entity_type = "scenario_comparison", entity_id=comp.id, action = "create",
+  actor_id=created_by, after_state=serialize_model(comp), module = "process",
   )
   await db.commit()
   await db.refresh(comp)

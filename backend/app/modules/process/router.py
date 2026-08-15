@@ -94,7 +94,7 @@ async def update_scenario_endpoint(
   if scenario.owner_id != current_user.id:
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail = "not your scenario")
   try:
-    return await service.update_scenario(db, scenario, payload)
+    return await service.update_scenario(db, scenario, payload, current_user.id)
   except service.SimulationError as exc:
     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
 
@@ -110,7 +110,7 @@ async def delete_scenario_endpoint(
   if scenario.owner_id != current_user.id:
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail = "not your scenario")
   try:
-    await service.delete_scenario(db, scenario)
+    await service.delete_scenario(db, scenario, current_user.id)
   except service.SimulationError as exc:
     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
 
@@ -127,7 +127,7 @@ async def add_scenario_input_endpoint(
   if scenario.owner_id != current_user.id:
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail = "not your scenario")
   try:
-    return await service.add_input(db, scenario, payload)
+    return await service.add_input(db, scenario, payload, current_user.id)
   except service.SimulationError as exc:
     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
 
@@ -144,7 +144,7 @@ async def remove_scenario_input_endpoint(
   if scenario.owner_id != current_user.id:
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail = "not your scenario")
   try:
-    await service.remove_input(db, scenario, input_id)
+    await service.remove_input(db, scenario, input_id, current_user.id)
   except service.SimulationError as exc:
     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
 

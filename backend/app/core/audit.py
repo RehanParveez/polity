@@ -1,10 +1,13 @@
+from __future__ import annotations
 from sqlalchemy.ext.asyncio import AsyncSession
 import uuid
 from app.modules.audits.repository import create_audit_event
 from typing import Callable, Any
 import functools
+import inspect
 
 class AuditService:
+
   @staticmethod
   async def log(
     db: AsyncSession,
@@ -16,10 +19,12 @@ class AuditService:
     actor_name: str | None = None,
     before_state: dict | None = None,
     after_state: dict | None = None,
-    metadata: dict | None = None,
+    event_metadata: dict | None = None,
     module: str | None = None,
   ) -> None:
-    await create_audit_event(db,
+
+    await create_audit_event(
+      db,
       entity_type=entity_type,
       entity_id=entity_id,
       action=action,
@@ -27,136 +32,148 @@ class AuditService:
       actor_name=actor_name,
       before_state=before_state,
       after_state=after_state,
-      metadata=metadata or {},
+      event_metadata=event_metadata or {},
       module=module,
     )
-    await db.flush()
 
 def audit_action(action: str, entity_type: str, *, module: str | None = None, entity_id_attr: str = "id"):
   """
-  Service-layer decorator that captures before/after state automatically.
+  Service-layer audit decorator.
 
-  Requirements for the decorated function:
-    - First positional arg must be db: AsyncSession
-    - Second positional arg must be the entity object being modified
-    - Must have a keyword arg named 'actor_id' or 'updated_by' or 'created_by' or 'user_id' or 'current_user_id'
+  The decorated service must have AsyncSession as its first argument.
 
-  The decorator:
-    1. Reads the entity's current __dict__ (excluding SQLAlchemy internals) as before_state
-    2. Calls the original function
-    3. Refreshes the entity from DB
-    4. Reads the new __dict__ as after_state
-    5. Writes an AuditEvent row
-    6. Commits (the caller still controls the outer commit)
+  The decorator supports service functions where:
+    - an existing ORM entity is passed as the second argument
+    - the created entity is returned by the service
+    - the entity ID is available on the returned object
+
+  Actor information can be supplied through:
+    actor_id
+    updated_by
+    created_by
+    user_id
+    current_user_id
+    triggered_by
+    owner_id
   """
+
   def decorator(func: Callable) -> Callable:
+
     @functools.wraps(func)
     async def wrapper(*args, **kwargs) -> Any:
-      if len(args) < 2:
+
+      if not args:
         return await func(*args, **kwargs)
-      db: AsyncSession = args[0]
-      entity = args[1]
+      db = args[0]
+      if not isinstance(db, AsyncSession):
+        return await func(*args, **kwargs)
       actor_id = None
-      for key in ("actor_id", "updated_by", "created_by", "user_id", "current_user_id", "triggered_by"):
-        if key in kwargs and kwargs[key] is not None:
-          val = kwargs[key]
-          actor_id = val.id if hasattr(val, "id") else val
-          break
-      before = {}
-      if hasattr(entity, "__dict__") and action in ("update", "delete"):
-        before = {k: _serialize(v) for k, v in entity.__dict__.items() if not k.startswith("_")}
+      actor_name = None
+
+      actor_keys = (
+        "actor_id",
+        "updated_by",
+        "created_by",
+        "user_id",
+        "current_user_id",
+        "triggered_by",
+        "owner_id",
+      )
+
+      signature = inspect.signature(func)
+      bound = signature.bind_partial(*args, **kwargs)
+
+      signature = inspect.signature(func)
+      bound = signature.bind_partial(*args, **kwargs)
+
+      for key in actor_keys:
+        actor = bound.arguments.get(key)
+        if actor is None:
+          continue
+        if hasattr(actor, "id"):
+          actor_id = actor.id
+          actor_name = (
+            getattr(actor, "full_name", None)
+            or getattr(actor, "name", None)
+          )
+        else:
+          actor_id = actor
+
+        break
+      entity = None
+
+      if len(args) >= 2:
+        candidate = args[1]
+        if hasattr(candidate, "__table__"):
+          entity = candidate
+      before_state = None
+
+      if entity is not None and action in {
+        "update",
+        "delete",
+        "transition",
+        "approve",
+        "reject",
+        "publish",
+        "archive",
+      }:
+        before_state = serialize_model(entity)
 
       result = await func(*args, **kwargs)
-      after = {}
-      entity_id_val = None
-      if hasattr(entity, entity_id_attr):
-        entity_id_val = getattr(entity, entity_id_attr)
-        try:
-          await db.refresh(entity)
-          after = {k: _serialize(v) for k, v in entity.__dict__.items() if not k.startswith("_")}
-        except Exception:
-          pass
+      result_entity = None
+      if hasattr(result, "__table__"):
+        result_entity = result
+      if result_entity is not None:
+        entity = result_entity
+      entity_id = None
 
-      if action == "create" and not entity_id_val and result and hasattr(result, entity_id_attr):
-        entity = result
-        entity_id_val = getattr(result, entity_id_attr)
-        after = {k: _serialize(v) for k, v in entity.__dict__.items() if not k.startswith("_")}
+      if entity is not None and hasattr(entity, entity_id_attr):
+        entity_id = getattr(entity, entity_id_attr)
+      after_state = None
+      if entity is not None and action != "delete":
+        after_state = serialize_model(entity)
+      if entity_id is not None:
 
-      if entity_id_val:
-        await create_audit_event(db,
-          entity_type=entity_type,
-          entity_id=entity_id_val,
-          action=action,
-          actor_id=actor_id,
-          before_state=before if before else None,
-          after_state=after if after else None,
-          module=module,
+        await AuditService.log(db, entity_type=entity_type, entity_id=entity_id, action=action, actor_id=actor_id,
+          actor_name=actor_name, before_state=before_state, after_state=after_state, module=module,
         )
-        await db.flush()
 
       return result
+
     return wrapper
+
   return decorator
+
+def serialize_model(entity: Any) -> dict:
+  """
+  Serialize only SQLAlchemy column values.
+
+  This intentionally avoids serializing relationships,
+  internal SQLAlchemy state, methods, etc.
+  """
+
+  if not hasattr(entity, "__table__"):
+    return {}
+  result = {}
+  for column in entity.__table__.columns:
+    value = getattr(entity, column.name, None)
+    result[column.name] = _serialize(value)
+
+  return result
 
 def _serialize(value: Any) -> Any:
   if isinstance(value, uuid.UUID):
     return str(value)
+  if isinstance(value, dict):
+    return {
+      str(key): _serialize(item)
+      for key, item in value.items()
+    }
+  if isinstance(value, (list, tuple)):
+    return [_serialize(item) for item in value]
+  if isinstance(value, (str, int, float, bool)) or value is None:
+    return value
   if hasattr(value, "isoformat"):
     return value.isoformat()
-  if isinstance(value, (list, dict, str, int, float, bool, type(None))):
-    return value
+
   return str(value)
-
-def attach_session_listener():
-  from sqlalchemy import event
-  from sqlalchemy.orm import Session
-  from app.modules.audits.models import AuditEvent
-
-  @event.listens_for(Session, "before_flush")
-  def _before_flush(session, flush_context, instances):
-    if not hasattr(session, "_pending_audit_events"):
-      session._pending_audit_events = []
-
-    for obj in session.new:
-      if hasattr(obj, "__tablename__") and obj.__tablename__ != "audit_events":
-        state = {c.name: _serialize(getattr(obj, c.name)) for c in obj.__table__.columns}
-        session._pending_audit_events.append({
-          "entity_type": obj.__tablename__,
-          "entity_id": getattr(obj, "id", None),
-          "action": "create",
-          "after_state": state,
-          "module": obj.__tablename__,
-        })
-
-    for obj in session.dirty:
-      if hasattr(obj, "__tablename__") and obj.__tablename__ != "audit_events":
-        state = session.object_state(obj)
-        if state.has_changes:
-          before = {c.name: _serialize(getattr(obj, c.name)) for c in obj.__table__.columns}
-          session._pending_audit_events.append({
-            "entity_type": obj.__tablename__,
-            "entity_id": getattr(obj, "id", None),
-            "action": "update",
-            "before_state": before,
-            "module": obj.__tablename__,
-          })
-
-    for obj in session.deleted:
-      if hasattr(obj, "__tablename__") and obj.__tablename__ != "audit_events":
-        before = {c.name: _serialize(getattr(obj, c.name)) for c in obj.__table__.columns}
-        session._pending_audit_events.append({
-          "entity_type": obj.__tablename__,
-          "entity_id": getattr(obj, "id", None),
-          "action": "delete",
-          "before_state": before,
-          "module": obj.__tablename__,
-        })
-
-  @event.listens_for(Session, "after_flush")
-  def _after_flush(session, flush_context):
-    if hasattr(session, "_pending_audit_events"):
-      for evt in session._pending_audit_events:
-        if evt.get("entity_id"):
-          audit = AuditEvent(**evt)
-          session.add(audit)
-      session._pending_audit_events = []

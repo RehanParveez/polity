@@ -42,6 +42,8 @@ import { AssistantPage } from '../modules/assistant/pages/AssistantPage'
 import { SessionsPage } from '../modules/sessions/pages/SessionsPage'
 import { SessionDetailPage } from '../modules/sessions/pages/SessionDetailPage'
 import { SessionCreatePage } from '../modules/sessions/pages/SessionCreatePage'
+import { AuditDashboardPage } from '../modules/audits/pages/AuditDashboardPage'
+import { AuditEventDetailPage } from '../modules/audits/pages/AuditEventDetailPage'
 
 function ProtectedRoute({ children }: { children: ReactElement }) {
   const accessToken = useAuthStore((s) => s.accessToken)
@@ -101,6 +103,8 @@ export const router = createBrowserRouter([
       { path: '/sessions', element: <SessionsPage /> },
       { path: '/sessions/new', element: <SessionCreatePage /> },
       { path: '/sessions/:sessionId', element: <SessionDetailPage /> },
+      { path: '/audits', element: <AuditDashboardPage /> },
+      { path: '/audits/events/:auditId', element: <AuditEventDetailPage /> },
     ],
   },
 ])

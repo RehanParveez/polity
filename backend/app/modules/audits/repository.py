@@ -14,7 +14,7 @@ async def create_audit_event(
   actor_name: str | None = None,
   before_state: dict | None = None,
   after_state: dict | None = None,
-  metadata: dict | None = None,
+  event_metadata: dict | None = None,
   module: str | None = None,
 ) -> AuditEvent:
   evt = AuditEvent(
@@ -25,7 +25,7 @@ async def create_audit_event(
     actor_name=actor_name,
     before_state=before_state,
     after_state=after_state,
-    metadata=metadata or {},
+    event_metadata=event_metadata or {},
     module=module,
   )
   db.add(evt)

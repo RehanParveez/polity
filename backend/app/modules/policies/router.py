@@ -112,9 +112,12 @@ async def add_approval_step_endpoint(
   if not policy:
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = "the policy is not present")
   try:
-    return await repository.add_approval_step(db, policy_id, **payload.model_dump(exclude_unset=True))
+    await service.add_custom_approval_step(db, policy, payload)
+    steps = await repository.get_approval_steps(db, policy_id)
+    return steps[-1] if steps else None
   except service.PolicyError as exc:
-    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc),
+    ) 
 
 @router.get("/{policy_id}/approvals", response_model=list[PolicyApprovalRead])
 async def list_approvals_endpoint(policy_id: uuid.UUID, db: AsyncSession = Depends(get_db)):

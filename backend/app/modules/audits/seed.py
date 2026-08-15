@@ -1,5 +1,6 @@
 from app.core.database import AsyncSessionLocal
 from app.modules.audits.models import AuditEvent
+from sqlalchemy import select
 import asyncio
 
 DEMO_EVENTS = [
@@ -10,7 +11,7 @@ DEMO_EVENTS = [
     "actor_id": "11111111-1111-1111-1111-111111111111",
     "actor_name": "Roma",
     "after_state": {"ip": "192.168.1.10", "user_agent": "Mozilla/5.0"},
-    "metadata": {"ip": "192.168.1.10"},
+    "event_metadata": {"ip": "192.168.1.10"},
     "module": "identity",
   },
   {
@@ -20,7 +21,7 @@ DEMO_EVENTS = [
     "actor_id": "11111111-1111-1111-1111-111111111111",
     "actor_name": "Roma",
     "after_state": {"title": "National Digital Literacy Program 2026", "status": "draft"},
-    "metadata": {},
+    "event_metadata": {},
     "module": "policies",
   },
   {
@@ -31,7 +32,7 @@ DEMO_EVENTS = [
     "actor_name": "Bilal Ahmed",
     "before_state": {"status": "draft"},
     "after_state": {"status": "under_review"},
-    "metadata": {"comment": "Submitted for ministry review"},
+    "event_metadata": {"comment": "Submitted for ministry review"},
     "module": "policies",
   },
   {
@@ -41,7 +42,7 @@ DEMO_EVENTS = [
     "actor_id": "55555555-5555-5555-5555-555555555555",
     "actor_name": "Sana Malik",
     "after_state": {"scenario_title": "Education Surge", "status": "completed"},
-    "metadata": {"rule_count": 3, "indicators_affected": 3},
+    "event_metadata": {"rule_count": 3, "indicators_affected": 3},
     "module": "simulations",
   },
   {
@@ -52,7 +53,7 @@ DEMO_EVENTS = [
     "actor_name": "Usman Tariq",
     "before_state": {"total_amount": "500000000000.00", "status": "draft"},
     "after_state": {"total_amount": "520000000000.00", "status": "draft"},
-    "metadata": {"reason": "Revised revenue projections"},
+    "event_metadata": {"reason": "Revised revenue projections"},
     "module": "finance",
   },
   {
@@ -62,7 +63,7 @@ DEMO_EVENTS = [
     "actor_id": "11111111-1111-1111-1111-111111111111",
     "actor_name": "Roma",
     "after_state": {"portfolio": "Federal Minister for Health", "ministry_code": "HLTH", "oath_taken": True},
-    "metadata": {},
+    "event_metadata": {},
     "module": "government",
   },
   {
@@ -72,7 +73,7 @@ DEMO_EVENTS = [
     "actor_id": "55555555-5555-5555-5555-555555555555",
     "actor_name": "Sana Malik",
     "after_state": {"session_title": "Health & Infrastructure Combo", "shared_with": "institutional", "permission": "view"},
-    "metadata": {},
+    "event_metadata": {},
     "module": "sessions",
   },
 ]
@@ -90,5 +91,4 @@ async def seed() -> None:
     print(f"[seed] {len(DEMO_EVENTS)} demo audit events seeded")
 
 if __name__ == "__main__":
-  from sqlalchemy import select
   asyncio.run(seed())

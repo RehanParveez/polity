@@ -12,7 +12,7 @@ class AuditEventRead(BaseModel):
   actor_name: str | None
   before_state: dict | None
   after_state: dict | None
-  metadata: dict
+  event_metadata: dict
   module: str | None
   created_at: datetime
 

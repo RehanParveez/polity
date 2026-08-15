@@ -19,7 +19,7 @@ async def list_events_endpoint(
   module: str | None = None,
   start_date: datetime | None = None,
   end_date: datetime | None = None,
-  limit: int = Query(default=100, le=500),
+  limit: int = Query(default=100, ge=1, le=500),
   offset: int = Query(default=0, ge=0),
   current_user: User = Depends(require_permission("audit.read")),
   db: AsyncSession = Depends(get_db),
